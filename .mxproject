@@ -7,8 +7,8 @@ HeaderPath=Drivers\STM32F4xx_HAL_Driver\Inc;Drivers\STM32F4xx_HAL_Driver\Inc\Leg
 CDefines=USE_HAL_DRIVER;STM32F411xE;USE_HAL_DRIVER;USE_HAL_DRIVER;
 
 [PreviousGenFiles]
-HeaderPath=C:/Users/Filip/Documents/Development/Temperature Sensor Array/Inc
+HeaderPath=C:/Users/Filip/Documents/Development/P00_SW_TemperatureSensorArray/Inc
 HeaderFiles=usb_device.h;usbd_conf.h;usbd_desc.h;usbd_cdc_if.h;stm32f4xx_it.h;stm32f4xx_hal_conf.h;main.h;
-SourcePath=C:/Users/Filip/Documents/Development/Temperature Sensor Array/Src
+SourcePath=C:/Users/Filip/Documents/Development/P00_SW_TemperatureSensorArray/Src
 SourceFiles=usb_device.c;usbd_conf.c;usbd_desc.c;usbd_cdc_if.c;stm32f4xx_it.c;stm32f4xx_hal_msp.c;main.c;
 
