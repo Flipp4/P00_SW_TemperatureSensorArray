@@ -24,6 +24,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "..\Drivers\MCP9808\TemperatureSensor_MCP9808.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -118,7 +120,12 @@ int main(void)
   HAL_GPIO_WritePin(I2C2_VDD_GPIO_Port, I2C2_VDD_Pin, SET);
   HAL_GPIO_WritePin(I2C1_VDD_GPIO_Port, I2C1_VDD_Pin, SET);
 
+  uint8_t u8DeviceAddressList = 0x0E;
+
+  MCP9808_InitCommunicationI2C1(&hi2c1, &u8DeviceAddressList, 1);
+
   long long counter = 0;
+  float output = 0.0;
   while (1)
   {
 	  HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
@@ -127,6 +134,7 @@ int main(void)
 	  {
 		  HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
 		  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0);
+		  MCP9808_CommunicateTaskI2C1();
 		  counter = 0;
 	  }
     /* USER CODE END WHILE */
