@@ -39,8 +39,9 @@ float MCP9808_ReadTemperature(I2C_HandleTypeDef hI2C_Transciever, uint8_t u8Devi
 void MCP9808_CommunicateTaskI2C1()
 {
 
+	uint16_t u16FixedPointReadingLow = 0;
+	uint16_t u16FixedPointReadingHigh = 0;
 	uint16_t u16FixedPointReading = 0;
-
 
 	switch(I2C1_Array.eState)
 	{
@@ -53,9 +54,9 @@ void MCP9808_CommunicateTaskI2C1()
 			I2C1_Array.eState = MCP9808_TemperatureConversion;
 			break;
 	case(MCP9808_TemperatureConversion):
-			u16FixedPointReading = ((I2C1_Array.u16RawTemperature && 0x003F) << 8);
-			u16FixedPointReading += ((uint8_t)(I2C1_Array.u16RawTemperature && 0xFF00) >> 8);
-
+			u16FixedPointReadingLow = (I2C1_Array.u16RawTemperature & 0x003F) << 8;
+			u16FixedPointReadingHigh = (I2C1_Array.u16RawTemperature & 0xFF00) >> 8;
+			u16FixedPointReading = u16FixedPointReadingLow + u16FixedPointReadingHigh;
 			I2C1_Array.fConvertedTemperature = (float)(u16FixedPointReading) / 16;
 			I2C1_Array.eState = MCP9808_TemperatureReadRequest;
 			break;
