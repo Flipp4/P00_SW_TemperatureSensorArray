@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 
 #include "..\Drivers\MCP9808\TemperatureSensor_MCP9808.h"
+#include "..\Application\Application.h"
 
 /* USER CODE END Includes */
 
@@ -128,6 +129,7 @@ int main(void)
   float output = 0.0;
   while (1)
   {
+	  ApplicationPerform();
 	  HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
 	  counter++;
 	  if(counter >= 72000)
