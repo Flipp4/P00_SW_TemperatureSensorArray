@@ -54,6 +54,11 @@ void OperateLED_D (LEDState_t eState)
 	}
 }
 
+void ToggleLED_B()
+{
+	HAL_GPIO_Toggle(LED1_GPIO_Port, LED1_Pin);
+}
+
 void OperateSensorPower_A (SensorState_t eState)
 {
 	if(eState == eLED_On)

@@ -50,6 +50,8 @@ typedef struct ErrorRegister_t
 	bool bInputError;
 	bool bTaskOverlapError;
 	bool bUndefinedError;
+	bool bAppDefaultStateEntryError;
+	bool bWrongStateTransitionError;
 }ErrorRegister_t;
 
 typedef struct sApplication_t
@@ -57,6 +59,7 @@ typedef struct sApplication_t
 	AsyncTimers_t sAsyncTimers;
 	ErrorRegister_t sErrorReg;
 	bool bInitializedFlag;
+	ApplicationState_t eApplicationState;
 
 }sApplication_t;
 

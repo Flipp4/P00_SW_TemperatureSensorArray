@@ -27,6 +27,8 @@ void OperateLED_B (LEDState_t eState);
 void OperateLED_C (LEDState_t eState);
 void OperateLED_D (LEDState_t eState);
 
+void ToggleLED_B();
+
 void OperateSensorPower_A (SensorState_t eState);
 void OperateSensorPower_B (SensorState_t eState);
 
