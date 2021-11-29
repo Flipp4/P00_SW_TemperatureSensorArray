@@ -56,27 +56,27 @@ void OperateLED_D (LEDState_t eState)
 
 void ToggleLED_B()
 {
-	HAL_GPIO_Toggle(LED1_GPIO_Port, LED1_Pin);
+	HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
 }
 
 void OperateSensorPower_A (SensorState_t eState)
 {
-	if(eState == eLED_On)
+	if(eState == eSensor_On)
 	{
 		HAL_GPIO_WritePin(I2C1_VDD_GPIO_Port, I2C1_VDD_Pin, GPIO_PIN_SET);
 	}
-	else if(eState == eLED_Off)
+	else if(eState == eSensor_Off)
 	{
 		HAL_GPIO_WritePin(I2C1_VDD_GPIO_Port, I2C1_VDD_Pin, GPIO_PIN_RESET);
 	}
 }
 void OperateSensorPower_B (SensorState_t eState)
 {
-	if(eState == eLED_On)
+	if(eState == eSensor_On)
 	{
 		HAL_GPIO_WritePin(I2C2_VDD_GPIO_Port, I2C2_VDD_Pin, GPIO_PIN_SET);
 	}
-	else if(eState == eLED_Off)
+	else if(eState == eSensor_Off)
 	{
 		HAL_GPIO_WritePin(I2C2_VDD_GPIO_Port, I2C2_VDD_Pin, GPIO_PIN_RESET);
 	}
