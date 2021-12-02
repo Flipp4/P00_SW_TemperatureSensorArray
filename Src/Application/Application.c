@@ -19,6 +19,7 @@ void AsynchronousTaskScheduler();
 void AppStateChangeRequest( ApplicationState_t eNewState);
 void WaitManager();
 void AppEnableResetTaskTimers();
+void TurnOnSynchronousEvent();
 
 /* File-scope variables */
 
@@ -47,6 +48,8 @@ void ApplicationPerform()
 
 	case eApp_Initialization:
 		AppEnableResetTaskTimers();
+		TurnAllSensorOn();
+		TurnOnSynchronousEvent();
 		AppStateChangeRequest(eApp_Perform);
 		break;
 

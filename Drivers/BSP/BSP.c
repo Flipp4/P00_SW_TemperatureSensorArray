@@ -82,5 +82,12 @@ void OperateSensorPower_B (SensorState_t eState)
 	}
 }
 
+void TurnAllSensorOn()
+{
+	OperateSensorPower_A(eSensor_On);
+	OperateSensorPower_B(eSensor_On);
+}
+
+
 
 

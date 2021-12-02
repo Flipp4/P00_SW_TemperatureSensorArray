@@ -60,7 +60,6 @@ typedef struct sApplication_t
 	ErrorRegister_t sErrorReg;
 	bool bInitializedFlag;
 	ApplicationState_t eApplicationState;
-
 }sApplication_t;
 
 

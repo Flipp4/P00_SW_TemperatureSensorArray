@@ -32,5 +32,7 @@ void ToggleLED_B();
 void OperateSensorPower_A (SensorState_t eState);
 void OperateSensorPower_B (SensorState_t eState);
 
+void TurnAllSensorOn();
+
 
 #endif /* BSP_BSP_H_ */
