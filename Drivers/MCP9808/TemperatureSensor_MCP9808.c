@@ -81,7 +81,7 @@ float MCP9808_ReadTemperature(I2C_HandleTypeDef hI2C_Transciever, uint8_t u8Devi
 {
 	float fTemperature = 0.0;
 //	uint8_t u8DeviceAddres = (u8DeviceHWAddress | MCP9808_AddresLowerNibble);
-	uint8_t u8Buffer[2];
+//	uint8_t u8Buffer[2];
 
 //	HAL_I2C_Master_Receive(&hI2C_Transciever, u8DeviceAddres, &u8Buffer, 2, 1000);
 

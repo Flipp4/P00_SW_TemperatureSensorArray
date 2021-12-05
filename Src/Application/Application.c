@@ -210,3 +210,8 @@ void AssertError()
 {
 
 }
+
+void TurnOnSynchronousEvent()
+{
+
+}

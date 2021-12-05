@@ -116,7 +116,6 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USB_DEVICE_Init();
   MX_TIM2_Init();
-
   /* USER CODE BEGIN 2 */
   HAL_GPIO_WritePin(LED0_GPIO_Port, LED0_Pin, SET);
 
@@ -132,7 +131,7 @@ int main(void)
   MCP9808_InitCommunicationI2C1(&hi2c1, &u8DeviceAddressList, 1);
 
   long long counter = 0;
-  float output = 0.0;
+
   while (1)
   {
 	  ApplicationPerform();
@@ -160,7 +159,6 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-  RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
 
   /** Configure the main internal regulator output voltage
   */
@@ -192,12 +190,6 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_RTC;
-  PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
   {
     Error_Handler();
   }

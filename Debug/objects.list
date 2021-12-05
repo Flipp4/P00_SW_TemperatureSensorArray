@@ -40,3 +40,4 @@
 "./Src/usbd_cdc_if.o"
 "./Src/usbd_conf.o"
 "./Src/usbd_desc.o"
+"./Startup/startup_stm32f411rctx.o"
