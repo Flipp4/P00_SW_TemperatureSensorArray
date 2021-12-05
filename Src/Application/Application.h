@@ -11,7 +11,7 @@
 void ApplicationPerform();
 void AsynchronousTaskTimerUpdate();
 
-
+void AssertError();
 
 #endif /* APPLICATION_APPLICATION_H_ */
 

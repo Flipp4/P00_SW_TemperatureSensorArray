@@ -10,9 +10,11 @@
 #include "ApplicationSystem.h"
 #include "..\Drivers\MCP9808\TemperatureSensor_MCP9808.h"
 #include "../Drivers/BSP/BSP.h"
+#include "TemperatureCollector.h"
 
 /* Function prototypes */
 
+void AsynchronousTask_10ms();
 void AsynchronousTask_100ms();
 void AsynchronousTask_1000ms();
 void AsynchronousTaskScheduler();
@@ -48,6 +50,7 @@ void ApplicationPerform()
 
 	case eApp_Initialization:
 		AppEnableResetTaskTimers();
+		TempCollect_Initialize();
 		TurnAllSensorOn();
 		TurnOnSynchronousEvent();
 		AppStateChangeRequest(eApp_Perform);
@@ -93,6 +96,10 @@ void AsynchronousTaskTimerUpdate()
 }
 
 /* Internal functions */
+void AsynchronousTask_10ms()
+{
+	TempCollect_Operate();
+}
 
 void AsynchronousTask_100ms()
 {
@@ -120,7 +127,7 @@ void AsynchronousTaskScheduler()
 
 	if(sApplicationBase.sAsyncTimers.s10ms.u16Counter >= dAsynchronousTaskPeriod10ms)
 	{
-//		AsynchronousTask_10ms();
+		AsynchronousTask_10ms();
 		sApplicationBase.sAsyncTimers.s10ms.u16Counter = 0;
 	}
 
@@ -197,4 +204,9 @@ void AppEnableResetTaskTimers()
 	sApplicationBase.sAsyncTimers.s10ms.u16Counter = 0;
 	sApplicationBase.sAsyncTimers.s1ms.u16Counter = 0;
 	sApplicationBase.sAsyncTimers.s500us.u16Counter = 0;
+}
+
+void AssertError()
+{
+
 }

@@ -8,14 +8,8 @@
 #ifndef MCP9808_TEMPERATURESENSOR_MCP9808_H_
 #define MCP9808_TEMPERATURESENSOR_MCP9808_H_
 
-#include "stm32f4xx_hal.h"
-#include <stdio.h>
-#include <stdbool.h>
-/*
- *  Every MC9808 device address consists of following bytes: 0011 A0 A1 A2, where 0011 is constant and A0-A2 is hardware coded.
- */
+#include "MCP9808_ArrayData.h"
 
-#define MCP9808_AddresLowerNibble 0x3
 #define MCP9808_AddressAmbientTemperature 0x05
 
 void MCP9808_CommunicateTaskI2C1();

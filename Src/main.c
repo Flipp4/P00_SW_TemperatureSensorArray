@@ -25,7 +25,7 @@
 /* USER CODE BEGIN Includes */
 
 #include "..\Drivers\MCP9808\TemperatureSensor_MCP9808.h"
-#include "..\Application\Application.h"
+#include "Application\Application.h"
 
 
 /* USER CODE END Includes */

@@ -5,12 +5,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Drivers/MCP9808/MCP9808_ArrayData.c \
 ../Drivers/MCP9808/TemperatureSensor_MCP9808.c 
 
 OBJS += \
+./Drivers/MCP9808/MCP9808_ArrayData.o \
 ./Drivers/MCP9808/TemperatureSensor_MCP9808.o 
 
 C_DEPS += \
+./Drivers/MCP9808/MCP9808_ArrayData.d \
 ./Drivers/MCP9808/TemperatureSensor_MCP9808.d 
 
 
