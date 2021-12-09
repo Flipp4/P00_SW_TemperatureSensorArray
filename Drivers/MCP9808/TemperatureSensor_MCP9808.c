@@ -6,85 +6,23 @@
  */
 
 #include "TemperatureSensor_MCP9808.h"
+#include "MCP9808_ArrayData.h"
 
-typedef struct kMCP9808_CommData_t
+void MCP9808_Read(MCP9808_Sensor_t *kSensor)
 {
-	I2C_HandleTypeDef* hTranscieverHandle;
-	uint8_t u8DeviceAddressList[8];
-	uint8_t u8DeviceCount;
-	bool bEnabled;
-	bool bStateReady;
-	uint16_t u16RawTemperature;
-	float fConvertedTemperature;
-
-}kMCP9808_CommData_t;
-
-kMCP9808_CommData_t I2C1_Array;
-kMCP9808_CommData_t I2C2_Array;
-
-
-float MCP9808_ReadTemperature(I2C_HandleTypeDef hI2C_Transciever, uint8_t u8DeviceHWAddress);
-float MCP9808_DecodeTemperature(kMCP9808_CommData_t *kSensorArrayData);
-
-void MCP9808_CommunicateTaskI2C1()
-{
-
-//	switch(I2C1_Array.eState)
-//	{
-//	case(MCP9808_Initialized):
-//			I2C1_Array.eState = MCP9808_TemperatureReadRequest;
-//			break;
-//	case(MCP9808_TemperatureReadRequest):
-////			HAL_I2C_Master_Transmit(&hI2C_Transciever, u8DeviceAddres, &u8Buffer, 2, 1000);
-//			HAL_I2C_Mem_Read(I2C1_Array.hTranscieverHandle, I2C1_Array.u8DeviceAddressList[0], MCP9808_AddressAmbientTemperature, 1, &I2C1_Array.u16RawTemperature, 2, 1000);
-//			I2C1_Array.eState = MCP9808_TemperatureConversion;
-//			break;
-//	case(MCP9808_TemperatureConversion):
-//
-//			I2C1_Array.fConvertedTemperature = MCP9808_DecodeTemperature(&I2C1_Array);
-//			I2C1_Array.eState = MCP9808_TemperatureReadRequest;
-//			break;
-//	case(MCP9808_Waiting):
-//			break;
-//	default:
-//	break;
-//	}
-
+	HAL_I2C_Mem_Read_IT(kSensor->hTranscieverHandle, kSensor->u8Address, MCP9808_AddressAmbientTemperature, 1, kSensor->u16RawMeasurement, 2);
 }
 
-
-void MCP9808_InitCommunicationI2C1(I2C_HandleTypeDef *hI2C_Transciever, uint8_t *u8DeviceAddressList, uint8_t u8DeviceCount)
-{
-	I2C1_Array.hTranscieverHandle = hI2C_Transciever;
-	for( uint8_t u8AddresIndex = 0; u8AddresIndex < u8DeviceCount; u8AddresIndex++ )
-	{
-//		I2C1_Array.u8DeviceAddressList[u8AddresIndex] = ((MCP9808_AddresLowerNibble << 4) + u8DeviceAddressList[u8AddresIndex]);
-	}
-	I2C1_Array.bEnabled = true;
-}
-
-float MCP9808_DecodeTemperature(kMCP9808_CommData_t *kSensorArrayData)
+float MCP9808_DecodeTemperature(MCP9808_Sensor_t *kSensor)
 {
 	uint16_t u16FixedPointReadingLow = 0;
 	uint16_t u16FixedPointReadingHigh = 0;
 	uint16_t u16FixedPointReading = 0;
 
-	u16FixedPointReadingLow = (kSensorArrayData->u16RawTemperature & 0x003F) << 8;
-	u16FixedPointReadingHigh = (kSensorArrayData->u16RawTemperature & 0xFF00) >> 8;
+	u16FixedPointReadingLow = (kSensor->u16RawMeasurement[0]) << 8;
+	u16FixedPointReadingHigh = (kSensor->u16RawMeasurement[1]) >> 8;
 	u16FixedPointReading = u16FixedPointReadingLow + u16FixedPointReadingHigh;
 
 	return (float)(u16FixedPointReading) / 16;
 }
 
-
-float MCP9808_ReadTemperature(I2C_HandleTypeDef hI2C_Transciever, uint8_t u8DeviceHWAddress)
-{
-	float fTemperature = 0.0;
-//	uint8_t u8DeviceAddres = (u8DeviceHWAddress | MCP9808_AddresLowerNibble);
-//	uint8_t u8Buffer[2];
-
-//	HAL_I2C_Master_Receive(&hI2C_Transciever, u8DeviceAddres, &u8Buffer, 2, 1000);
-
-
-	return fTemperature;
-}

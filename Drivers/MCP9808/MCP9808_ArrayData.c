@@ -11,8 +11,8 @@
  */
 #define MCP9808_AddresLowerNibble 0x3
 
-volatile MCP9808_Sensor_t kaSensorArrayDataA[MCP9808_I2CA_DeviceCount];
-volatile MCP9808_Sensor_t kaSensorArrayDataB[MCP9808_I2CB_DeviceCount];
+MCP9808_Sensor_t kaSensorArrayDataA[MCP9808_I2CA_DeviceCount];
+MCP9808_Sensor_t kaSensorArrayDataB[MCP9808_I2CB_DeviceCount];
 
 const uint8_t u8DeviceAddressListA[MCP9808_I2CA_DeviceCount] = {
 	0x00,
@@ -56,11 +56,13 @@ void SensorArray_Reset()
 	for(uint8_t u8Idx = 0; u8Idx < MCP9808_I2CA_DeviceCount; u8Idx++)
 	{
 		kaSensorArrayDataA[u8Idx].bNewData = false;
-		kaSensorArrayDataA[u8Idx].u16RawMeasurement = 0;
+		kaSensorArrayDataA[u8Idx].u16RawMeasurement[0] = 0;
+		kaSensorArrayDataA[u8Idx].u16RawMeasurement[1] = 0;
 	}
 	for(uint8_t u8Idx = 0; u8Idx < MCP9808_I2CB_DeviceCount; u8Idx++)
 	{
 		kaSensorArrayDataB[u8Idx].bNewData = false;
-		kaSensorArrayDataB[u8Idx].u16RawMeasurement = 0;
+		kaSensorArrayDataB[u8Idx].u16RawMeasurement[0] = 0;
+		kaSensorArrayDataB[u8Idx].u16RawMeasurement[1] = 0;
 	}
 }

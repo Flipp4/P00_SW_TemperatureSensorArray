@@ -126,24 +126,12 @@ int main(void)
   HAL_GPIO_WritePin(I2C2_VDD_GPIO_Port, I2C2_VDD_Pin, SET);
   HAL_GPIO_WritePin(I2C1_VDD_GPIO_Port, I2C1_VDD_Pin, SET);
 
-  uint8_t u8DeviceAddressList = 0x0E;
-
-  MCP9808_InitCommunicationI2C1(&hi2c1, &u8DeviceAddressList, 1);
-
   long long counter = 0;
 
   while (1)
   {
 	  ApplicationPerform();
-	  HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
-	  counter++;
-	  if(counter >= 72000)
-	  {
-		  HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
-		  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0);
-		  MCP9808_CommunicateTaskI2C1();
-		  counter = 0;
-	  }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

@@ -12,7 +12,7 @@
 
 #define MCP9808_AddressAmbientTemperature 0x05
 
-void MCP9808_CommunicateTaskI2C1();
-void MCP9808_InitCommunicationI2C1(I2C_HandleTypeDef *hI2C_Transciever, uint8_t *u8DeviceAddressList, uint8_t u8DeviceCount);
+void MCP9808_Read(MCP9808_Sensor_t *kSensor);
+float MCP9808_DecodeTemperature(MCP9808_Sensor_t *kSensor);
 
 #endif /* MCP9808_TEMPERATURESENSOR_MCP9808_H_ */
