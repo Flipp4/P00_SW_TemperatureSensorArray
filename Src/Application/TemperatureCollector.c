@@ -15,6 +15,7 @@ typedef enum TemperatureCollectorState_t
 	TempCollect_Initialized,
 	TempCollect_TemperatureReadRequest,
 	TempCollect_ProcessData,
+	TempCollect_ArmNewReading,
 	TempCollect_Waiting,
 	TempCollect_Error
 }TemperatureCollectorState_t;
@@ -26,8 +27,9 @@ typedef struct kTempCollect_Data_t
 	bool bEnabledFlag;
 	bool bScheduleMeasurement;
 	TemperatureCollectorState_t eState;
+	bool bReadFinished[2];
 	bool bStateReady[2];
-	float fConvertedTemperature;
+	float fConvertedTemperature[2];
 	uint16_t u16ArrayASensorIndex;
 	uint16_t u16ArrayBSensorIndex;
 
@@ -58,13 +60,17 @@ void TempCollect_Operate()
 		kTemperatureData.bScheduleMeasurement = false;
 		if(kTemperatureData.u16ArrayASensorIndex < MCP9808_I2CA_DeviceCount)
 		{
+			/*
+			 * By placing "ready" flag clearing here this app will not get stuck
+			 * if the sensor number on each array branch would be not equal
+			 */
+			kTemperatureData.bStateReady[0] = false;
 			MCP9808_Read(&kaSensorArrayDataA[kTemperatureData.u16ArrayASensorIndex]);
-
 		}
 		if(kTemperatureData.u16ArrayBSensorIndex < MCP9808_I2CB_DeviceCount)
 		{
+			kTemperatureData.bStateReady[1] = false;
 			MCP9808_Read(&kaSensorArrayDataB[kTemperatureData.u16ArrayBSensorIndex]);
-
 		}
 		kTemperatureData.eState = TempCollect_Waiting;
 		break;
@@ -75,20 +81,44 @@ void TempCollect_Operate()
 		}
 		break;
 	case(TempCollect_ProcessData):
-		MCP9808_DecodeTemperature(&kaSensorArrayDataA[kTemperatureData.u16ArrayASensorIndex]);
-		MCP9808_DecodeTemperature(&kaSensorArrayDataB[kTemperatureData.u16ArrayBSensorIndex]);
-
-		kTemperatureData.u16ArrayASensorIndex++;
-		kTemperatureData.u16ArrayBSensorIndex++;
-
-		if ( ( kTemperatureData.u16ArrayASensorIndex < MCP9808_I2CA_DeviceCount )
-		  && ( kTemperatureData.u16ArrayBSensorIndex < MCP9808_I2CB_DeviceCount ) )
+		if( !kTemperatureData.bReadFinished[0] )
 		{
-			kTemperatureData.eState = TempCollect_TemperatureReadRequest;
+			kTemperatureData.fConvertedTemperature[0] = MCP9808_DecodeTemperature(&kaSensorArrayDataA[kTemperatureData.u16ArrayASensorIndex]);
+		}
+		if( !kTemperatureData.bReadFinished[0] )
+		{
+			kTemperatureData.fConvertedTemperature[1] = MCP9808_DecodeTemperature(&kaSensorArrayDataB[kTemperatureData.u16ArrayBSensorIndex]);
+		}
+
+		kTemperatureData.eState = TempCollect_ArmNewReading;
+		break;
+
+	case(TempCollect_ArmNewReading):
+		if( kTemperatureData.u16ArrayASensorIndex >= MCP9808_I2CA_DeviceCount)
+		{
+			kTemperatureData.bReadFinished[0] = true;
 		}
 		else
 		{
+			kTemperatureData.u16ArrayASensorIndex++;
+		}
+
+		if( kTemperatureData.u16ArrayBSensorIndex >= MCP9808_I2CB_DeviceCount)
+		{
+			kTemperatureData.bReadFinished[1] = true;
+		}
+		else
+		{
+			kTemperatureData.u16ArrayBSensorIndex++;
+		}
+
+		if ( kTemperatureData.bReadFinished[0] && kTemperatureData.bReadFinished[1] )
+		{
 			kTemperatureData.eState = TempCollect_Initialized;
+		}
+		else
+		{
+			kTemperatureData.eState = TempCollect_TemperatureReadRequest;
 		}
 		break;
 	default:
@@ -103,6 +133,9 @@ void TempCollect_Initialize()
 	kTemperatureData.bEnabledFlag = true;
 }
 void TempCollect_RetrieveResult(TemperatureData_t *sTemperatureData);
+
+/* Interrupt callback functions */
+
 void TempCollect_ScheduleMeasurement()
 {
 	if(kTemperatureData.bScheduleMeasurement)
@@ -113,4 +146,13 @@ void TempCollect_ScheduleMeasurement()
 	{
 		kTemperatureData.bScheduleMeasurement = true;
 	}
+}
+
+void TempCollect_I2CA_Done()
+{
+	kTemperatureData.bStateReady[0] = true;
+}
+void TempCollect_I2CB_Done()
+{
+	kTemperatureData.bStateReady[1] = true;
 }
