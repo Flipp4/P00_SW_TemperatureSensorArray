@@ -6,14 +6,17 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../Src/Application/Application.c \
+../Src/Application/DataHandler.c \
 ../Src/Application/TemperatureCollector.c 
 
 OBJS += \
 ./Src/Application/Application.o \
+./Src/Application/DataHandler.o \
 ./Src/Application/TemperatureCollector.o 
 
 C_DEPS += \
 ./Src/Application/Application.d \
+./Src/Application/DataHandler.d \
 ./Src/Application/TemperatureCollector.d 
 
 

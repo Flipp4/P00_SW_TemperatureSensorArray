@@ -31,6 +31,7 @@
 "./Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.o"
 "./Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.o"
 "./Src/Application/Application.o"
+"./Src/Application/DataHandler.o"
 "./Src/Application/TemperatureCollector.o"
 "./Src/main.o"
 "./Src/stm32f4xx_hal_msp.o"

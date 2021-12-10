@@ -11,6 +11,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+void DataHandler_Initialize();
+void DataHandler_Reset();
 void DataHandler_OpenNewMeasurement( uint32_t u32TimeStamp );
 void DataHandler_StoreMeasurement( float fNewMeasurement );
 

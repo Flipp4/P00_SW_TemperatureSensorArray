@@ -11,6 +11,7 @@
 #include "..\Drivers\MCP9808\TemperatureSensor_MCP9808.h"
 #include "../Drivers/BSP/BSP.h"
 #include "TemperatureCollector.h"
+#include "DataHandler.h"
 
 /* Function prototypes */
 
@@ -51,6 +52,7 @@ void ApplicationPerform()
 	case eApp_Initialization:
 		AppEnableResetTaskTimers();
 		TempCollect_Initialize();
+		DataHandler_Initialize();
 		TurnAllSensorOn();
 		TurnOnSynchronousEvent();
 		AppStateChangeRequest(eApp_Perform);
