@@ -126,8 +126,6 @@ int main(void)
   HAL_GPIO_WritePin(I2C2_VDD_GPIO_Port, I2C2_VDD_Pin, SET);
   HAL_GPIO_WritePin(I2C1_VDD_GPIO_Port, I2C1_VDD_Pin, SET);
 
-  long long counter = 0;
-
   while (1)
   {
 	  ApplicationPerform();

@@ -111,6 +111,7 @@ void AsynchronousTask_100ms()
 void AsynchronousTask_1000ms()
 {
 	ToggleLED_B();
+	DataHandler_Operate();
 }
 
 void AsynchronousTaskScheduler()
