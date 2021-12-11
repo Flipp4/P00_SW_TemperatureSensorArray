@@ -66,7 +66,7 @@ void ApplicationPerform()
 		break;
 
 	default:
-		sApplicationBase.sErrorReg.bAppDefaultStateEntryError = true;
+		AssertError(AppError_AppDefaultStateEntryError);
 		break;
 	}
 
@@ -153,7 +153,7 @@ void AppStateChangeRequest( ApplicationState_t eNewState)
 		}
 		else
 		{
-			sApplicationBase.sErrorReg.bWrongStateTransitionError = true;
+			AssertError(AppError_WrongStateTransition);
 		}
 		break;
 
@@ -164,7 +164,7 @@ void AppStateChangeRequest( ApplicationState_t eNewState)
 		}
 		else
 		{
-			sApplicationBase.sErrorReg.bWrongStateTransitionError = true;
+			AssertError(AppError_WrongStateTransition);
 		}
 		break;
 
@@ -179,16 +179,16 @@ void AppStateChangeRequest( ApplicationState_t eNewState)
 		}
 		else
 		{
-			sApplicationBase.sErrorReg.bWrongStateTransitionError = true;
+			AssertError(AppError_WrongStateTransition);
 		}
 		break;
 
 	case eApp_Shutdown:
-		sApplicationBase.sErrorReg.bWrongStateTransitionError = true;
+		AssertError(AppError_WrongStateTransition);
 		break;
 
 	default:
-		sApplicationBase.sErrorReg.bWrongStateTransitionError = true;
+		AssertError(AppError_WrongStateTransition);
 		break;
 	}
 
@@ -209,9 +209,9 @@ void AppEnableResetTaskTimers()
 	sApplicationBase.sAsyncTimers.s500us.u16Counter = 0;
 }
 
-void AssertError()
+void AssertError( AppErrorList_t eAppError )
 {
-
+	sApplicationBase.u32ErrorReg |= (uint32_t)eAppError;
 }
 
 void TurnOnSynchronousEvent()

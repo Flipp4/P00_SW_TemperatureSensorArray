@@ -88,7 +88,7 @@ void DataHandler_OpenNewMeasurement( uint32_t u32TimeStamp )
 
 			if( !kDataHandler.kMeasurementMemory[kDataHandler.u8ActiveMemoryPage].bHardSaved )
 			{
-				AssertError(); // Data not saved; possibly add timestamp to track lost data chunks
+				AssertError(AppError_DataLost); // Data not saved; possibly add timestamp to track lost data chunks
 			}
 
 			kDataHandler.u8LastMemoryPage = kDataHandler.u8ActiveMemoryPage;
@@ -102,7 +102,7 @@ void DataHandler_OpenNewMeasurement( uint32_t u32TimeStamp )
 	}
 	else
 	{
-		AssertError(); // Call to DataHandler procedure before initialization
+		AssertError(AppError_DataHandlerUninitialized); // Call to DataHandler procedure before initialization
 	}
 
 }
@@ -122,12 +122,12 @@ void DataHandler_StoreMeasurement( float fNewMeasurement )
 		if(kDataHandler.u8WidthPointer >= dMemoryWidth)
 		{
 			kDataHandler.u8WidthPointer--;
-			AssertError(); // Width overstretched - no new measurement was called;
+			AssertError(AppError_WidthOverstretched); // Width overstretched - no new measurement was called;
 		}
 	}
 	else
 	{
-		AssertError(); // Call to DataHandler procedure before initialization
+		AssertError(AppError_DataHandlerUninitialized); // Call to DataHandler procedure before initialization
 	}
 }
 
@@ -145,6 +145,6 @@ void DataHandler_Operate()
 	}
 	else
 	{
-		AssertError(); // Call to DataHandler procedure before initialization
+		AssertError(AppError_DataHandlerUninitialized); // Call to DataHandler procedure before initialization
 	}
 }

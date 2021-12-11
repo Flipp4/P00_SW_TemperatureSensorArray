@@ -8,10 +8,12 @@
 #ifndef APPLICATION_APPLICATION_H_
 #define APPLICATION_APPLICATION_H_
 
+#include "../Error/ErrorList.h"
+
 void ApplicationPerform();
 void AsynchronousTaskTimerUpdate();
 
-void AssertError();
+void AssertError(AppErrorList_t eAppError);
 
 #endif /* APPLICATION_APPLICATION_H_ */
 

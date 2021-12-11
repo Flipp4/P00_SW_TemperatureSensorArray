@@ -44,20 +44,10 @@ typedef struct AsyncTimers_t
 	SWTimer_t s500us;
 }AsyncTimers_t;
 
-typedef struct ErrorRegister_t
-{
-	bool bTimerError;
-	bool bInputError;
-	bool bTaskOverlapError;
-	bool bUndefinedError;
-	bool bAppDefaultStateEntryError;
-	bool bWrongStateTransitionError;
-}ErrorRegister_t;
-
 typedef struct sApplication_t
 {
 	AsyncTimers_t sAsyncTimers;
-	ErrorRegister_t sErrorReg;
+	uint32_t u32ErrorReg;
 	bool bInitializedFlag;
 	ApplicationState_t eApplicationState;
 }sApplication_t;
