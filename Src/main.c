@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 
 #include "..\Drivers\MCP9808\TemperatureSensor_MCP9808.h"
+#include "../Drivers/MCP9808/MCP9808_ArrayData.h"
 #include "Application\Application.h"
 
 
@@ -117,6 +118,10 @@ int main(void)
   MX_USB_DEVICE_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+
+  SensorArray_Init(&hi2c1, &hi2c2);
+//  HAL_TIM_Base_MspInit(&htim2);
+  HAL_TIM_Base_Start_IT(&htim2);
   HAL_GPIO_WritePin(LED0_GPIO_Port, LED0_Pin, SET);
 
   /* USER CODE END 2 */

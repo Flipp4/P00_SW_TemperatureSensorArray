@@ -68,22 +68,22 @@ void OperateSensorPower_A (SensorState_t eState)
 {
 	if(eState == eSensor_On)
 	{
-		HAL_GPIO_WritePin(I2C1_VDD_GPIO_Port, I2C1_VDD_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(I2C1_VDD_GPIO_Port, I2C1_VDD_Pin, GPIO_PIN_RESET);
 	}
 	else if(eState == eSensor_Off)
 	{
-		HAL_GPIO_WritePin(I2C1_VDD_GPIO_Port, I2C1_VDD_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(I2C1_VDD_GPIO_Port, I2C1_VDD_Pin, GPIO_PIN_SET);
 	}
 }
 void OperateSensorPower_B (SensorState_t eState)
 {
 	if(eState == eSensor_On)
 	{
-		HAL_GPIO_WritePin(I2C2_VDD_GPIO_Port, I2C2_VDD_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(I2C2_VDD_GPIO_Port, I2C2_VDD_Pin, GPIO_PIN_RESET);
 	}
 	else if(eState == eSensor_Off)
 	{
-		HAL_GPIO_WritePin(I2C2_VDD_GPIO_Port, I2C2_VDD_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(I2C2_VDD_GPIO_Port, I2C2_VDD_Pin, GPIO_PIN_SET);
 	}
 }
 
