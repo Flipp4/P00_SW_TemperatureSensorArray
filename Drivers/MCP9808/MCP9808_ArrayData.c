@@ -42,6 +42,7 @@ void SensorArray_Init(I2C_HandleTypeDef *hI2CA, I2C_HandleTypeDef *hI2CB)
 	{
 		kaSensorArrayDataA[u8Idx].hTranscieverHandle = hI2CA;
 		kaSensorArrayDataA[u8Idx].u8Address = ((MCP9808_AddresLowerNibble << 4) + u8DeviceAddressListA[u8Idx]);
+		kaSensorArrayDataA[u8Idx].bEnabled = true;
 	}
 	for(uint8_t u8Idx = 0; u8Idx < MCP9808_I2CB_DeviceCount; u8Idx++)
 	{

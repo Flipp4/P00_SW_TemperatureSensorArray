@@ -243,7 +243,8 @@ void TIM2_IRQHandler(void)
 void I2C1_EV_IRQHandler(void)
 {
   /* USER CODE BEGIN I2C1_EV_IRQn 0 */
-	TempCollect_I2CA_Done();
+
+//	TempCollect_I2CA_Done();
 
   /* USER CODE END I2C1_EV_IRQn 0 */
   HAL_I2C_EV_IRQHandler(&hi2c1);
@@ -258,7 +259,7 @@ void I2C1_EV_IRQHandler(void)
 void I2C2_EV_IRQHandler(void)
 {
   /* USER CODE BEGIN I2C2_EV_IRQn 0 */
-	TempCollect_I2CB_Done();
+//	TempCollect_I2CB_Done();
 
   /* USER CODE END I2C2_EV_IRQn 0 */
   HAL_I2C_EV_IRQHandler(&hi2c2);
@@ -282,6 +283,22 @@ void OTG_FS_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
+
+void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c)
+{
+	if(hi2c == &hi2c1)
+	{
+		TempCollect_I2CA_Done();
+	}
+	else if ( hi2c == &hi2c2)
+	{
+		TempCollect_I2CB_Done();
+	}
+	else
+	{
+		AssertError(AppError_UndefinedError);
+	}
+}
 
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

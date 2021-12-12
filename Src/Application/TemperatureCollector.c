@@ -139,6 +139,15 @@ void TempCollect_Initialize()
 {
 	kTemperatureData.eState = TempCollect_Initialized;
 	kTemperatureData.bEnabledFlag = true;
+
+	if(MCP9808_I2CA_DeviceCount == 0)
+	{
+		kTemperatureData.bStateReady[0] = true;
+	}
+	if(MCP9808_I2CB_DeviceCount == 0)
+	{
+		kTemperatureData.bStateReady[1] = true;
+	}
 }
 void TempCollect_RetrieveResult(TemperatureData_t *sTemperatureData);
 
