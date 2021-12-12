@@ -8,6 +8,8 @@
 #include "TemperatureCollector.h"
 #include "../Drivers/MCP9808/TemperatureSensor_MCP9808.h"
 #include "Application.h"
+#include "DataHandler.h"
+#include "../Drivers/BSP/BSP.h"
 
 typedef enum TemperatureCollectorState_t
 {
@@ -32,6 +34,7 @@ typedef struct kTempCollect_Data_t
 	float fConvertedTemperature[2];
 	uint16_t u16ArrayASensorIndex;
 	uint16_t u16ArrayBSensorIndex;
+	uint32_t u32MeasurementCounter;
 
 }kTempCollect_Data_t;
 
@@ -54,6 +57,9 @@ void TempCollect_Operate()
 			kTemperatureData.eState = TempCollect_TemperatureReadRequest;
 			kTemperatureData.u16ArrayASensorIndex = 0;
 			kTemperatureData.u16ArrayBSensorIndex = 0;
+			kTemperatureData.bReadFinished[0] = false;
+			kTemperatureData.bReadFinished[1] = false;
+			DataHandler_OpenNewMeasurement(kTemperatureData.u32MeasurementCounter++);
 		}
 		break;
 	case(TempCollect_TemperatureReadRequest):
@@ -84,10 +90,12 @@ void TempCollect_Operate()
 		if( !kTemperatureData.bReadFinished[0] )
 		{
 			kTemperatureData.fConvertedTemperature[0] = MCP9808_DecodeTemperature(&kaSensorArrayDataA[kTemperatureData.u16ArrayASensorIndex]);
+			DataHandler_StoreMeasurement(kTemperatureData.fConvertedTemperature[0]);
 		}
-		if( !kTemperatureData.bReadFinished[0] )
+		if( !kTemperatureData.bReadFinished[1] )
 		{
 			kTemperatureData.fConvertedTemperature[1] = MCP9808_DecodeTemperature(&kaSensorArrayDataB[kTemperatureData.u16ArrayBSensorIndex]);
+			DataHandler_StoreMeasurement(kTemperatureData.fConvertedTemperature[1]);
 		}
 
 		kTemperatureData.eState = TempCollect_ArmNewReading;
@@ -138,6 +146,7 @@ void TempCollect_RetrieveResult(TemperatureData_t *sTemperatureData);
 
 void TempCollect_ScheduleMeasurement()
 {
+	ToggleLED_D();
 	if(kTemperatureData.bScheduleMeasurement)
 	{
 		AssertError(AppError_TempCollectRequestOverlap); // Overlap of requests;

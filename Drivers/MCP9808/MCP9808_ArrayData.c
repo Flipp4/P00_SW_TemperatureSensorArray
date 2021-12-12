@@ -15,9 +15,9 @@ MCP9808_Sensor_t kaSensorArrayDataA[MCP9808_I2CA_DeviceCount];
 MCP9808_Sensor_t kaSensorArrayDataB[MCP9808_I2CB_DeviceCount];
 
 const uint8_t u8DeviceAddressListA[MCP9808_I2CA_DeviceCount] = {
-	0x00,
-	0x02,
-	0x04,
+//	0x00,
+//	0x02,
+//	0x04,
 	0x06,
 	0x08,
 	0x0A,
@@ -26,9 +26,9 @@ const uint8_t u8DeviceAddressListA[MCP9808_I2CA_DeviceCount] = {
 };
 
 const uint8_t u8DeviceAddressListB[MCP9808_I2CB_DeviceCount] = {
-	0x00,
-	0x02,
-	0x04,
+//	0x00,
+//	0x02,
+//	0x04,
 	0x06,
 	0x08,
 	0x0A,

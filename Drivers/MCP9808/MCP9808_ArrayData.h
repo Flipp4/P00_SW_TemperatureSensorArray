@@ -12,9 +12,9 @@
 #include <stdint.h>
 #include "stm32f4xx_hal.h"
 
-#define MCP9808_I2CA_DeviceCount 8
+#define MCP9808_I2CA_DeviceCount 5
 
-#define MCP9808_I2CB_DeviceCount 8
+#define MCP9808_I2CB_DeviceCount 5
 typedef struct MCP9808_Sensor_t
 {
 	bool bEnabled;
