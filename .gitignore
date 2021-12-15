@@ -42,6 +42,10 @@
 *.idb
 *.pdb
 
+#Resulting files
+*.list
+*.bin
+
 # Kernel Module Compile Results
 *.mod*
 *.cmd
@@ -51,6 +55,3 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-#Resulting files
-*.list
-*.bin

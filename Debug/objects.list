@@ -33,6 +33,7 @@
 "./Src/Application/Application.o"
 "./Src/Application/DataHandler.o"
 "./Src/Application/TemperatureCollector.o"
+"./Src/Communication/USBTransmitter.o"
 "./Src/main.o"
 "./Src/stm32f4xx_hal_msp.o"
 "./Src/stm32f4xx_it.o"

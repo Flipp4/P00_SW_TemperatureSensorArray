@@ -9,6 +9,7 @@
 #define APPLICATION_APPLICATION_H_
 
 #include "../Error/ErrorList.h"
+#include "../Drivers/MCP9808/MCP9808_ArrayData.h"
 
 void ApplicationPerform();
 void AsynchronousTaskTimerUpdate();

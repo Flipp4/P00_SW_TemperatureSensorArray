@@ -7,21 +7,22 @@
 
 #include "DataHandler.h"
 #include "Application.h"
-
+#include "../Inc/usbd_cdc_if.h"
+#include "../Communication/USBTransmitter.h"
 /*
  * Definition of how much measurements should fit into single measurement save cell
  * Eg. if application collect data from 16 sensors at single time moment (assumed)
  * then width shall be equal to 16
  */
 
-#define dMemoryWidth 		( 16 )
-#define dMemoryLength 		( 8 )
-#define dMemoryPagesCount 	( 2 )
-
 typedef struct MeasurementEntry_t
 {
 	uint32_t u16Timestamp;
+#if dStoreReultsAsFloat
 	float fMeasurementArray[dMemoryLength][dMemoryWidth];
+#else
+	int16_t i16MeasurementArray[dMemoryLength][dMemoryWidth];
+#endif
 	bool bAlreadySent;
 	bool bHardSaved;
 	bool bHardSaveRequest;
@@ -37,6 +38,7 @@ typedef struct DataHandler_t
 	uint8_t u8LengthPointer;
 	bool bReadyToSend;
 	bool bPageFilled;
+	bool bTransmissionAllowed;
 }DataHandler_t;
 
 static DataHandler_t kDataHandler;
@@ -45,6 +47,7 @@ void DataHandler_Initialize()
 {
 	DataHandler_Reset();
 	kDataHandler.bEnabled = true;
+	kDataHandler.bTransmissionAllowed = true;
 
 }
 void DataHandler_Reset()
@@ -66,7 +69,11 @@ void DataHandler_Reset()
 
 			for(uint8_t u8WidthIdx = 0; u8WidthIdx < dMemoryWidth; u8WidthIdx++)
 			{
+				#if dStoreReultsAsFloat
 				kDataHandler.kMeasurementMemory[u8PageIdx].fMeasurementArray[u8LengthIdx][u8WidthIdx] = 0;
+				#else
+				kDataHandler.kMeasurementMemory[u8PageIdx].i16MeasurementArray[u8LengthIdx][u8WidthIdx] = 0;
+				#endif
 			}
 		}
 	}
@@ -114,7 +121,11 @@ void DataHandler_OpenNewMeasurement( uint32_t u32TimeStamp )
 	}
 
 }
+#if dStoreReultsAsFloat
 void DataHandler_StoreMeasurement( float fNewMeasurement )
+#else
+void DataHandler_StoreMeasurement( int16_t i16NewMeasurement )
+#endif
 {
 	uint8_t u8MemPage = kDataHandler.u8ActiveMemoryPage;
 	uint8_t u8LenPtr = kDataHandler.u8LengthPointer;
@@ -122,8 +133,11 @@ void DataHandler_StoreMeasurement( float fNewMeasurement )
 
 	if( kDataHandler.bEnabled )
 	{
-
+		#if dStoreReultsAsFloat
 		kDataHandler.kMeasurementMemory[u8MemPage].fMeasurementArray[u8LenPtr][u8WidPtr] = fNewMeasurement;
+		#else
+		kDataHandler.kMeasurementMemory[u8MemPage].i16MeasurementArray[u8LenPtr][u8WidPtr] = i16NewMeasurement;
+		#endif
 
 		kDataHandler.u8WidthPointer++;
 
@@ -141,6 +155,8 @@ void DataHandler_StoreMeasurement( float fNewMeasurement )
 
 void DataHandler_Operate()
 {
+	bool bTransmissionStatus = false;
+
 	if( kDataHandler.bEnabled )
 	{
 
@@ -151,8 +167,22 @@ void DataHandler_Operate()
 			// Call to save with SD card
 		}
 
-		if( kDataHandler.bReadyToSend )
+		if( kDataHandler.bReadyToSend & kDataHandler.bTransmissionAllowed )
 		{
+			if(kDataHandler.u8LengthPointer == 0)
+			{
+				bTransmissionStatus = USB_TransmitData(kDataHandler.kMeasurementMemory[kDataHandler.u8LastMemoryPage].i16MeasurementArray[dMemoryLength-1]);
+			}
+			else
+			{
+				bTransmissionStatus = USB_TransmitData(kDataHandler.kMeasurementMemory[kDataHandler.u8ActiveMemoryPage].i16MeasurementArray[kDataHandler.u8LengthPointer-1]);
+			}
+
+			if ( !bTransmissionStatus )
+			{
+				kDataHandler.bReadyToSend = false;
+			}
+
 			//call an USB data transmission
 		}
 

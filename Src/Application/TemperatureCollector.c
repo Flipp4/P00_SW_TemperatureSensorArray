@@ -31,7 +31,11 @@ typedef struct kTempCollect_Data_t
 	TemperatureCollectorState_t eState;
 	bool bReadFinished[2];
 	bool bStateReady[2];
+#if dStoreReultsAsFloat
 	float fConvertedTemperature[2];
+#else
+	int16_t i16ConvertedTemperature[2];
+#endif
 	uint16_t u16ArrayASensorIndex;
 	uint16_t u16ArrayBSensorIndex;
 	uint32_t u32MeasurementCounter;
@@ -96,13 +100,23 @@ void TempCollect_Operate()
 	case(TempCollect_ProcessData):
 		if( !kTemperatureData.bReadFinished[0] )
 		{
+			#if dStoreReultsAsFloat
 			kTemperatureData.fConvertedTemperature[0] = MCP9808_DecodeTemperature(&kaSensorArrayDataA[kTemperatureData.u16ArrayASensorIndex]);
 			DataHandler_StoreMeasurement(kTemperatureData.fConvertedTemperature[0]);
+			#else
+			kTemperatureData.i16ConvertedTemperature[0] = MCP9808_DecodeTemperature(&kaSensorArrayDataA[kTemperatureData.u16ArrayASensorIndex]);
+			DataHandler_StoreMeasurement(kTemperatureData.i16ConvertedTemperature[0]);
+			#endif
 		}
 		if( !kTemperatureData.bReadFinished[1] )
 		{
+			#if dStoreReultsAsFloat
 			kTemperatureData.fConvertedTemperature[1] = MCP9808_DecodeTemperature(&kaSensorArrayDataB[kTemperatureData.u16ArrayBSensorIndex]);
-			DataHandler_StoreMeasurement(kTemperatureData.fConvertedTemperature[1]);
+			DataHandler_StoreMeasurement(kTemperatureData.fConvertedTemperature[0]);
+			#else
+			kTemperatureData.i16ConvertedTemperature[1] = MCP9808_DecodeTemperature(&kaSensorArrayDataB[kTemperatureData.u16ArrayBSensorIndex]);
+			DataHandler_StoreMeasurement(kTemperatureData.i16ConvertedTemperature[1]);
+			#endif
 		}
 
 		kTemperatureData.eState = TempCollect_ArmNewReading;

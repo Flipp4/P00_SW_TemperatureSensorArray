@@ -26,6 +26,7 @@ Drivers/STM32F4xx_HAL_Driver/Src \
 Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src \
 Middlewares/ST/STM32_USB_Device_Library/Core/Src \
 Src/Application \
+Src/Communication \
 Src \
 Startup \
 
