@@ -35,6 +35,7 @@ typedef struct kTempCollect_Data_t
 	uint16_t u16ArrayASensorIndex;
 	uint16_t u16ArrayBSensorIndex;
 	uint32_t u32MeasurementCounter;
+	uint8_t u8TimeoutCounter;
 
 }kTempCollect_Data_t;
 
@@ -59,7 +60,7 @@ void TempCollect_Operate()
 			kTemperatureData.u16ArrayBSensorIndex = 0;
 			kTemperatureData.bReadFinished[0] = false;
 			kTemperatureData.bReadFinished[1] = false;
-			DataHandler_OpenNewMeasurement(kTemperatureData.u32MeasurementCounter++);
+			kTemperatureData.u8TimeoutCounter = 0;
 		}
 		break;
 	case(TempCollect_TemperatureReadRequest):
@@ -84,6 +85,12 @@ void TempCollect_Operate()
 		if(kTemperatureData.bStateReady[0] && kTemperatureData.bStateReady[1])
 		{
 			kTemperatureData.eState = TempCollect_ProcessData;
+			kTemperatureData.u8TimeoutCounter = 0;
+		}
+		else
+		{
+			kTemperatureData.u8TimeoutCounter++;
+			//todo: implement a timeout comm reset function
 		}
 		break;
 	case(TempCollect_ProcessData):
@@ -102,27 +109,28 @@ void TempCollect_Operate()
 		break;
 
 	case(TempCollect_ArmNewReading):
+		kTemperatureData.u16ArrayASensorIndex++;
+
 		if( kTemperatureData.u16ArrayASensorIndex >= MCP9808_I2CA_DeviceCount)
 		{
 			kTemperatureData.bReadFinished[0] = true;
 		}
-		else
-		{
-			kTemperatureData.u16ArrayASensorIndex++;
-		}
+
+		kTemperatureData.u16ArrayBSensorIndex++;
 
 		if( kTemperatureData.u16ArrayBSensorIndex >= MCP9808_I2CB_DeviceCount)
 		{
 			kTemperatureData.bReadFinished[1] = true;
 		}
-		else
-		{
-			kTemperatureData.u16ArrayBSensorIndex++;
-		}
 
 		if ( kTemperatureData.bReadFinished[0] && kTemperatureData.bReadFinished[1] )
 		{
 			kTemperatureData.eState = TempCollect_Initialized;
+
+			/*
+			 * Open new measurement at the end of current session
+			 */
+			DataHandler_OpenNewMeasurement(kTemperatureData.u32MeasurementCounter++);
 		}
 		else
 		{

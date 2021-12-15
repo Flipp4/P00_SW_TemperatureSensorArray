@@ -35,6 +35,7 @@ typedef struct DataHandler_t
 	uint8_t u8LastMemoryPage;
 	uint8_t u8WidthPointer;
 	uint8_t u8LengthPointer;
+	bool bReadyToSend;
 	bool bPageFilled;
 }DataHandler_t;
 
@@ -53,6 +54,7 @@ void DataHandler_Reset()
 	kDataHandler.u8WidthPointer = 0;
 	kDataHandler.u8LengthPointer = 0;
 	kDataHandler.bPageFilled = false;
+	kDataHandler.bReadyToSend = false;
 
 	for(uint8_t u8PageIdx = 0; u8PageIdx < dMemoryPagesCount; u8PageIdx++)
 	{
@@ -78,6 +80,11 @@ void DataHandler_OpenNewMeasurement( uint32_t u32TimeStamp )
 		kDataHandler.u8LengthPointer++;
 		kDataHandler.u8WidthPointer = 0;
 
+		/*
+		 * Every time new measurement is opened the previous one is assumed to be ready for transmission
+		 */
+		kDataHandler.bReadyToSend = true;
+
 		if(kDataHandler.u8LengthPointer >= dMemoryLength)
 		{
 			kDataHandler.u8LengthPointer = 0;
@@ -97,6 +104,7 @@ void DataHandler_OpenNewMeasurement( uint32_t u32TimeStamp )
 			{
 				kDataHandler.u8ActiveMemoryPage = 0;
 			}
+			kDataHandler.bPageFilled = true;
 
 		}
 	}
@@ -139,7 +147,13 @@ void DataHandler_Operate()
 		if( kDataHandler.bPageFilled )
 		{
 			kDataHandler.kMeasurementMemory[kDataHandler.u8LastMemoryPage].bHardSaveRequest = true;
+			kDataHandler.bPageFilled = false;
 			// Call to save with SD card
+		}
+
+		if( kDataHandler.bReadyToSend )
+		{
+			//call an USB data transmission
 		}
 
 	}
