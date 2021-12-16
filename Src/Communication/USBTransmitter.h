@@ -14,12 +14,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#if dStoreReultsAsFloat
 bool USB_TransmitData(float *Dataset);
-#else
-bool USB_TransmitData(int16_t *Dataset);
-#endif
-
-
 
 #endif /* COMMUNICATION_USBTRANSMITTER_H_ */

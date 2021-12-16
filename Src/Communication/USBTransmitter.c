@@ -9,17 +9,14 @@
 #include "../Application/DataHandler.h"
 
 static uint8_t u8DataArray[ 2 * dMemoryWidth];
+static uint8_t Buf[] = "Test/r/n";
 
-void ConvertDataToBytes(int16_t *Dataset);
+void ConvertDataToBytes(float *Dataset);
 
-#if dStoreReultsAsFloat
 bool USB_TransmitData(float *Dataset)
-#else
-bool USB_TransmitData(int16_t *Dataset)
-#endif
 {
 	bool bResult = false;
-	uint8_t * pBuf = &u8DataArray;
+	uint8_t * pBuf = (uint8_t*)&u8DataArray;
 
 	ConvertDataToBytes( Dataset );
 
@@ -28,11 +25,12 @@ bool USB_TransmitData(int16_t *Dataset)
 	 */
 
 	bResult = CDC_Transmit_FS(pBuf,  2 * dMemoryWidth);
+//	bResult = CDC_Transmit_FS(Buf,  6);
 
 	return bResult;
 }
 
-void ConvertDataToBytes(int16_t *Dataset)
+void ConvertDataToBytes(float *Dataset)
 {
 	for(uint8_t u8Idx = 0; u8Idx < (2 * dMemoryWidth); u8Idx+=2)
 	{

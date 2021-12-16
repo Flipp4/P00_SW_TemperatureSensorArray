@@ -16,11 +16,6 @@
 
 #define MCP9808_I2CB_DeviceCount 5
 
-/*
- * Flag used across the SW to change from fixed point to float representation
- */
-#define dStoreReultsAsFloat 0
-
 typedef struct MCP9808_Sensor_t
 {
 	bool bEnabled;

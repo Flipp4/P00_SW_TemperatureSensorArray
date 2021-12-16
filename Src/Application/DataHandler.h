@@ -19,13 +19,7 @@
 void DataHandler_Initialize();
 void DataHandler_Reset();
 void DataHandler_OpenNewMeasurement( uint32_t u32TimeStamp );
-
-#if dStoreReultsAsFloat
 void DataHandler_StoreMeasurement( float fNewMeasurement );
-#else
-void DataHandler_StoreMeasurement( int16_t i16NewMeasurement );
-#endif
-
 void DataHandler_Operate();
 
 #endif /* APPLICATION_DATAHANDLER_H_ */
