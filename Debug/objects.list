@@ -32,6 +32,8 @@
 "./Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.o"
 "./Src/Application/Application.o"
 "./Src/Application/DataHandler.o"
+"./Src/Application/EventSystem.o"
+"./Src/Application/ModuleInterconnect.o"
 "./Src/Application/TemperatureCollector.o"
 "./Src/Communication/CommunicationManager.o"
 "./Src/Communication/FrameAssembler.o"

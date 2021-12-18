@@ -8,8 +8,7 @@
 #include "DataHandler.h"
 #include "DataCommon.h"
 #include "Application.h"
-#include "../Inc/usbd_cdc_if.h"
-#include "../Communication/USBTransmitter.h"
+#include "ModuleInterconnect.h"
 /*
  * Definition of how much measurements should fit into single measurement save cell
  * Eg. if application collect data from 16 sensors at single time moment (assumed)
@@ -38,8 +37,9 @@ typedef struct DataHandler_t
 }DataHandler_t;
 
 static DataHandler_t kDataHandler;
+static MemoryInterchange_t kMemoryInterchange;
 
-void DataHandler_CopyMemoryToTransmissionBuffer( float fMemoryArray );
+void DataHandler_CopyMemoryToTransmissionBuffer( float *pfMemoryArray );
 
 void DataHandler_Initialize()
 {
@@ -156,19 +156,15 @@ void DataHandler_Operate()
 		{
 			if(kDataHandler.u8LengthPointer == 0)
 			{
-				bTransmissionStatus = USB_TransmitData(kDataHandler.kMeasurementMemory[kDataHandler.u8LastMemoryPage].fMeasurementArray[dMemoryLength-1]);
+
+//				bTransmissionStatus = USB_TransmitData(kDataHandler.kMeasurementMemory[kDataHandler.u8LastMemoryPage].fMeasurementArray[dMemoryLength-1]);
 			}
 			else
 			{
-				bTransmissionStatus = USB_TransmitData(kDataHandler.kMeasurementMemory[kDataHandler.u8ActiveMemoryPage].fMeasurementArray[kDataHandler.u8LengthPointer-1]);
+//				bTransmissionStatus = USB_TransmitData(kDataHandler.kMeasurementMemory[kDataHandler.u8ActiveMemoryPage].fMeasurementArray[kDataHandler.u8LengthPointer-1]);
 			}
 
-			if ( !bTransmissionStatus )
-			{
-				kDataHandler.bReadyToSend = false;
-			}
-
-			//call an USB data transmission
+			CallForTransmissionEvent(); //Inform main event system that there is a pending transmission and data is preloaded to Memory Interchange
 		}
 
 	}
@@ -176,4 +172,15 @@ void DataHandler_Operate()
 	{
 		AssertError(AppError_DataHandlerUninitialized); // Call to DataHandler procedure before initialization
 	}
+}
+
+void DataHandler_CopyMemoryToTransmissionBuffer( float *pfMemoryArray )
+{
+	if(kMemoryInterchange.eMemoryState != MemoryState_DataSent)
+	{
+		AssertError(AppError_DataLost); // Memory will be overwritten;
+	}
+
+	kMemoryInterchange.fDataPointer = pfMemoryArray;
+
 }

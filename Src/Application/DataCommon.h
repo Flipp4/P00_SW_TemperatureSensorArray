@@ -24,8 +24,8 @@ typedef enum MemoryState_t
 
 typedef struct MemoryInterchange_t
 {
-	float fData[dMemoryWidth];
+	float * fDataPointer;
 	MemoryState_t eMemoryState;
-};
+}MemoryInterchange_t;
 
 #endif /* APPLICATION_DATACOMMON_H_ */

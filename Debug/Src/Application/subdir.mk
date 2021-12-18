@@ -7,16 +7,22 @@
 C_SRCS += \
 ../Src/Application/Application.c \
 ../Src/Application/DataHandler.c \
+../Src/Application/EventSystem.c \
+../Src/Application/ModuleInterconnect.c \
 ../Src/Application/TemperatureCollector.c 
 
 OBJS += \
 ./Src/Application/Application.o \
 ./Src/Application/DataHandler.o \
+./Src/Application/EventSystem.o \
+./Src/Application/ModuleInterconnect.o \
 ./Src/Application/TemperatureCollector.o 
 
 C_DEPS += \
 ./Src/Application/Application.d \
 ./Src/Application/DataHandler.d \
+./Src/Application/EventSystem.d \
+./Src/Application/ModuleInterconnect.d \
 ./Src/Application/TemperatureCollector.d 
 
 
