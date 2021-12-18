@@ -6,6 +6,7 @@
  */
 
 #include "DataHandler.h"
+#include "DataCommon.h"
 #include "Application.h"
 #include "../Inc/usbd_cdc_if.h"
 #include "../Communication/USBTransmitter.h"
@@ -34,16 +35,16 @@ typedef struct DataHandler_t
 	uint8_t u8LengthPointer;
 	bool bReadyToSend;
 	bool bPageFilled;
-	bool bTransmissionAllowed;
 }DataHandler_t;
 
 static DataHandler_t kDataHandler;
+
+void DataHandler_CopyMemoryToTransmissionBuffer( float fMemoryArray );
 
 void DataHandler_Initialize()
 {
 	DataHandler_Reset();
 	kDataHandler.bEnabled = true;
-	kDataHandler.bTransmissionAllowed = true;
 
 }
 void DataHandler_Reset()
@@ -151,7 +152,7 @@ void DataHandler_Operate()
 			// Call to save with SD card
 		}
 
-		if( kDataHandler.bReadyToSend & kDataHandler.bTransmissionAllowed )
+		if( kDataHandler.bReadyToSend )
 		{
 			if(kDataHandler.u8LengthPointer == 0)
 			{

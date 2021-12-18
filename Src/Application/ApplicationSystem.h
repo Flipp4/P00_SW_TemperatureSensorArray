@@ -44,13 +44,12 @@ typedef struct AsyncTimers_t
 	SWTimer_t s500us;
 }AsyncTimers_t;
 
-typedef struct sApplication_t
+typedef struct Application_t
 {
 	AsyncTimers_t sAsyncTimers;
 	uint32_t u32ErrorReg;
 	bool bInitializedFlag;
 	ApplicationState_t eApplicationState;
-}sApplication_t;
-
+}Application_t;
 
 #endif /* APPLICATION_APPLICATIONSYSTEM_H_ */

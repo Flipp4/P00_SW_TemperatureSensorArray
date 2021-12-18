@@ -12,10 +12,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define dMemoryWidth 		( 16 )
-#define dMemoryLength 		( 8 )
-#define dMemoryPagesCount 	( 2 )
-
 void DataHandler_Initialize();
 void DataHandler_Reset();
 void DataHandler_OpenNewMeasurement( uint32_t u32TimeStamp );

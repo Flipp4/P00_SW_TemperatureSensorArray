@@ -76,6 +76,7 @@ void Error_Handler(void);
 #define PIN_2_GPIO_Port GPIOA
 #define USB_VSENSE_Pin GPIO_PIN_8
 #define USB_VSENSE_GPIO_Port GPIOA
+#define USB_VSENSE_EXTI_IRQn EXTI9_5_IRQn
 #define I2C1_VDD_Pin GPIO_PIN_12
 #define I2C1_VDD_GPIO_Port GPIOC
 /* USER CODE BEGIN Private defines */

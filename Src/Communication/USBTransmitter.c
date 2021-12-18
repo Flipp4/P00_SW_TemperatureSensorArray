@@ -6,7 +6,7 @@
  */
 
 #include "USBTransmitter.h"
-#include "../Application/DataHandler.h"
+#include "../Application/DataCommon.h"
 
 static uint8_t u8DataArray[ 2 * dMemoryWidth];
 static uint8_t Buf[] = "Test/r/n";

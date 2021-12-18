@@ -5,12 +5,18 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Src/Communication/CommunicationManager.c \
+../Src/Communication/FrameAssembler.c \
 ../Src/Communication/USBTransmitter.c 
 
 OBJS += \
+./Src/Communication/CommunicationManager.o \
+./Src/Communication/FrameAssembler.o \
 ./Src/Communication/USBTransmitter.o 
 
 C_DEPS += \
+./Src/Communication/CommunicationManager.d \
+./Src/Communication/FrameAssembler.d \
 ./Src/Communication/USBTransmitter.d 
 
 
