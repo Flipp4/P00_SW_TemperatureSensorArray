@@ -32,6 +32,7 @@ void EventSystem_HandleEvent()
 	if( (kEventData.u32EventRegister & u32EventCode) == u32EventCode )
 	{
 		ComManager_ArmTransmission();
+		kEventData.u32EventRegister &= ~(u32EventCode);
 	}
 }
 

@@ -19,6 +19,7 @@
 
 /* Function prototypes */
 
+void AsynchronousTask_1ms();
 void AsynchronousTask_10ms();
 void AsynchronousTask_100ms();
 void AsynchronousTask_1000ms();
@@ -104,11 +105,16 @@ void AsynchronousTaskTimerUpdate()
 }
 
 /* Internal functions */
-void AsynchronousTask_10ms()
+
+void AsynchronousTask_1ms()
 {
 	EventSystem_HandleEvent();
-	TempCollect_Operate();
 	CommManager_Operate();
+}
+
+void AsynchronousTask_10ms()
+{
+	TempCollect_Operate();
 }
 
 void AsynchronousTask_100ms()
@@ -144,7 +150,7 @@ void AsynchronousTaskScheduler()
 
 	if(kApplicationBase.sAsyncTimers.s1ms.u16Counter >= dAsynchronousTaskPeriod1ms)
 	{
-//		AsynchronousTask_1ms();
+		AsynchronousTask_1ms();
 		kApplicationBase.sAsyncTimers.s1ms.u16Counter = 0;
 	}
 
