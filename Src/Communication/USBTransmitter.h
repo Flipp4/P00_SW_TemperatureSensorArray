@@ -14,6 +14,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-bool USB_TransmitData(float *Dataset);
+bool USB_TransmitData(uint8_t *Dataset, uint8_t u8Length);
 
 #endif /* COMMUNICATION_USBTRANSMITTER_H_ */

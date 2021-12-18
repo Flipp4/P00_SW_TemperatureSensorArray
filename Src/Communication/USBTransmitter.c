@@ -13,19 +13,13 @@ static uint8_t Buf[] = "Test/r/n";
 
 void ConvertDataToBytes(float *Dataset);
 
-bool USB_TransmitData(float *Dataset)
+bool USB_TransmitData(uint8_t *Dataset, uint8_t u8Length)
 {
 	bool bResult = false;
-	uint8_t * pBuf = (uint8_t*)&u8DataArray;
-
-	ConvertDataToBytes( Dataset );
-
 	/*
 	 * result = true means that a fault occurred
 	 */
-
-	bResult = CDC_Transmit_FS(pBuf,  2 * dMemoryWidth);
-//	bResult = CDC_Transmit_FS(Buf,  6);
+	bResult = CDC_Transmit_FS(Dataset,  u8Length);
 
 	return bResult;
 }

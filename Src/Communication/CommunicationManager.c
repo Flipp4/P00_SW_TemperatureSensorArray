@@ -10,12 +10,19 @@
 #include "../Application/DataCommon.h"
 #include "../Application/Application.h"
 
+#define dOpeningByte	( 0x0A ) // line feed (/n) as an opening character
+#define dClosingByte	( 0x0D ) // carriage return (/r) as an closing character
+
+#define dMaxDataLenght 		( 10 )
+
 typedef enum CommunicationState_t
 {
 	Comm_Initialized,
 	Comm_Idle,
-	Comm_AssemblingFrame,
-	Comm_Transmitting,
+	Comm_OpenTransmission,
+	Comm_AssembleFrame,
+	Comm_CloseTransmission,
+	Comm_Transmit,
 	Comm_Receiving,
 	Comm_Abort
 }CommunicationState_t;
@@ -26,7 +33,10 @@ typedef struct CommunicationData_t
 	MemoryInterchange_t *pkMemoryPointer;
 	CommunicationState_t eState;
 	uint16_t u16ReadoutPointer;
+	uint8_t u8Frame[dMaxDataLenght];
+	uint8_t u8CurrentFrameLength;
 	bool bUSBConnected;
+	bool bLastByte;
 }CommunicationData_t;
 
 static CommunicationData_t kCommData;
@@ -43,14 +53,45 @@ void CommManager_Operate()
 		kCommData.eState = Comm_Idle;
 		break;
 	case Comm_Idle:
+		//Wait for new Arm_Transmission call
 		break;
-	case Comm_AssemblingFrame:
+	case Comm_OpenTransmission:
+		kCommData.u8Frame[0] = dOpeningByte;
+		kCommData.u8CurrentFrameLength = 1;
+		kCommData.eState = Comm_Transmit;
 		break;
-	case Comm_Transmitting:
+	case Comm_AssembleFrame:
+		break;
+	case Comm_CloseTransmission:
+		kCommData.u8Frame[0] = dClosingByte;
+		kCommData.u8CurrentFrameLength = 1;
+		kCommData.eState = Comm_Transmit;
+		kCommData.bLastByte = true;
+		break;
+	case Comm_Transmit:
+		if( kCommData.u16ReadoutPointer >= dMemoryWidth)
+		{
+			kCommData.eState = Comm_CloseTransmission;
+		}
+		else if (kCommData.bLastByte)
+		{
+			kCommData.bLastByte = false;
+			kCommData.pkMemoryPointer->eMemoryState = MemoryState_DataSent;
+			kCommData.eState = Comm_Idle;
+		}
+		else
+		{
+			kCommData.eState = Comm_AssembleFrame;
+		}
 		break;
 	case Comm_Receiving:
 		break;
 	case Comm_Abort:
+		kCommData.eState = Comm_Idle;
+
+		kCommData.pkMemoryPointer->eMemoryState = MemoryState_DataSkipped;
+		kCommData.u16ReadoutPointer = 0;
+		kCommData.u8Frame[0] = 0; //todo: replace with Frame_Flush with for
 		break;
 	default:
 		break;
@@ -77,7 +118,7 @@ void ComManager_ArmTransmission()
 	{
 		if(kCommData.eState == Comm_Idle)
 		{
-			kCommData.eState = Comm_AssemblingFrame;
+			kCommData.eState = Comm_AssembleFrame;
 			kCommData.u16ReadoutPointer = 0;
 			DataHandler_AccessMemoryInterchange(kCommData.pkMemoryPointer);
 		}
