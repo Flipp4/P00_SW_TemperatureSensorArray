@@ -7,6 +7,7 @@
 
 #include "EventSystem.h"
 #include "Application.h"
+#include "../Communication/CommunicationManager.h"
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -20,25 +21,33 @@ static EventData_t kEventData;
 
 void EventSystem_Initialize()
 {
-
+	kEventData.bInitalized = true;
 }
 void EventSystem_HandleEvent()
 {
+	uint32_t u32EventCode = 0;
 
+	u32EventCode = (uint32_t)Event_DataReadyToTransmit;
+
+	if( (kEventData.u32EventRegister & u32EventCode) == u32EventCode )
+	{
+		ComManager_ArmTransmission();
+	}
 }
-
 
 void EventSystem_Signalize(Event_t eEvent)
 {
 	uint32_t u32EventCode = (uint32_t)eEvent;
 
-	if( (kEventData.u32EventRegister & u32EventCode) == u32EventCode )
+	if(kEventData.bInitalized)
 	{
-		AssertError(AppError_EventOverlap); // Event already set, before handling it
+		if( (kEventData.u32EventRegister & u32EventCode) == u32EventCode )
+		{
+			AssertError(AppError_EventOverlap); // Event already set, before handling it
+		}
+		else
+		{
+			kEventData.u32EventRegister |= u32EventCode; // Set bit in register according to the event code
+		}
 	}
-	else
-	{
-		kEventData.u32EventRegister |= u32EventCode; // Set bit in register according to the event code
-	}
-
 }

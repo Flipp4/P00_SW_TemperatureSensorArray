@@ -8,12 +8,14 @@
 #ifndef APPLICATION_EVENTSYSTEM_H_
 #define APPLICATION_EVENTSYSTEM_H_
 
+#define dEventCount  4
+
 typedef enum Event_t
 {
 	Event_DataReadyToTransmit 	= 0x0001,
 	Event_USBConnected		 	= 0x0002,
 	Event_USBDisconnected		= 0x0004,
-	Event_Other					= 0x0008
+	Event_Other					= 0x0008,
 }Event_t;
 
 void EventSystem_Initialize();

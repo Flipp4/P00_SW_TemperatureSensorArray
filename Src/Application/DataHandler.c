@@ -6,7 +6,6 @@
  */
 
 #include "DataHandler.h"
-#include "DataCommon.h"
 #include "Application.h"
 #include "ModuleInterconnect.h"
 /*
@@ -156,12 +155,13 @@ void DataHandler_Operate()
 		{
 			if(kDataHandler.u8LengthPointer == 0)
 			{
-
+				DataHandler_CopyMemoryToTransmissionBuffer(kDataHandler.kMeasurementMemory[kDataHandler.u8LastMemoryPage].fMeasurementArray[dMemoryLength-1]);
 //				bTransmissionStatus = USB_TransmitData(kDataHandler.kMeasurementMemory[kDataHandler.u8LastMemoryPage].fMeasurementArray[dMemoryLength-1]);
 			}
 			else
 			{
 //				bTransmissionStatus = USB_TransmitData(kDataHandler.kMeasurementMemory[kDataHandler.u8ActiveMemoryPage].fMeasurementArray[kDataHandler.u8LengthPointer-1]);
+				DataHandler_CopyMemoryToTransmissionBuffer(kDataHandler.kMeasurementMemory[kDataHandler.u8ActiveMemoryPage].fMeasurementArray[kDataHandler.u8LengthPointer-1]);
 			}
 
 			CallForTransmissionEvent(); //Inform main event system that there is a pending transmission and data is preloaded to Memory Interchange
@@ -174,13 +174,21 @@ void DataHandler_Operate()
 	}
 }
 
+void DataHandler_AccessMemoryInterchange( MemoryInterchange_t * pkMemoryInterchangeAddress)
+{
+	pkMemoryInterchangeAddress = &kMemoryInterchange;
+}
+
 void DataHandler_CopyMemoryToTransmissionBuffer( float *pfMemoryArray )
 {
-	if(kMemoryInterchange.eMemoryState != MemoryState_DataSent)
+	if( (kMemoryInterchange.eMemoryState != MemoryState_DataSent) && ( kMemoryInterchange.eMemoryState != MemoryState_DataSkipped ) )
 	{
-		AssertError(AppError_DataLost); // Memory will be overwritten;
+		AssertError(AppError_DataLost); // Memory would be overwritten;
 	}
-
-	kMemoryInterchange.fDataPointer = pfMemoryArray;
+	else
+	{
+		kMemoryInterchange.fDataPointer = pfMemoryArray;
+		kMemoryInterchange.eMemoryState = MemoryState_NewData;
+	}
 
 }

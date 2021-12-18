@@ -25,7 +25,8 @@ typedef enum AppErrorList_t
 	AppError_TempCollectDefaultState	= 0x0400,
 	AppError_TempCollectRequestOverlap	= 0x0800,
 
-	AppError_EventOverlap				= 0x1000
+	AppError_EventOverlap				= 0x1000,
+	AppError_TransmissionOverlap		= 0x2000
 
 }AppErrorList_t;
 

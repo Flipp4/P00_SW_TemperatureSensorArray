@@ -8,10 +8,14 @@
 
 #include "Application.h"
 #include "ApplicationSystem.h"
-#include "..\Drivers\MCP9808\TemperatureSensor_MCP9808.h"
-#include "../Drivers/BSP/BSP.h"
 #include "TemperatureCollector.h"
 #include "DataHandler.h"
+#include "EventSystem.h"
+
+#include "../Drivers/MCP9808/TemperatureSensor_MCP9808.h"
+#include "../Drivers/BSP/BSP.h"
+
+#include "../Communication/CommunicationManager.h"
 
 /* Function prototypes */
 
@@ -53,8 +57,10 @@ void ApplicationPerform()
 		AppEnableResetTaskTimers();
 		TempCollect_Initialize();
 		DataHandler_Initialize();
+		CommManager_Initialize();
+		EventSystem_Initialize();
 		TurnAllSensorOn();
-		TurnOnSynchronousEvent();
+		TurnOnSynchronousEvent(); //todo: add actual on/off functionality to synchronous timers
 		AppStateChangeRequest(eApp_Perform);
 		break;
 
@@ -100,7 +106,9 @@ void AsynchronousTaskTimerUpdate()
 /* Internal functions */
 void AsynchronousTask_10ms()
 {
+	EventSystem_HandleEvent();
 	TempCollect_Operate();
+	CommManager_Operate();
 }
 
 void AsynchronousTask_100ms()
