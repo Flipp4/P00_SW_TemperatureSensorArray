@@ -60,97 +60,101 @@ void CommManager_Operate()
 	float * pfPointer;
 	float fValue;
 
-	switch (kCommData.eState)
+	if(kCommData.bInitialized)
 	{
-	case Comm_Initialized:
 
-		kCommData.eState = Comm_Idle;
-		break;
-	case Comm_Idle:
-
-		//Wait for new Arm_Transmission call
-		break;
-	case Comm_OpenTransmission:
-
-		kCommData.u8Frame[0] = dOpeningByte;
-		kCommData.u8CurrentFrameLength = 1;
-		kCommData.ePreviousState = kCommData.eState;
-		kCommData.eState = Comm_Transmit;
-		break;
-	case Comm_AssembleFrame:
-
-		pfPointer = kCommData.pkMemoryPointer->fDataPointer;
-		fValue = pfPointer[kCommData.u16ReadoutPointer];
-
-		FrameAssembler_ConvertFloatToCharArray(kCommData.u8Frame, fValue);
-		kCommData.u8CurrentFrameLength = 10;
-		kCommData.ePreviousState = kCommData.eState;
-		kCommData.eState = Comm_Transmit;
-		break;
-	case Comm_CloseTransmission:
-
-		kCommData.u8Frame[0] = dClosingByte;
-		kCommData.u8CurrentFrameLength = 1;
-		kCommData.ePreviousState = kCommData.eState;
-		kCommData.eState = Comm_Transmit;
-		break;
-	case Comm_Transmit:
-
-		bResult = USB_TransmitData(kCommData.u8Frame, kCommData.u8CurrentFrameLength);
-		if( !bResult )
+		switch (kCommData.eState)
 		{
-			kCommData.u8TrialsCounter = 0;
-			if ( kCommData.ePreviousState == Comm_AssembleFrame )
+		case Comm_Initialized:
+
+			kCommData.eState = Comm_Idle;
+			break;
+		case Comm_Idle:
+
+			//Wait for new Arm_Transmission call
+			break;
+		case Comm_OpenTransmission:
+
+			kCommData.u8Frame[0] = dOpeningByte;
+			kCommData.u8CurrentFrameLength = 1;
+			kCommData.ePreviousState = kCommData.eState;
+			kCommData.eState = Comm_Transmit;
+			break;
+		case Comm_AssembleFrame:
+
+			pfPointer = kCommData.pkMemoryPointer->fDataPointer;
+			fValue = pfPointer[kCommData.u16ReadoutPointer];
+
+			FrameAssembler_ConvertFloatToCharArray(kCommData.u8Frame, fValue);
+			kCommData.u8CurrentFrameLength = 10;
+			kCommData.ePreviousState = kCommData.eState;
+			kCommData.eState = Comm_Transmit;
+			break;
+		case Comm_CloseTransmission:
+
+			kCommData.u8Frame[0] = dClosingByte;
+			kCommData.u8CurrentFrameLength = 1;
+			kCommData.ePreviousState = kCommData.eState;
+			kCommData.eState = Comm_Transmit;
+			break;
+		case Comm_Transmit:
+
+			bResult = USB_TransmitData(kCommData.u8Frame, kCommData.u8CurrentFrameLength);
+			if( !bResult )
 			{
-				kCommData.u16ReadoutPointer++;
-				kCommData.eState = Comm_AssembleFrame;
-				if( kCommData.u16ReadoutPointer >= dMemoryWidth)
+				kCommData.u8TrialsCounter = 0;
+				if ( kCommData.ePreviousState == Comm_AssembleFrame )
 				{
-					kCommData.eState = Comm_CloseTransmission;
-					kCommData.u16ReadoutPointer = 0;
+					kCommData.u16ReadoutPointer++;
+					kCommData.eState = Comm_AssembleFrame;
+					if( kCommData.u16ReadoutPointer >= dMemoryWidth)
+					{
+						kCommData.eState = Comm_CloseTransmission;
+						kCommData.u16ReadoutPointer = 0;
+					}
 				}
-			}
-			else if( kCommData.ePreviousState == Comm_CloseTransmission)
-			{
-				kCommData.pkMemoryPointer->eMemoryState = MemoryState_DataSent;
-				kCommData.eState = Comm_Idle;
-			}
-			else if ( kCommData.ePreviousState == Comm_OpenTransmission )
-			{
-				kCommData.u16ReadoutPointer = 0;
-				kCommData.eState = Comm_AssembleFrame;
+				else if( kCommData.ePreviousState == Comm_CloseTransmission)
+				{
+					kCommData.pkMemoryPointer->eMemoryState = MemoryState_DataSent;
+					kCommData.eState = Comm_Idle;
+				}
+				else if ( kCommData.ePreviousState == Comm_OpenTransmission )
+				{
+					kCommData.u16ReadoutPointer = 0;
+					kCommData.eState = Comm_AssembleFrame;
+				}
+				else
+				{
+					AssertError(AppError_TransmissionLogicBroken);
+					kCommData.eState = Comm_Abort;
+				}
 			}
 			else
 			{
-				AssertError(AppError_TransmissionLogicBroken);
-				kCommData.eState = Comm_Abort;
+				kCommData.eState = kCommData.ePreviousState;
+				kCommData.u8TrialsCounter++;
+				// Additional mechanism of aborting the transmission if 3 consecutive trials are unsuccessful
+				if(kCommData.u8TrialsCounter > dMaxTrialsCount)
+				{
+					kCommData.eState = Comm_Abort;
+				}
 			}
+			break;
+		case Comm_Receiving:
+
+			break;
+		case Comm_Abort:
+
+			kCommData.eState = Comm_Idle;
+
+			kCommData.pkMemoryPointer->eMemoryState = MemoryState_DataSkipped;
+			kCommData.u16ReadoutPointer = 0;
+			CommManager_FlushFrame();
+			break;
+		default:
+
+			break;
 		}
-		else
-		{
-			kCommData.eState = kCommData.ePreviousState;
-			kCommData.u8TrialsCounter++;
-			// Additional mechanism of aborting the transmission if 3 consecutive trials are unsuccessful
-			if(kCommData.u8TrialsCounter > dMaxTrialsCount)
-			{
-				kCommData.eState = Comm_Abort;
-			}
-		}
-		break;
-	case Comm_Receiving:
-
-		break;
-	case Comm_Abort:
-
-		kCommData.eState = Comm_Idle;
-
-		kCommData.pkMemoryPointer->eMemoryState = MemoryState_DataSkipped;
-		kCommData.u16ReadoutPointer = 0;
-		CommManager_FlushFrame();
-		break;
-	default:
-
-		break;
 	}
 }
 
