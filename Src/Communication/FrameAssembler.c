@@ -10,5 +10,5 @@
 
 void FrameAssembler_ConvertFloatToCharArray(uint8_t *pResultArray, float fNumber)
 {
-	sprintf((char*)pResultArray,"%f+10.4\t",fNumber);
+	sprintf((char*)pResultArray,"%+8.4f \t",fNumber);
 }

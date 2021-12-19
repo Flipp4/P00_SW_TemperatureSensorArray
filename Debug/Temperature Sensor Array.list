@@ -33169,7 +33169,7 @@ void FrameAssembler_ConvertFloatToCharArray(uint8_t *pResultArray, float fNumber
  800c56c:	af00      	add	r7, sp, #0
  800c56e:	6078      	str	r0, [r7, #4]
  800c570:	ed87 0a00 	vstr	s0, [r7]
-	sprintf((char*)pResultArray,"%f+10.4\t",fNumber);
+	sprintf((char*)pResultArray,"%+8.4f \t",fNumber);
  800c574:	6838      	ldr	r0, [r7, #0]
  800c576:	f7f3 ffef 	bl	8000558 <__aeabi_f2d>
  800c57a:	4602      	mov	r2, r0
