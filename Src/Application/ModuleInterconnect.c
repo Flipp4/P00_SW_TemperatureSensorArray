@@ -13,3 +13,12 @@ void CallForTransmissionEvent()
 {
 	EventSystem_Signalize(Event_DataReadyToTransmit);
 }
+
+void CallForUSBConnection()
+{
+	EventSystem_Signalize(Event_USBConnected);
+}
+void CallForUSBDisonnection()
+{
+	EventSystem_Signalize(Event_USBDisconnected);
+}

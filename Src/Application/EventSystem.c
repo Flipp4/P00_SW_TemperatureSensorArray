@@ -5,11 +5,13 @@
  *      Author: Filip
  */
 
-#include "EventSystem.h"
-#include "Application.h"
-#include "../Communication/CommunicationManager.h"
 #include <stdbool.h>
 #include <stdint.h>
+
+#include "EventSystem.h"
+#include "Application.h"
+
+#include "../Communication/CommunicationManager.h"
 
 typedef struct EventData_t
 {
@@ -32,6 +34,20 @@ void EventSystem_HandleEvent()
 	if( (kEventData.u32EventRegister & u32EventCode) == u32EventCode )
 	{
 		ComManager_ArmTransmission();
+		kEventData.u32EventRegister &= ~(u32EventCode);
+	}
+	u32EventCode = (uint32_t)Event_USBConnected;
+
+	if( (kEventData.u32EventRegister & u32EventCode) == u32EventCode )
+	{
+		CommManager_SetUSBConnectionState(USB_Connected);
+		kEventData.u32EventRegister &= ~(u32EventCode);
+	}
+	u32EventCode = (uint32_t)Event_USBDisconnected;
+
+	if( (kEventData.u32EventRegister & u32EventCode) == u32EventCode )
+	{
+		CommManager_SetUSBConnectionState(USB_Disconnected);
 		kEventData.u32EventRegister &= ~(u32EventCode);
 	}
 }

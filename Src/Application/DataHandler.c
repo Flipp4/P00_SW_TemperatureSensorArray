@@ -163,6 +163,7 @@ void DataHandler_Operate()
 			}
 
 			CallForTransmissionEvent(); //Inform main event system that there is a pending transmission and data is preloaded to Memory Interchange
+			kDataHandler.bReadyToSend = false;
 		}
 
 	}
@@ -172,9 +173,11 @@ void DataHandler_Operate()
 	}
 }
 
-void DataHandler_AccessMemoryInterchange( MemoryInterchange_t * pkMemoryInterchangeAddress)
+void DataHandler_AccessMemoryInterchange( MemoryInterchange_t ** pkMemoryInterchangeAddress)
 {
-	pkMemoryInterchangeAddress = &kMemoryInterchange;
+	MemoryInterchange_t *pkPointer;
+	pkPointer = &kMemoryInterchange;
+	*pkMemoryInterchangeAddress = pkPointer;
 }
 
 void DataHandler_CopyMemoryToTransmissionBuffer( float *pfMemoryArray )

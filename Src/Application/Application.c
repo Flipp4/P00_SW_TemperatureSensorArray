@@ -119,7 +119,7 @@ void AsynchronousTask_10ms()
 
 void AsynchronousTask_100ms()
 {
-
+	USB_CheckForUSBConnection();
 }
 
 void AsynchronousTask_1000ms()

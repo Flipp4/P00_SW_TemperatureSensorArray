@@ -9,5 +9,7 @@
 #define APPLICATION_MODULEINTERCONNECT_H_
 
 void CallForTransmissionEvent();
+void CallForUSBConnection();
+void CallForUSBDisonnection();
 
 #endif /* APPLICATION_MODULEINTERCONNECT_H_ */

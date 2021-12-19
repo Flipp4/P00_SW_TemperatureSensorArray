@@ -57,6 +57,8 @@ void CommManager_Initialize()
 void CommManager_Operate()
 {
 	bool bResult;
+	float * pfPointer;
+	float fValue;
 
 	switch (kCommData.eState)
 	{
@@ -77,7 +79,10 @@ void CommManager_Operate()
 		break;
 	case Comm_AssembleFrame:
 
+		pfPointer = kCommData.pkMemoryPointer->fDataPointer;
+		fValue = pfPointer[kCommData.u16ReadoutPointer];
 
+		FrameAssembler_ConvertFloatToCharArray(kCommData.u8Frame, fValue);
 		kCommData.u8CurrentFrameLength = 10;
 		kCommData.ePreviousState = kCommData.eState;
 		kCommData.eState = Comm_Transmit;
@@ -98,6 +103,7 @@ void CommManager_Operate()
 			if ( kCommData.ePreviousState == Comm_AssembleFrame )
 			{
 				kCommData.u16ReadoutPointer++;
+				kCommData.eState = Comm_AssembleFrame;
 				if( kCommData.u16ReadoutPointer >= dMemoryWidth)
 				{
 					kCommData.eState = Comm_CloseTransmission;
@@ -166,19 +172,26 @@ void CommManager_SetUSBConnectionState( USBState_t eState )
 
 void ComManager_ArmTransmission()
 {
+	DataHandler_AccessMemoryInterchange(&kCommData.pkMemoryPointer);
+
 	if( kCommData.bUSBConnected)
 	{
 		if(kCommData.eState == Comm_Idle)
 		{
-			kCommData.eState = Comm_AssembleFrame;
+			kCommData.eState = Comm_OpenTransmission;
 			kCommData.u16ReadoutPointer = 0;
-			DataHandler_AccessMemoryInterchange(kCommData.pkMemoryPointer);
+
 		}
 		else
 		{
 			AssertError(AppError_TransmissionOverlap);
 		}
 	}
+	else
+	{
+		kCommData.pkMemoryPointer->eMemoryState = MemoryState_DataSkipped;
+	}
+
 }
 
 /* Internal functions */
