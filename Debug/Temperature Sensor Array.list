@@ -32515,9 +32515,9 @@ void TempCollect_Operate()
  800c1ec:	eef0 7a40 	vmov.f32	s15, s0
  800c1f0:	4b23      	ldr	r3, [pc, #140]	; (800c280 <TempCollect_Operate+0x1e4>)
  800c1f2:	edc3 7a04 	vstr	s15, [r3, #16]
-			DataHandler_StoreMeasurement(kTemperatureData.fConvertedTemperature[0]);
+			DataHandler_StoreMeasurement(kTemperatureData.fConvertedTemperature[1]);
  800c1f6:	4b22      	ldr	r3, [pc, #136]	; (800c280 <TempCollect_Operate+0x1e4>)
- 800c1f8:	edd3 7a03 	vldr	s15, [r3, #12]
+ 800c1f8:	edd3 7a04 	vldr	s15, [r3, #16]
  800c1fc:	eeb0 0a67 	vmov.f32	s0, s15
  800c200:	f7ff fdee 	bl	800bde0 <DataHandler_StoreMeasurement>
 		}

@@ -102,7 +102,7 @@ void TempCollect_Operate()
 		if( !kTemperatureData.bReadFinished[1] )
 		{
 			kTemperatureData.fConvertedTemperature[1] = MCP9808_DecodeTemperature(&kaSensorArrayDataB[kTemperatureData.u16ArrayBSensorIndex]);
-			DataHandler_StoreMeasurement(kTemperatureData.fConvertedTemperature[0]);
+			DataHandler_StoreMeasurement(kTemperatureData.fConvertedTemperature[1]);
 		}
 
 		kTemperatureData.eState = TempCollect_ArmNewReading;
