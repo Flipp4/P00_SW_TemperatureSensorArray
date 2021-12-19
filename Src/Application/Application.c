@@ -16,6 +16,7 @@
 #include "../Drivers/BSP/BSP.h"
 
 #include "../Communication/CommunicationManager.h"
+#include "../Communication/USBTransmitter.h"
 
 /* Function prototypes */
 
@@ -120,12 +121,12 @@ void AsynchronousTask_10ms()
 void AsynchronousTask_100ms()
 {
 	USB_CheckForUSBConnection();
+	DataHandler_Operate();
 }
 
 void AsynchronousTask_1000ms()
 {
 	ToggleLED_B();
-	DataHandler_Operate();
 }
 
 void AsynchronousTaskScheduler()

@@ -26,6 +26,7 @@
 #include "Application/Application.h"
 #include "Application/TemperatureCollector.h"
 #include "Communication/CommunicationManager.h"
+#include "Communication/USBTransmitter.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
