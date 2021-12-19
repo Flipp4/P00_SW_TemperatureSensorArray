@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include "Application/Application.h"
 #include "Application/TemperatureCollector.h"
+#include "Communication/CommunicationManager.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -227,7 +228,14 @@ void DMA1_Stream1_IRQHandler(void)
 void EXTI9_5_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI9_5_IRQn 0 */
-
+	if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_8) == GPIO_PIN_SET)
+	{
+		CommManager_SetUSBConnectionState(USB_Connected);
+	}
+	else
+	{
+		CommManager_SetUSBConnectionState(USB_Disconnected);
+	}
   /* USER CODE END EXTI9_5_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_8);
   /* USER CODE BEGIN EXTI9_5_IRQn 1 */

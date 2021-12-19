@@ -9,7 +9,7 @@
 #include "../Application/DataCommon.h"
 
 static uint8_t u8DataArray[ 2 * dMemoryWidth];
-static uint8_t Buf[] = "Test/r/n";
+//static uint8_t Buf[] = "Test/r/n";
 
 void ConvertDataToBytes(float *Dataset);
 

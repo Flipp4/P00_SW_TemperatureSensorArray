@@ -139,8 +139,6 @@ void DataHandler_StoreMeasurement( float fNewMeasurement )
 
 void DataHandler_Operate()
 {
-	bool bTransmissionStatus = false;
-
 	if( kDataHandler.bEnabled )
 	{
 
