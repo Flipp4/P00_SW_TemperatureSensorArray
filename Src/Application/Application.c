@@ -109,8 +109,10 @@ void AsynchronousTaskTimerUpdate()
 
 void AsynchronousTask_1ms()
 {
+	SetSecondDebugPinOn();
 	EventSystem_HandleEvent();
 	CommManager_Operate();
+	SetSecondDebugPinOff();
 }
 
 void AsynchronousTask_10ms()

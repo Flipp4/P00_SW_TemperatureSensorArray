@@ -35,5 +35,11 @@ void OperateSensorPower_B (SensorState_t eState);
 
 void TurnAllSensorOn();
 
+void SetFirstDebugPinOn();
+void SetFirstDebugPinOff();
+
+void SetSecondDebugPinOn();
+void SetSecondDebugPinOff();
+
 
 #endif /* BSP_BSP_H_ */
