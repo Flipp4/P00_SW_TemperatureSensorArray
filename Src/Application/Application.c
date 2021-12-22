@@ -109,25 +109,48 @@ void AsynchronousTaskTimerUpdate()
 
 void AsynchronousTask_1ms()
 {
-	SetSecondDebugPinOn();
+
+	/* Measured time:
+	 * 10 us with no frame assembly,
+	 * 70 us with frame assembly
+	 *
+	 * two functions (22.12.2201): EventSystem and CommManager
+	 */
 	EventSystem_HandleEvent();
 	CommManager_Operate();
-	SetSecondDebugPinOff();
 }
 
 void AsynchronousTask_10ms()
 {
+	/* Measured time:
+	 * 5-10 us with no communication
+	 * 1-9 us with communication
+	 *
+	 * one function (22.12.2201): TempCollect
+	 */
 	TempCollect_Operate();
 }
 
 void AsynchronousTask_100ms()
 {
+	/* Measured time:
+	 * 8-11 us with no communication
+	 * same with communication
+	 *
+	 * two functions (22.12.2201): USB_Check and DataHandler
+	 */
 	USB_CheckForUSBConnection();
 	DataHandler_Operate();
 }
 
 void AsynchronousTask_1000ms()
 {
+	/* Measured execution period:
+	 * 999 ms without communication
+	 * same with communication
+	 *
+	 * Measured 22.12.2021
+	 */
 	ToggleLED_B();
 }
 

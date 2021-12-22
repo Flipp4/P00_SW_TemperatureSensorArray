@@ -112,4 +112,13 @@ void SetSecondDebugPinOff()
 	HAL_GPIO_WritePin(PIN_1_GPIO_Port, PIN_1_Pin, GPIO_PIN_RESET);
 }
 
+void ToggleFirstDebugPin()
+{
+	HAL_GPIO_TogglePin(PIN_0_GPIO_Port, PIN_0_Pin);
+}
+
+void ToggleSecondDebugPin()
+{
+	HAL_GPIO_TogglePin(PIN_1_GPIO_Port, PIN_1_Pin);
+}
 

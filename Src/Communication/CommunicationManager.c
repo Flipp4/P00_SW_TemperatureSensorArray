@@ -84,10 +84,7 @@ void CommManager_Operate()
 
 			pfPointer = kCommData.pkMemoryPointer->fDataPointer;
 			fValue = pfPointer[kCommData.u16ReadoutPointer];
-
-			SetFirstDebugPinOn();
 			FrameAssembler_ConvertFloatToCharArray(kCommData.u8Frame, fValue);
-			SetFirstDebugPinOff();
 			kCommData.u8CurrentFrameLength = 10;
 			kCommData.ePreviousState = kCommData.eState;
 			kCommData.eState = Comm_Transmit;

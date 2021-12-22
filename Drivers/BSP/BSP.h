@@ -41,5 +41,7 @@ void SetFirstDebugPinOff();
 void SetSecondDebugPinOn();
 void SetSecondDebugPinOff();
 
+void ToggleFirstDebugPin();
+void ToggleSecondDebugPin();
 
 #endif /* BSP_BSP_H_ */
