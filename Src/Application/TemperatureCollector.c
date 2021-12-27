@@ -99,12 +99,12 @@ void TempCollect_Operate()
 				kTemperatureData.u8TimeoutCounter = 0;
 				if(!kTemperatureData.bStateReady[0])
 				{
-					TemperatureData.bErrorOnArray[0] = true;
+					kTemperatureData.bErrorOnArray[0] = true;
 					AssertError(AppError_ArrayAError);
 				}
 				if(!kTemperatureData.bStateReady[1])
 				{
-					TemperatureData.bErrorOnArray[1] = true;
+					kTemperatureData.bErrorOnArray[1] = true;
 					AssertError(AppError_ArrayBError);
 				}
 				kTemperatureData.eState = TempCollect_ProcessData;
