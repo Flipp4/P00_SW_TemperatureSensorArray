@@ -11,6 +11,9 @@
 #include "DataHandler.h"
 #include "../Drivers/BSP/BSP.h"
 
+#define dTimeoutMaxWait		(10)
+#define dErrorIndication	(200.0)
+
 typedef enum TemperatureCollectorState_t
 {
 	TempCollect_EntryState,
@@ -36,6 +39,7 @@ typedef struct kTempCollect_Data_t
 	uint16_t u16ArrayBSensorIndex;
 	uint32_t u32MeasurementCounter;
 	uint8_t u8TimeoutCounter;
+	bool bErrorOnArray[2];
 
 }kTempCollect_Data_t;
 
@@ -90,18 +94,48 @@ void TempCollect_Operate()
 		else
 		{
 			kTemperatureData.u8TimeoutCounter++;
-			//todo: implement a timeout comm reset function
+			if(kTemperatureData.u8TimeoutCounter > dTimeoutMaxWait)
+			{
+				kTemperatureData.u8TimeoutCounter = 0;
+				if(!kTemperatureData.bStateReady[0])
+				{
+					TemperatureData.bErrorOnArray[0] = true;
+					AssertError(AppError_ArrayAError);
+				}
+				if(!kTemperatureData.bStateReady[1])
+				{
+					TemperatureData.bErrorOnArray[1] = true;
+					AssertError(AppError_ArrayBError);
+				}
+				kTemperatureData.eState = TempCollect_ProcessData;
+			}
 		}
 		break;
 	case(TempCollect_ProcessData):
 		if( !kTemperatureData.bReadFinished[0] )
 		{
-			kTemperatureData.fConvertedTemperature[0] = MCP9808_DecodeTemperature(&kaSensorArrayDataA[kTemperatureData.u16ArrayASensorIndex]);
-			DataHandler_StoreMeasurement(kTemperatureData.fConvertedTemperature[0]);
+			if(kTemperatureData.bErrorOnArray[0])
+			{
+				kTemperatureData.fConvertedTemperature[0] = dErrorIndication;
+				kTemperatureData.bErrorOnArray[0] = false;
+			}
+			else
+			{
+				kTemperatureData.fConvertedTemperature[0] = MCP9808_DecodeTemperature(&kaSensorArrayDataA[kTemperatureData.u16ArrayASensorIndex]);
+			}
+		DataHandler_StoreMeasurement(kTemperatureData.fConvertedTemperature[0]);
 		}
 		if( !kTemperatureData.bReadFinished[1] )
 		{
-			kTemperatureData.fConvertedTemperature[1] = MCP9808_DecodeTemperature(&kaSensorArrayDataB[kTemperatureData.u16ArrayBSensorIndex]);
+			if(kTemperatureData.bErrorOnArray[1])
+			{
+				kTemperatureData.fConvertedTemperature[1] = dErrorIndication;
+				kTemperatureData.bErrorOnArray[1] = false;
+			}
+			else
+			{
+				kTemperatureData.fConvertedTemperature[1] = MCP9808_DecodeTemperature(&kaSensorArrayDataB[kTemperatureData.u16ArrayBSensorIndex]);
+			}
 			DataHandler_StoreMeasurement(kTemperatureData.fConvertedTemperature[1]);
 		}
 

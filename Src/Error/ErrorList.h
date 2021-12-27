@@ -27,7 +27,10 @@ typedef enum AppErrorList_t
 
 	AppError_EventOverlap				= 0x1000,
 	AppError_TransmissionOverlap		= 0x2000,
-	AppError_TransmissionLogicBroken	= 0x4000
+	AppError_TransmissionLogicBroken	= 0x4000,
+	AppError_ArrayAError				= 0x8000,
+
+	AppError_ArrayBError				= 0x1000
 
 }AppErrorList_t;
 
