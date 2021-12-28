@@ -175,7 +175,7 @@ void AsynchronousTaskScheduler()
 		kApplicationBase.sAsyncTimers.s10ms.u16Counter = 0;
 	}
 
-	if(kApplicationBase.sAsyncTimers.s1ms.u16Counter >= dAsynchronousTaskPeriod1ms)
+ 	if(kApplicationBase.sAsyncTimers.s1ms.u16Counter >= dAsynchronousTaskPeriod1ms)
 	{
 		AsynchronousTask_1ms();
 		kApplicationBase.sAsyncTimers.s1ms.u16Counter = 0;

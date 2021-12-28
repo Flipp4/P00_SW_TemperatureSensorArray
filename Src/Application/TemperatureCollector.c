@@ -94,16 +94,19 @@ void TempCollect_Operate()
 		}
 		else
 		{
+			//todo: add handling of the acknowledge failed/other error in the I2C interrupt
 			kTemperatureData.u8TimeoutCounter++;
-			if(kTemperatureData.u8TimeoutCounter > dTimeoutMaxWait)
+
+			/* Additional check are made to handle also the faults that were signalized by I2C event interrupt */
+			if( (kTemperatureData.u8TimeoutCounter > dTimeoutMaxWait) || kTemperatureData.bErrorOnArray[0] || kTemperatureData.bErrorOnArray[1] )
 			{
 				kTemperatureData.u8TimeoutCounter = 0;
-				if(!kTemperatureData.bStateReady[0])
+				if(!kTemperatureData.bStateReady[0] || kTemperatureData.bErrorOnArray[0])
 				{
 					kTemperatureData.bErrorOnArray[0] = true;
 					AssertError(AppError_ArrayAError);
 				}
-				if(!kTemperatureData.bStateReady[1])
+				if(!kTemperatureData.bStateReady[1] || kTemperatureData.bErrorOnArray[1])
 				{
 					kTemperatureData.bErrorOnArray[1] = true;
 					AssertError(AppError_ArrayBError);
@@ -216,4 +219,16 @@ void TempCollect_I2CA_Done()
 void TempCollect_I2CB_Done()
 {
 	kTemperatureData.bStateReady[1] = true;
+}
+
+void TempCollect_CommFaultOccured(CommunicationModule_t eModule)
+{
+	if( eModule == eModule_I2CA)
+	{
+		kTemperatureData.bErrorOnArray[0] = true;
+	}
+	if( eModule == eModule_I2CB)
+	{
+		kTemperatureData.bErrorOnArray[1] = true;
+	}
 }

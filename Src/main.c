@@ -21,13 +21,14 @@
 #include "main.h"
 #include "usb_device.h"
 
-#include "../Drivers/Sensors/TemperatureSensor_ArrayData.h"
-#include "../Drivers/Sensors/TemperatureSensor_MCP9808.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
 #include "Application\Application.h"
 #include "Communication/USBTransmitter.h"
+
+#include "../Drivers/Sensors/TemperatureSensor_ArrayData.h"
+#include "../Drivers/Sensors/TemperatureSensor_MCP9808.h"
 
 
 /* USER CODE END Includes */
@@ -123,7 +124,7 @@ int main(void)
   MX_TIM2_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
-
+  //todo: add global handles assignment function
   SensorArray_Init(&hi2c1, &hi2c2);
   USB_InitalizeTransmitterLogic(&hadc1);
 

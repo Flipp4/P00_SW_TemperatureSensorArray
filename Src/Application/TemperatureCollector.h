@@ -16,6 +16,12 @@
 
 #define dSensorCount (Sensor_I2CA_DeviceCount + Sensor_I2CB_DeviceCount)
 
+typedef enum CommunicationModule_t
+{
+	eModule_I2CA,
+	eModule_I2CB
+}CommunicationModule_t;
+
 typedef struct TemperatureData_t
 {
 	float faTemperatureMeasurements[dSensorCount];
@@ -32,5 +38,6 @@ void TempCollect_RetrieveResult(TemperatureData_t *sTemperatureData);
 void TempCollect_ScheduleMeasurement();
 void TempCollect_I2CA_Done();
 void TempCollect_I2CB_Done();
+void TempCollect_CommFaultOccured(CommunicationModule_t eModule);
 
 #endif /* APPLICATION_TEMPERATURECOLLECTOR_H_ */
