@@ -13,6 +13,7 @@
 #define MCP9808_AddressAmbientTemperature 0x05
 
 void MCP9808_Read(TemperatureSensor_t *kSensor);
+uint8_t MCP9808_CalculateAddress(uint8_t u8BitSettings);
 
 float MCP9808_DecodeTemperature(TemperatureSensor_t *kSensor);
 

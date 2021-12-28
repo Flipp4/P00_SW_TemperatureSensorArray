@@ -12,7 +12,7 @@
 #include "DataHandler.h"
 #include "../Drivers/BSP/BSP.h"
 
-#define dTimeoutMaxWait		(10)
+#define dTimeoutMaxWait		(15)
 #define dErrorIndication	(200.0)
 
 typedef enum TemperatureCollectorState_t
@@ -77,12 +77,12 @@ void TempCollect_Operate()
 			 * if the sensor number on each array branch would be not equal
 			 */
 			kTemperatureData.bStateReady[0] = false;
-			MCP9808_Read(&kaSensorArrayDataA[kTemperatureData.u16ArrayASensorIndex]);
+			kaSensorArrayDataA[kTemperatureData.u16ArrayASensorIndex].fcnReadTemperature(&kaSensorArrayDataA[kTemperatureData.u16ArrayASensorIndex]);
 		}
 		if(kTemperatureData.u16ArrayBSensorIndex < Sensor_I2CB_DeviceCount)
 		{
 			kTemperatureData.bStateReady[1] = false;
-			MCP9808_Read(&kaSensorArrayDataB[kTemperatureData.u16ArrayBSensorIndex]);
+			kaSensorArrayDataB[kTemperatureData.u16ArrayBSensorIndex].fcnReadTemperature(&kaSensorArrayDataB[kTemperatureData.u16ArrayBSensorIndex]);
 		}
 		kTemperatureData.eState = TempCollect_Waiting;
 		break;
@@ -122,7 +122,7 @@ void TempCollect_Operate()
 			}
 			else
 			{
-				kTemperatureData.fConvertedTemperature[0] = MCP9808_DecodeTemperature(&kaSensorArrayDataA[kTemperatureData.u16ArrayASensorIndex]);
+				kTemperatureData.fConvertedTemperature[0] = kaSensorArrayDataA[kTemperatureData.u16ArrayASensorIndex].fcnDecodeTemperature(&kaSensorArrayDataA[kTemperatureData.u16ArrayASensorIndex]);
 			}
 		DataHandler_StoreMeasurement(kTemperatureData.fConvertedTemperature[0]);
 		}
@@ -135,7 +135,7 @@ void TempCollect_Operate()
 			}
 			else
 			{
-				kTemperatureData.fConvertedTemperature[1] = MCP9808_DecodeTemperature(&kaSensorArrayDataB[kTemperatureData.u16ArrayBSensorIndex]);
+				kTemperatureData.fConvertedTemperature[1] = kaSensorArrayDataB[kTemperatureData.u16ArrayBSensorIndex].fcnDecodeTemperature(&kaSensorArrayDataB[kTemperatureData.u16ArrayBSensorIndex]);
 			}
 			DataHandler_StoreMeasurement(kTemperatureData.fConvertedTemperature[1]);
 		}

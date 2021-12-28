@@ -6,6 +6,9 @@
  */
 
 #include "TemperatureSensor_ArrayData.h"
+#include "TemperatureSensor_MCP9803.h"
+#include "TemperatureSensor_MCP9808.h"
+
 /*
  *  Every MC9808 device address consists of following bytes: 0011 A0 A1 A2, where 0011 is constant and A0-A2 is hardware coded.
  */
@@ -17,7 +20,7 @@ TemperatureSensor_t kaSensorArrayDataB[Sensor_I2CB_DeviceCount];
 const uint8_t u8DeviceAddressListA[Sensor_I2CA_DeviceCount] = {
 //	0x00,
 //	0x02,
-//	0x04,
+	0x08,
 	0x06,
 	0x08,
 	0x0A,
@@ -28,7 +31,7 @@ const uint8_t u8DeviceAddressListA[Sensor_I2CA_DeviceCount] = {
 const uint8_t u8DeviceAddressListB[Sensor_I2CB_DeviceCount] = {
 //	0x00,
 //	0x02,
-//	0x04,
+	0x08,
 	0x06,
 	0x08,
 	0x0A,
@@ -36,18 +39,69 @@ const uint8_t u8DeviceAddressListB[Sensor_I2CB_DeviceCount] = {
 	0x0E
 };
 
+const SensorType_t eSensorTypeListArrayA[Sensor_I2CA_DeviceCount] =
+{
+//		eSensor_MCP9803,
+//		eSensor_MCP9803,
+		eSensor_MCP9803,
+		eSensor_MCP9808,
+		eSensor_MCP9808,
+		eSensor_MCP9808,
+		eSensor_MCP9808,
+		eSensor_MCP9808
+};
+
+const SensorType_t eSensorTypeListArrayB[Sensor_I2CB_DeviceCount] =
+{
+//		eSensor_MCP9803,
+//		eSensor_MCP9803,
+		eSensor_MCP9803,
+		eSensor_MCP9808,
+		eSensor_MCP9808,
+		eSensor_MCP9808,
+		eSensor_MCP9808,
+		eSensor_MCP9808
+};
+
 void SensorArray_Init(I2C_HandleTypeDef *hI2CA, I2C_HandleTypeDef *hI2CB)
 {
 	for(uint8_t u8Idx = 0; u8Idx < Sensor_I2CA_DeviceCount; u8Idx++)
 	{
+		kaSensorArrayDataA[u8Idx].eSensorType = eSensorTypeListArrayA[u8Idx];
+
+		if(eSensorTypeListArrayA[u8Idx] == eSensor_MCP9803)
+		{
+
+			kaSensorArrayDataA[u8Idx].u8Address = MCP9803_CalculateAddress(u8DeviceAddressListA[u8Idx]);
+			kaSensorArrayDataA[u8Idx].fcnDecodeTemperature = &MCP9803_DecodeTemperature;
+			kaSensorArrayDataA[u8Idx].fcnReadTemperature = &MCP9803_Read;
+		}
+		else if (eSensorTypeListArrayA[u8Idx] == eSensor_MCP9808)
+		{
+			kaSensorArrayDataA[u8Idx].u8Address = MCP9808_CalculateAddress(u8DeviceAddressListA[u8Idx]);
+			kaSensorArrayDataA[u8Idx].fcnDecodeTemperature = &MCP9808_DecodeTemperature;
+			kaSensorArrayDataA[u8Idx].fcnReadTemperature = &MCP9808_Read;
+		}
 		kaSensorArrayDataA[u8Idx].hTranscieverHandle = hI2CA;
-		kaSensorArrayDataA[u8Idx].u8Address = ((MCP9808_AddresLowerNibble << 4) + u8DeviceAddressListA[u8Idx]);
 		kaSensorArrayDataA[u8Idx].bEnabled = true;
 	}
 	for(uint8_t u8Idx = 0; u8Idx < Sensor_I2CB_DeviceCount; u8Idx++)
 	{
+		kaSensorArrayDataB[u8Idx].eSensorType = eSensorTypeListArrayB[u8Idx];
+
+		if(eSensorTypeListArrayB[u8Idx] == eSensor_MCP9803)
+		{
+			kaSensorArrayDataB[u8Idx].u8Address = MCP9803_CalculateAddress(u8DeviceAddressListB[u8Idx]);
+			kaSensorArrayDataB[u8Idx].fcnDecodeTemperature = &MCP9803_DecodeTemperature;
+			kaSensorArrayDataB[u8Idx].fcnReadTemperature = &MCP9803_Read;
+		}
+		else if (eSensorTypeListArrayB[u8Idx] == eSensor_MCP9808)
+		{
+			kaSensorArrayDataB[u8Idx].u8Address = MCP9808_CalculateAddress(u8DeviceAddressListB[u8Idx]);
+			kaSensorArrayDataB[u8Idx].fcnDecodeTemperature = &MCP9808_DecodeTemperature;
+			kaSensorArrayDataB[u8Idx].fcnReadTemperature = &MCP9808_Read;
+		}
 		kaSensorArrayDataB[u8Idx].hTranscieverHandle = hI2CB;
-		kaSensorArrayDataB[u8Idx].u8Address = ((MCP9808_AddresLowerNibble << 4) + u8DeviceAddressListB[u8Idx]);
 		kaSensorArrayDataB[u8Idx].bEnabled = true;
 	}
 }

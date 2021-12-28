@@ -9,11 +9,17 @@
 
 #include "TemperatureSensor_ArrayData.h"
 
+#define MCP9808_AddresLowerNibble 0x3
+
 void MCP9808_Read(TemperatureSensor_t *kSensor)
 {
 	HAL_I2C_Mem_Read_IT(kSensor->hTranscieverHandle, kSensor->u8Address, MCP9808_AddressAmbientTemperature, 1, kSensor->u16RawMeasurement, 2);
 }
 
+uint8_t MCP9808_CalculateAddress(uint8_t u8BitSettings)
+{
+	return ((MCP9808_AddresLowerNibble << 4) + u8BitSettings);
+}
 
 float MCP9808_DecodeTemperature(TemperatureSensor_t *kSensor)
 {

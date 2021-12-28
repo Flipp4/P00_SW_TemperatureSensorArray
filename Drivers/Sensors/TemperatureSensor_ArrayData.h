@@ -12,9 +12,18 @@
 #include <stdint.h>
 #include "stm32f4xx_hal.h"
 
-#define Sensor_I2CA_DeviceCount 5
+#define Sensor_I2CA_DeviceCount 6
 
-#define Sensor_I2CB_DeviceCount 5
+#define Sensor_I2CB_DeviceCount 6
+
+typedef enum SensorType_t
+{
+	eSensor_MCP9808,
+	eSensor_MCP9803
+}SensorType_t;
+
+typedef void ( *VoidSensorFunction)(void *kTemperatureSensor);
+typedef float ( *FloatSensorFunction)(void *kTemperatureSensor);
 
 typedef struct TemperatureSensor_t
 {
@@ -23,6 +32,9 @@ typedef struct TemperatureSensor_t
 	I2C_HandleTypeDef* hTranscieverHandle;
 	uint8_t u16RawMeasurement[2];
 	bool bNewData;
+	SensorType_t eSensorType;
+	FloatSensorFunction fcnDecodeTemperature;
+	VoidSensorFunction fcnReadTemperature;
 }TemperatureSensor_t;
 
 extern TemperatureSensor_t kaSensorArrayDataA[Sensor_I2CA_DeviceCount];
