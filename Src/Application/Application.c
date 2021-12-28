@@ -14,9 +14,12 @@
 
 #include "../Drivers/MCP9808/TemperatureSensor_MCP9808.h"
 #include "../Drivers/BSP/BSP.h"
+#include "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
 
 #include "../Communication/CommunicationManager.h"
 #include "../Communication/USBTransmitter.h"
+
+#include "../Middlewares/Third_Party/FatFs/src/ff.h"
 
 /* Function prototypes */
 
@@ -40,6 +43,11 @@ static volatile Application_t kApplicationBase =
 	.eApplicationState = eApp_EntryState
 };
 
+static FIL kFileName;
+static FRESULT kCardResult;
+static WORD kWordCount;
+static FATFS kFAT;
+
 /* Definitions */
 
 
@@ -47,7 +55,6 @@ static volatile Application_t kApplicationBase =
 
 void ApplicationPerform()
 {
-
 	switch(kApplicationBase.eApplicationState)
 	{
 	case eApp_EntryState:
@@ -62,6 +69,8 @@ void ApplicationPerform()
 		CommManager_Initialize();
 		EventSystem_Initialize();
 		TurnAllSensorOn();
+		kCardResult = f_mount(&kFAT, "0://" ,1);
+		kCardResult = f_open(&kFileName, "0://TestFile.txt", FA_CREATE_ALWAYS );
 		TurnOnSynchronousEvent(); //todo: add actual on/off functionality to synchronous timers
 		AppStateChangeRequest(eApp_Perform);
 		break;
@@ -152,6 +161,9 @@ void AsynchronousTask_1000ms()
 	 * Measured 22.12.2021
 	 */
 	ToggleLED_B();
+
+	kCardResult = f_write(&kFileName, "Test message type 1\r\n", 20, &kWordCount);
+
 }
 
 void AsynchronousTaskScheduler()

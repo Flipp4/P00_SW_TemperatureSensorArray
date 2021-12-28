@@ -74,6 +74,8 @@ void Error_Handler(void);
 #define PIN_1_GPIO_Port GPIOA
 #define PIN_2_Pin GPIO_PIN_2
 #define PIN_2_GPIO_Port GPIOA
+#define SDIO_DETECT_Pin GPIO_PIN_7
+#define SDIO_DETECT_GPIO_Port GPIOC
 #define USB_VSENSE_Pin GPIO_PIN_8
 #define USB_VSENSE_GPIO_Port GPIOA
 #define USB_VSENSE_EXTI_IRQn EXTI9_5_IRQn
