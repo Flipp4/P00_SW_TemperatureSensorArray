@@ -21,11 +21,11 @@
 #include "main.h"
 #include "usb_device.h"
 
+#include "../Drivers/Sensors/TemperatureSensor_ArrayData.h"
+#include "../Drivers/Sensors/TemperatureSensor_MCP9808.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
-#include "..\Drivers\MCP9808\TemperatureSensor_MCP9808.h"
-#include "../Drivers/MCP9808/MCP9808_ArrayData.h"
 #include "Application\Application.h"
 #include "Communication/USBTransmitter.h"
 

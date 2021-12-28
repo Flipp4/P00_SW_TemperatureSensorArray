@@ -11,9 +11,10 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "../Drivers/MCP9808/MCP9808_ArrayData.h"
 
-#define dSensorCount (MCP9808_I2CA_DeviceCount + MCP9808_I2CB_DeviceCount)
+#include "../../Drivers/Sensors/TemperatureSensor_ArrayData.h"
+
+#define dSensorCount (Sensor_I2CA_DeviceCount + Sensor_I2CB_DeviceCount)
 
 typedef struct TemperatureData_t
 {

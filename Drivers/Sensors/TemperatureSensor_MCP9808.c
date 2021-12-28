@@ -5,16 +5,17 @@
  *      Author: Filip
  */
 
-#include "TemperatureSensor_MCP9808.h"
-#include "MCP9808_ArrayData.h"
+#include "../Sensors/TemperatureSensor_MCP9808.h"
 
-void MCP9808_Read(MCP9808_Sensor_t *kSensor)
+#include "TemperatureSensor_ArrayData.h"
+
+void MCP9808_Read(TemperatureSensor_t *kSensor)
 {
 	HAL_I2C_Mem_Read_IT(kSensor->hTranscieverHandle, kSensor->u8Address, MCP9808_AddressAmbientTemperature, 1, kSensor->u16RawMeasurement, 2);
 }
 
 
-float MCP9808_DecodeTemperature(MCP9808_Sensor_t *kSensor)
+float MCP9808_DecodeTemperature(TemperatureSensor_t *kSensor)
 {
 	uint16_t u16FixedPointReadingLow = 0;
 	uint16_t u16FixedPointReadingHigh = 0;

@@ -8,8 +8,8 @@
 #ifndef APPLICATION_APPLICATION_H_
 #define APPLICATION_APPLICATION_H_
 
+#include "../../Drivers/Sensors/TemperatureSensor_ArrayData.h"
 #include "../Error/ErrorList.h"
-#include "../Drivers/MCP9808/MCP9808_ArrayData.h"
 
 void ApplicationPerform();
 void AsynchronousTaskTimerUpdate();

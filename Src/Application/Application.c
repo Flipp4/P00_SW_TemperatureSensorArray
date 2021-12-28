@@ -7,12 +7,13 @@
 
 
 #include "Application.h"
+
+#include "../../Drivers/Sensors/TemperatureSensor_MCP9808.h"
 #include "ApplicationSystem.h"
 #include "TemperatureCollector.h"
 #include "DataHandler.h"
 #include "EventSystem.h"
 
-#include "../Drivers/MCP9808/TemperatureSensor_MCP9808.h"
 #include "../Drivers/BSP/BSP.h"
 
 #include "../Communication/CommunicationManager.h"

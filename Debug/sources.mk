@@ -21,8 +21,8 @@ OBJCOPY_BIN :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 Drivers/BSP \
-Drivers/MCP9808 \
 Drivers/STM32F4xx_HAL_Driver/Src \
+Drivers/Sensors \
 Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src \
 Middlewares/ST/STM32_USB_Device_Library/Core/Src \
 Src/Application \

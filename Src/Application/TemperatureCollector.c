@@ -6,7 +6,8 @@
  */
 
 #include "TemperatureCollector.h"
-#include "../Drivers/MCP9808/TemperatureSensor_MCP9808.h"
+
+#include "../../Drivers/Sensors/TemperatureSensor_MCP9808.h"
 #include "Application.h"
 #include "DataHandler.h"
 #include "../Drivers/BSP/BSP.h"
@@ -69,7 +70,7 @@ void TempCollect_Operate()
 		break;
 	case(TempCollect_TemperatureReadRequest):
 		kTemperatureData.bScheduleMeasurement = false;
-		if(kTemperatureData.u16ArrayASensorIndex < MCP9808_I2CA_DeviceCount)
+		if(kTemperatureData.u16ArrayASensorIndex < Sensor_I2CA_DeviceCount)
 		{
 			/*
 			 * By placing "ready" flag clearing here this app will not get stuck
@@ -78,7 +79,7 @@ void TempCollect_Operate()
 			kTemperatureData.bStateReady[0] = false;
 			MCP9808_Read(&kaSensorArrayDataA[kTemperatureData.u16ArrayASensorIndex]);
 		}
-		if(kTemperatureData.u16ArrayBSensorIndex < MCP9808_I2CB_DeviceCount)
+		if(kTemperatureData.u16ArrayBSensorIndex < Sensor_I2CB_DeviceCount)
 		{
 			kTemperatureData.bStateReady[1] = false;
 			MCP9808_Read(&kaSensorArrayDataB[kTemperatureData.u16ArrayBSensorIndex]);
@@ -145,14 +146,14 @@ void TempCollect_Operate()
 	case(TempCollect_ArmNewReading):
 		kTemperatureData.u16ArrayASensorIndex++;
 
-		if( kTemperatureData.u16ArrayASensorIndex >= MCP9808_I2CA_DeviceCount)
+		if( kTemperatureData.u16ArrayASensorIndex >= Sensor_I2CA_DeviceCount)
 		{
 			kTemperatureData.bReadFinished[0] = true;
 		}
 
 		kTemperatureData.u16ArrayBSensorIndex++;
 
-		if( kTemperatureData.u16ArrayBSensorIndex >= MCP9808_I2CB_DeviceCount)
+		if( kTemperatureData.u16ArrayBSensorIndex >= Sensor_I2CB_DeviceCount)
 		{
 			kTemperatureData.bReadFinished[1] = true;
 		}
@@ -182,11 +183,11 @@ void TempCollect_Initialize()
 	kTemperatureData.eState = TempCollect_Initialized;
 	kTemperatureData.bEnabledFlag = true;
 
-	if(MCP9808_I2CA_DeviceCount == 0)
+	if(Sensor_I2CA_DeviceCount == 0)
 	{
 		kTemperatureData.bStateReady[0] = true;
 	}
-	if(MCP9808_I2CB_DeviceCount == 0)
+	if(Sensor_I2CB_DeviceCount == 0)
 	{
 		kTemperatureData.bStateReady[1] = true;
 	}
