@@ -19,8 +19,8 @@ TemperatureSensor_t kaSensorArrayDataA[Sensor_I2CA_DeviceCount];
 TemperatureSensor_t kaSensorArrayDataB[Sensor_I2CB_DeviceCount];
 
 const uint8_t u8DeviceAddressListA[Sensor_I2CA_DeviceCount] = {
-//	0x00,
-//	0x02,
+	0x00,
+	0x02,
 	0x08,
 	0x06,
 	0x08,
@@ -30,8 +30,8 @@ const uint8_t u8DeviceAddressListA[Sensor_I2CA_DeviceCount] = {
 };
 
 const uint8_t u8DeviceAddressListB[Sensor_I2CB_DeviceCount] = {
-//	0x00,
-//	0x02,
+	0x00,
+	0x02,
 	0x08,
 	0x06,
 	0x08,
@@ -42,8 +42,8 @@ const uint8_t u8DeviceAddressListB[Sensor_I2CB_DeviceCount] = {
 
 const SensorType_t eSensorTypeListArrayA[Sensor_I2CA_DeviceCount] =
 {
-//		eSensor_MCP9803,
-//		eSensor_MCP9803,
+		eSensor_MCP9803,
+		eSensor_MCP9803,
 		eSensor_MCP9803,
 		eSensor_MCP9808,
 		eSensor_MCP9808,
@@ -54,8 +54,8 @@ const SensorType_t eSensorTypeListArrayA[Sensor_I2CA_DeviceCount] =
 
 const SensorType_t eSensorTypeListArrayB[Sensor_I2CB_DeviceCount] =
 {
-//		eSensor_MCP9803,
-//		eSensor_MCP9803,
+		eSensor_MCP9803,
+		eSensor_MCP9803,
 		eSensor_MCP9803,
 		eSensor_MCP9808,
 		eSensor_MCP9808,

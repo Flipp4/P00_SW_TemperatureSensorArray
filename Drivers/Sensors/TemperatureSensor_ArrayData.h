@@ -13,9 +13,9 @@
 
 #include "stm32f4xx_hal.h"
 
-#define Sensor_I2CA_DeviceCount 6
+#define Sensor_I2CA_DeviceCount 8
 
-#define Sensor_I2CB_DeviceCount 6
+#define Sensor_I2CB_DeviceCount 8
 
 typedef enum SensorType_t
 {
