@@ -32,7 +32,7 @@ void MCP9803_ConfigureResolution(TemperatureSensor_t *kSensor, MCP9803_Resolutio
 
 	if(Result == HAL_OK)
 	{
-		u8Data = 0;
+		u8Data = 0; //todo: make a AssertError upon HAL_Status in all HAL calls
 	}
 }
 
