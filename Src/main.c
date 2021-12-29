@@ -574,7 +574,7 @@ void AssignHandles()
 {
 	HandlesAssigner_ShareHandle(&hadc1, eHandle_ADC);
 	HandlesAssigner_ShareHandle(&hi2c1, eHandle_I2C1);
-	HandlesAssigner_ShareHandle(&hi2c1, eHandle_I2C2);
+	HandlesAssigner_ShareHandle(&hi2c2, eHandle_I2C2);
 	HandlesAssigner_ShareHandle(&hrtc, eHandle_RTC);
 	HandlesAssigner_ShareHandle(&hsd, eHandle_SD);
 	HandlesAssigner_ShareHandle(&htim2, eHandle_TIM2);
