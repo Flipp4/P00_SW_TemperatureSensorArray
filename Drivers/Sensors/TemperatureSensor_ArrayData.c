@@ -79,12 +79,14 @@ void SensorArray_Init()
 			kaSensorArrayDataA[u8Idx].u8Address = MCP9803_CalculateAddress(u8DeviceAddressListA[u8Idx]);
 			kaSensorArrayDataA[u8Idx].fcnDecodeTemperature = &MCP9803_DecodeTemperature;
 			kaSensorArrayDataA[u8Idx].fcnReadTemperature = &MCP9803_Read;
+			kaSensorArrayDataA[u8Idx].fcnSendConfig = &MCP9803_ConfigureResolution;
 		}
 		else if (eSensorTypeListArrayA[u8Idx] == eSensor_MCP9808)
 		{
 			kaSensorArrayDataA[u8Idx].u8Address = MCP9808_CalculateAddress(u8DeviceAddressListA[u8Idx]);
 			kaSensorArrayDataA[u8Idx].fcnDecodeTemperature = &MCP9808_DecodeTemperature;
 			kaSensorArrayDataA[u8Idx].fcnReadTemperature = &MCP9808_Read;
+			//todo: manage the fact that there is no config for MCP9808
 		}
 		kaSensorArrayDataA[u8Idx].hTranscieverHandle = hI2CA;
 		kaSensorArrayDataA[u8Idx].bEnabled = true;
@@ -98,12 +100,14 @@ void SensorArray_Init()
 			kaSensorArrayDataB[u8Idx].u8Address = MCP9803_CalculateAddress(u8DeviceAddressListB[u8Idx]);
 			kaSensorArrayDataB[u8Idx].fcnDecodeTemperature = &MCP9803_DecodeTemperature;
 			kaSensorArrayDataB[u8Idx].fcnReadTemperature = &MCP9803_Read;
+			kaSensorArrayDataB[u8Idx].fcnSendConfig = &MCP9803_ConfigureResolution;
 		}
 		else if (eSensorTypeListArrayB[u8Idx] == eSensor_MCP9808)
 		{
 			kaSensorArrayDataB[u8Idx].u8Address = MCP9808_CalculateAddress(u8DeviceAddressListB[u8Idx]);
 			kaSensorArrayDataB[u8Idx].fcnDecodeTemperature = &MCP9808_DecodeTemperature;
 			kaSensorArrayDataB[u8Idx].fcnReadTemperature = &MCP9808_Read;
+			//todo: manage the fact that there is no config for MCP9808
 		}
 		kaSensorArrayDataB[u8Idx].hTranscieverHandle = hI2CB;
 		kaSensorArrayDataB[u8Idx].bEnabled = true;

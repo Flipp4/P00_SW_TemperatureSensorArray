@@ -59,6 +59,7 @@ void ApplicationPerform()
 		break;
 
 	case eApp_Initialization:
+		TurnAllSensorOn();
 		SensorArray_Init();
 		USB_InitalizeTransmitterLogic();
 		AppEnableResetTaskTimers();
@@ -66,7 +67,6 @@ void ApplicationPerform()
 		DataHandler_Initialize();
 		CommManager_Initialize();
 		EventSystem_Initialize();
-		TurnAllSensorOn();
 		TurnOnSynchronousEvent();
 		AppStateChangeRequest(eApp_Perform);
 		break;

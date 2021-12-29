@@ -8,6 +8,7 @@
 #include "TemperatureCollector.h"
 
 #include "../../Drivers/Sensors/TemperatureSensor_MCP9808.h"
+#include "../../Drivers/Sensors/TemperatureSensor_MCP9803.h"
 #include "Application.h"
 #include "DataHandler.h"
 #include "../Drivers/BSP/BSP.h"
@@ -193,6 +194,22 @@ void TempCollect_Initialize()
 	if(Sensor_I2CB_DeviceCount == 0)
 	{
 		kTemperatureData.bStateReady[1] = true;
+	}
+	/* Sensor configuration in blocking mode: once during startup */
+	//todo: Reconsider the implementation
+	for(uint8_t u8Idx = 0; u8Idx < Sensor_I2CA_DeviceCount; u8Idx++ )
+	{
+		if (kaSensorArrayDataA[u8Idx].eSensorType == eSensor_MCP9803)
+		{
+			kaSensorArrayDataA[u8Idx].fcnSendConfig(&kaSensorArrayDataA[u8Idx], eMCP9803_Resolution_12bit);
+		}
+	}
+	for(uint8_t u8Idx = 0; u8Idx < Sensor_I2CB_DeviceCount; u8Idx++ )
+	{
+		if (kaSensorArrayDataB[u8Idx].eSensorType == eSensor_MCP9803)
+		{
+			kaSensorArrayDataB[u8Idx].fcnSendConfig(&kaSensorArrayDataB[u8Idx], eMCP9803_Resolution_12bit);
+		}
 	}
 }
 void TempCollect_RetrieveResult(TemperatureData_t *sTemperatureData);

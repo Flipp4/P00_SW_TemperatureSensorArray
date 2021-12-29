@@ -25,6 +25,7 @@ typedef enum SensorType_t
 
 typedef void ( *VoidSensorFunction)(void *kTemperatureSensor);
 typedef float ( *FloatSensorFunction)(void *kTemperatureSensor);
+typedef void (*VoidSensorFunction2Param)(void *kTemperatureSensor, void* eBitResolution);
 
 typedef struct TemperatureSensor_t
 {
@@ -36,6 +37,7 @@ typedef struct TemperatureSensor_t
 	SensorType_t eSensorType;
 	FloatSensorFunction fcnDecodeTemperature;
 	VoidSensorFunction fcnReadTemperature;
+	VoidSensorFunction2Param fcnSendConfig;
 }TemperatureSensor_t;
 
 extern TemperatureSensor_t kaSensorArrayDataA[Sensor_I2CA_DeviceCount];
