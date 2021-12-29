@@ -27,27 +27,27 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
  11 .ARM.attributes 00000030  00000000  00000000  00030350  2**0
                   CONTENTS, READONLY
- 12 .debug_info   00030c96  00000000  00000000  00030380  2**0
+ 12 .debug_info   00030cc0  00000000  00000000  00030380  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 00005eff  00000000  00000000  00061016  2**0
+ 13 .debug_abbrev 00005eff  00000000  00000000  00061040  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 00001f00  00000000  00000000  00066f18  2**3
+ 14 .debug_aranges 00001f00  00000000  00000000  00066f40  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_ranges 00001cb0  00000000  00000000  00068e18  2**3
+ 15 .debug_ranges 00001cb0  00000000  00000000  00068e40  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  00020fd4  00000000  00000000  0006aac8  2**0
+ 16 .debug_macro  00020fd4  00000000  00000000  0006aaf0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   0002b253  00000000  00000000  0008ba9c  2**0
+ 17 .debug_line   0002b253  00000000  00000000  0008bac4  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000ad13e  00000000  00000000  000b6cef  2**0
+ 18 .debug_str    000ad160  00000000  00000000  000b6d17  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000053  00000000  00000000  00163e2d  2**0
+ 19 .comment      00000053  00000000  00000000  00163e77  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00009320  00000000  00000000  00163e80  2**2
+ 20 .debug_frame  00009320  00000000  00000000  00163ecc  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .stab         000000cc  00000000  00000000  0016d1a0  2**2
+ 21 .stab         000000cc  00000000  00000000  0016d1ec  2**2
                   CONTENTS, READONLY, DEBUGGING
- 22 .stabstr      000001b9  00000000  00000000  0016d26c  2**0
+ 22 .stabstr      000001b9  00000000  00000000  0016d2b8  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:

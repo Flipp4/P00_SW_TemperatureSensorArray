@@ -24,7 +24,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
-#include "Application\Application.h"
+#include "Application/Application.h"
+#include "Application/HandlesAssigner.h"
 #include "Communication/USBTransmitter.h"
 
 #include "../Drivers/Sensors/TemperatureSensor_ArrayData.h"

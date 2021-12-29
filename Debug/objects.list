@@ -37,6 +37,7 @@
 "./Src/Application/Application.o"
 "./Src/Application/DataHandler.o"
 "./Src/Application/EventSystem.o"
+"./Src/Application/HandlesAssigner.o"
 "./Src/Application/ModuleInterconnect.o"
 "./Src/Application/TemperatureCollector.o"
 "./Src/Communication/CommunicationManager.o"
