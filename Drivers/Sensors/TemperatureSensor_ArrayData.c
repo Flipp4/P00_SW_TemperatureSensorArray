@@ -8,6 +8,7 @@
 #include "TemperatureSensor_ArrayData.h"
 #include "TemperatureSensor_MCP9803.h"
 #include "TemperatureSensor_MCP9808.h"
+#include "../Src/Application/HandlesAssigner.h"
 
 /*
  *  Every MC9808 device address consists of following bytes: 0011 A0 A1 A2, where 0011 is constant and A0-A2 is hardware coded.
@@ -63,8 +64,11 @@ const SensorType_t eSensorTypeListArrayB[Sensor_I2CB_DeviceCount] =
 		eSensor_MCP9808
 };
 
-void SensorArray_Init(I2C_HandleTypeDef *hI2CA, I2C_HandleTypeDef *hI2CB)
+void SensorArray_Init()
 {
+	I2C_HandleTypeDef *hI2CA = HandlesAssigner_GetHandle(eHandle_I2C1);
+	I2C_HandleTypeDef *hI2CB = HandlesAssigner_GetHandle(eHandle_I2C2);
+
 	for(uint8_t u8Idx = 0; u8Idx < Sensor_I2CA_DeviceCount; u8Idx++)
 	{
 		kaSensorArrayDataA[u8Idx].eSensorType = eSensorTypeListArrayA[u8Idx];

@@ -6,8 +6,10 @@
  */
 
 #include "USBTransmitter.h"
+
 #include "../Application/ModuleInterconnect.h"
 #include "../Application/DataCommon.h"
+#include "../Application/HandlesAssigner.h"
 
 #define dLowThreshold  ( 3227 )
 #define dHighThreshold ( 3351 )
@@ -28,9 +30,9 @@ static USBTransmitter_t kUSBTransmitterData;
 
 void ConvertDataToBytes(float *Dataset);
 
-void USB_InitalizeTransmitterLogic(ADC_HandleTypeDef *phADCHandle)
+void USB_InitalizeTransmitterLogic()
 {
-	kUSBTransmitterData.phADCHandle = phADCHandle;
+	kUSBTransmitterData.phADCHandle = HandlesAssigner_GetHandle(eHandle_ADC);
 	kUSBTransmitterData.bInitialized = true;
 }
 

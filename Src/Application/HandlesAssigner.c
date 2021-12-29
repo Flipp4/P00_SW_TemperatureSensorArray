@@ -53,7 +53,7 @@ void HandlesAssigner_ShareHandle(void * phHandle, HandleType_t eHandleDeviceType
 	}
 }
 
-void* HandlerAssigner_GetHandle(HandleType_t eHandleDeviceType)
+void* HandlesAssigner_GetHandle(HandleType_t eHandleDeviceType)
 {
 	void * phHandle;
 	switch(eHandleDeviceType)

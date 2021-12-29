@@ -10,6 +10,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include "stm32f4xx_hal.h"
 
 #define dSysTickBase_us 1000
 
@@ -50,6 +51,7 @@ typedef struct Application_t
 	uint32_t u32ErrorReg;
 	bool bInitializedFlag;
 	ApplicationState_t eApplicationState;
+	TIM_HandleTypeDef *phSynchronousEventTimer;
 }Application_t;
 
 #endif /* APPLICATION_APPLICATIONSYSTEM_H_ */

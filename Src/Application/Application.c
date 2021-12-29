@@ -13,6 +13,7 @@
 #include "TemperatureCollector.h"
 #include "DataHandler.h"
 #include "EventSystem.h"
+#include "HandlesAssigner.h"
 
 #include "../Drivers/BSP/BSP.h"
 
@@ -53,17 +54,20 @@ void ApplicationPerform()
 	{
 	case eApp_EntryState:
 		OperateLED_A(eLED_On);
+		kApplicationBase.phSynchronousEventTimer = HandlesAssigner_GetHandle(eHandle_TIM2);
 		AppStateChangeRequest(eApp_Initialization);
 		break;
 
 	case eApp_Initialization:
+		SensorArray_Init();
+		USB_InitalizeTransmitterLogic();
 		AppEnableResetTaskTimers();
 		TempCollect_Initialize();
 		DataHandler_Initialize();
 		CommManager_Initialize();
 		EventSystem_Initialize();
 		TurnAllSensorOn();
-		TurnOnSynchronousEvent(); //todo: add actual on/off functionality to synchronous timers
+		TurnOnSynchronousEvent();
 		AppStateChangeRequest(eApp_Perform);
 		break;
 
@@ -257,5 +261,5 @@ void AssertError( AppErrorList_t eAppError )
 
 void TurnOnSynchronousEvent()
 {
-
+	 HAL_TIM_Base_Start_IT(kApplicationBase.phSynchronousEventTimer);
 }

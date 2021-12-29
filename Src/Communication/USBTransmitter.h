@@ -14,7 +14,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-void USB_InitalizeTransmitterLogic(ADC_HandleTypeDef *phADCHandle);
+void USB_InitalizeTransmitterLogic();
 bool USB_TransmitData(uint8_t *Dataset, uint8_t u8Length);
 void USB_CheckForUSBConnection();
 

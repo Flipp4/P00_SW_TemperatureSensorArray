@@ -80,6 +80,8 @@ static void MX_TIM2_Init(void);
 static void MX_ADC1_Init(void);
 /* USER CODE BEGIN PFP */
 
+static void AssignHandles();
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -125,19 +127,15 @@ int main(void)
   MX_TIM2_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
-  //todo: add global handles assignment function
-  SensorArray_Init(&hi2c1, &hi2c2);
-  USB_InitalizeTransmitterLogic(&hadc1);
-
-  HAL_TIM_Base_Start_IT(&htim2);
   HAL_GPIO_WritePin(LED0_GPIO_Port, LED0_Pin, SET);
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   HAL_GPIO_WritePin(I2C2_VDD_GPIO_Port, I2C2_VDD_Pin, SET);
   HAL_GPIO_WritePin(I2C1_VDD_GPIO_Port, I2C1_VDD_Pin, SET);
+
+  AssignHandles();
 
   while (1)
   {
@@ -571,6 +569,17 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void AssignHandles()
+{
+	HandlesAssigner_ShareHandle(&hadc1, eHandle_ADC);
+	HandlesAssigner_ShareHandle(&hi2c1, eHandle_I2C1);
+	HandlesAssigner_ShareHandle(&hi2c1, eHandle_I2C2);
+	HandlesAssigner_ShareHandle(&hrtc, eHandle_RTC);
+	HandlesAssigner_ShareHandle(&hsd, eHandle_SD);
+	HandlesAssigner_ShareHandle(&htim2, eHandle_TIM2);
+	HandlesAssigner_ShareHandle(&huart1, eHandle_UART1);
+}
 
 /* USER CODE END 4 */
 

@@ -22,7 +22,7 @@ typedef enum HandleType_t
 }HandleType_t;
 
 void HandlesAssigner_ShareHandle(void * hHandle, HandleType_t eHandleDeviceType);
-void* HandlerAssigner_GetHandle(HandleType_t eHandleDeviceType);
+void* HandlesAssigner_GetHandle(HandleType_t eHandleDeviceType);
 
 
 #endif /* APPLICATION_HANDLESASSIGNER_H_ */
