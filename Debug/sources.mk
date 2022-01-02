@@ -25,6 +25,8 @@ Drivers/STM32F4xx_HAL_Driver/Src \
 Drivers/Sensors \
 Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src \
 Middlewares/ST/STM32_USB_Device_Library/Core/Src \
+Middlewares/Third_Party/FatFs/src \
+Middlewares/Third_Party/FatFs/src/option \
 Src/Application \
 Src/Communication \
 Src \
