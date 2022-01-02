@@ -15,7 +15,6 @@
 #include "EventSystem.h"
 #include "HandlesAssigner.h"
 
-#include "../Drivers/MCP9808/TemperatureSensor_MCP9808.h"
 #include "../Drivers/BSP/BSP.h"
 #include "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
 
@@ -76,8 +75,8 @@ void ApplicationPerform()
 		CommManager_Initialize();
 		EventSystem_Initialize();
 		TurnOnSynchronousEvent();
-		kCardResult = f_mount(&kFAT, "0://" ,1);
-		kCardResult = f_open(&kFileName, "0://TestFile.txt", FA_CREATE_ALWAYS );
+		kCardResult = f_mount(&kFAT, "0:/" ,1);
+		kCardResult = f_open(&kFileName, "0:/TestFile.txt", FA_CREATE_ALWAYS | FA_WRITE );
 		AppStateChangeRequest(eApp_Perform);
 		break;
 
@@ -168,7 +167,7 @@ void AsynchronousTask_1000ms()
 	 */
 	ToggleLED_B();
 
-	kCardResult = f_write(&kFileName, "Test message type 1\r\n", 20, &kWordCount);
+	kCardResult = f_write(&kFileName, "Test message type 1\r\n", 21, &kWordCount);
 
 }
 
