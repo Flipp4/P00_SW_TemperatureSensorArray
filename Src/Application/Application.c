@@ -23,6 +23,8 @@
 
 #include "../Middlewares/Third_Party/FatFs/src/ff.h"
 
+#include "../Inc/fatfs.h"
+
 /* Function prototypes */
 
 void AsynchronousTask_1ms();
@@ -45,10 +47,10 @@ static volatile Application_t kApplicationBase =
 	.eApplicationState = eApp_EntryState
 };
 
-static FIL kFileName;
 static FRESULT kCardResult;
 static WORD kWordCount;
-static FATFS kFAT;
+static char cDataToBeWritten[10];
+uint8_t u8WriteCounter = 0;
 
 /* Definitions */
 
@@ -66,6 +68,16 @@ void ApplicationPerform()
 		break;
 
 	case eApp_Initialization:
+		cDataToBeWritten[0] = 'a';
+		cDataToBeWritten[1] = 'b';
+		cDataToBeWritten[2] = 'c';
+		cDataToBeWritten[3] = 'd';
+		cDataToBeWritten[4] = 'e';
+		cDataToBeWritten[5] = 'f';
+		cDataToBeWritten[6] = 'g';
+		cDataToBeWritten[7] = 'h';
+		cDataToBeWritten[8] = '\r';
+		cDataToBeWritten[9] = '\n';
 		TurnAllSensorOn();
 		SensorArray_Init();
 		USB_InitalizeTransmitterLogic();
@@ -75,8 +87,9 @@ void ApplicationPerform()
 		CommManager_Initialize();
 		EventSystem_Initialize();
 		TurnOnSynchronousEvent();
-		kCardResult = f_mount(&kFAT, "0:/" ,1);
-		kCardResult = f_open(&kFileName, "0:/TestFile.txt", FA_CREATE_ALWAYS | FA_WRITE );
+		kCardResult = f_mount(&SDFatFS, (TCHAR const*)SDPath ,1);
+//		kCardResult = f_mkfs((TCHAR const*)SDPath, FM_ANY, 0, byteWorkingBuffer, sizeof(byteWorkingBuffer));
+		kCardResult = f_open(&SDFile, "Test_3.txt", FA_CREATE_ALWAYS | FA_WRITE );
 		AppStateChangeRequest(eApp_Perform);
 		break;
 
@@ -167,7 +180,17 @@ void AsynchronousTask_1000ms()
 	 */
 	ToggleLED_B();
 
-	kCardResult = f_write(&kFileName, "Test message type 1\r\n", 21, &kWordCount);
+
+
+	if(u8WriteCounter++ > 1)
+	{
+		f_close(&SDFile);
+	}
+	else
+	{
+		kCardResult = f_write(&SDFile, &cDataToBeWritten, 10, &kWordCount);
+	}
+
 
 }
 

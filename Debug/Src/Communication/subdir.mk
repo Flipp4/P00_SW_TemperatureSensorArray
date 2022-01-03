@@ -24,3 +24,10 @@ C_DEPS += \
 Src/Communication/%.o: ../Src/Communication/%.c Src/Communication/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FatFs/src -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
 
+clean: clean-Src-2f-Communication
+
+clean-Src-2f-Communication:
+	-$(RM) ./Src/Communication/CommunicationManager.d ./Src/Communication/CommunicationManager.o ./Src/Communication/FrameAssembler.d ./Src/Communication/FrameAssembler.o ./Src/Communication/USBTransmitter.d ./Src/Communication/USBTransmitter.o
+
+.PHONY: clean-Src-2f-Communication
+

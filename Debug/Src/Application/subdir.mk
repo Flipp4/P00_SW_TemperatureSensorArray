@@ -35,3 +35,10 @@ Src/Application/Application.o: ../Src/Application/Application.c Src/Application/
 Src/Application/%.o: ../Src/Application/%.c Src/Application/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FatFs/src -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
 
+clean: clean-Src-2f-Application
+
+clean-Src-2f-Application:
+	-$(RM) ./Src/Application/Application.d ./Src/Application/Application.o ./Src/Application/DataHandler.d ./Src/Application/DataHandler.o ./Src/Application/EventSystem.d ./Src/Application/EventSystem.o ./Src/Application/HandlesAssigner.d ./Src/Application/HandlesAssigner.o ./Src/Application/ModuleInterconnect.d ./Src/Application/ModuleInterconnect.o ./Src/Application/TemperatureCollector.d ./Src/Application/TemperatureCollector.o
+
+.PHONY: clean-Src-2f-Application
+
