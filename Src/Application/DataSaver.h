@@ -15,7 +15,8 @@
 #define dSingleMeasurementSize ( 10 )
 
 #define dSavingPageCount	( 2 )
-#define dSavingPageSize 	( dMaximumChannels * dSingleMeasurementSize * 10 )
+#define dFormattingCharacters ( 2 )
+#define dSavingPageSize 	( (dMaximumChannels * dSingleMeasurementSize + dFormattingCharacters) * 10 )
 
 #define dAveragingPeriodTicks	( 8 )
 

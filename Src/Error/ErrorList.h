@@ -32,7 +32,7 @@ typedef enum AppErrorList_t
 
 	AppError_ArrayBError				= 0x01000,
 	AppError_HALHandleAssignmentError	= 0x02000,
-	AppError_SIgnalProcessingError		= 0x04000,
+	AppError_SignalProcessingError		= 0x04000,
 	AppError_AveragingDataLost			= 0x08000,
 
 	AppError_AveragingDataOverlaped		= 0x10000,

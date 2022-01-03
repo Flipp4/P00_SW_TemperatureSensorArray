@@ -39,9 +39,9 @@ void SignalProcessing_Initialize(uint8_t u8Channels)
 
 void SignalProcessing_AddSampleToAverage(float fNewData, uint8_t u8Channel)
 {
-	if( u8Channel > kSignalProcessingData.u8ChannelCount )
+	if( u8Channel >= kSignalProcessingData.u8ChannelCount )
 	{
-		AssertError(AppError_SIgnalProcessingError);
+		AssertError(AppError_SignalProcessingError);
 	}
 	else
 	{

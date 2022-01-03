@@ -37,6 +37,7 @@ typedef struct DataHandler_t
 
 static DataHandler_t kDataHandler;
 static MemoryInterchange_t kTransmissionMemoryInterchange;
+static MemoryInterchange_t kStorageMemoryInterchange;
 
 void DataHandler_CopyMemoryToInterchangeBuffer( float *pfMemoryArray );
 
@@ -163,7 +164,7 @@ void DataHandler_Operate()
 			}
 
 			CallForTransmissionEvent(); // Inform main event system that there is a pending transmission and data is preloaded to Memory Interchange
-			void CallForAverageAddition(); // Inform event system that data is also ready for averaging
+			CallForAverageAddition(); // Inform event system that data is also ready for averaging
 			kDataHandler.bReadyToSend = false;
 		}
 
@@ -174,10 +175,16 @@ void DataHandler_Operate()
 	}
 }
 
-void DataHandler_AccessMemoryInterchange( MemoryInterchange_t ** pkMemoryInterchangeAddress)
+void DataHandler_AccessTransmissionMemoryInterchange( MemoryInterchange_t ** pkMemoryInterchangeAddress)
 {
 	MemoryInterchange_t *pkPointer;
 	pkPointer = &kTransmissionMemoryInterchange;
+	*pkMemoryInterchangeAddress = pkPointer;
+}
+void DataHandler_AccessStorageMemoryInterchange( MemoryInterchange_t ** pkMemoryInterchangeAddress)
+{
+	MemoryInterchange_t *pkPointer;
+	pkPointer = &kStorageMemoryInterchange;
 	*pkMemoryInterchangeAddress = pkPointer;
 }
 
@@ -186,16 +193,21 @@ void DataHandler_CopyMemoryToInterchangeBuffer( float *pfMemoryArray )
 	if( (kTransmissionMemoryInterchange.eMemoryState != MemoryState_DataSent) && ( kTransmissionMemoryInterchange.eMemoryState != MemoryState_DataSkipped ) )
 	{
 		AssertError(AppError_DataLost); // Memory would be overwritten otherwise;
-		if( !kTransmissionMemoryInterchange.bAddedToAverage )
-		{
-			//todo: add average missing error;
-		}
 	}
 	else
 	{
 		kTransmissionMemoryInterchange.fDataPointer = pfMemoryArray;
 		kTransmissionMemoryInterchange.eMemoryState = MemoryState_NewData;
-		kTransmissionMemoryInterchange.bAddedToAverage = false;
+	}
+
+	if( !kStorageMemoryInterchange.bAddedToAverage )
+	{
+		//todo: add average missing error;
+	}
+	else
+	{
+		kStorageMemoryInterchange.fDataPointer = pfMemoryArray;
+		kStorageMemoryInterchange.bAddedToAverage = false;
 	}
 
 }

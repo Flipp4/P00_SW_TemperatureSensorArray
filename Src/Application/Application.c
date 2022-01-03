@@ -134,9 +134,13 @@ void AsynchronousTask_1ms()
 	 *
 	 * two functions (22.12.2201): EventSystem and CommManager
 	 */
+	SetFirstDebugPinOn();
 	EventSystem_HandleEvent();
 	CommManager_Operate();
+	SetSecondDebugPinOn();
 	DataSaver_Operate();
+	SetSecondDebugPinOff();
+	SetFirstDebugPinOff();
 }
 
 void AsynchronousTask_10ms()

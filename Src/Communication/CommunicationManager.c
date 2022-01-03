@@ -175,7 +175,7 @@ void CommManager_SetUSBConnectionState( USBState_t eState )
 
 void ComManager_ArmTransmission()
 {
-	DataHandler_AccessMemoryInterchange(&kCommData.pkMemoryPointer);
+	DataHandler_AccessTransmissionMemoryInterchange(&kCommData.pkMemoryPointer);
 
 	if( kCommData.bUSBConnected)
 	{

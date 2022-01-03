@@ -14,6 +14,8 @@
 
 #include "../Communication/FrameAssembler.h"
 
+#include "../Drivers/BSP/BSP.h"
+
 #include "../Middlewares/Third_Party/FatFs/src/ff.h"
 
 #include "../Inc/fatfs.h"
@@ -38,7 +40,7 @@ typedef struct DataSaver_t
 	bool bDataInputFull;
 	uint8_t u8CurrentSavingPage;
 	uint8_t u8PreviousSavingPage;
-	uint8_t u8SaveIndex;
+	uint16_t u16SaveIndex;
 	uint8_t u8SavingPage[dSavingPageCount][dSavingPageSize];
 	uint8_t u8DataProcessingIndex;
 	MemoryInterchange_t* pkMeasurementPointer;
@@ -56,7 +58,7 @@ void DataSaver_Initialize()
 	kDataSaver.bEnabled = true;
 	kDataSaver.u8CurrentSavingPage = 0;
 	kDataSaver.u8PreviousSavingPage = 0;
-	kDataSaver.u8SaveIndex = 0;
+	kDataSaver.u16SaveIndex = 0;
 	kDataSaver.u16TickCounter = 0;
 	kDataSaver.u8DataProcessingIndex = 0;
 	kDataSaver.eState = DataSaverState_Wait;
@@ -117,17 +119,19 @@ void DataSaver_Operate()
 			{
 
 				FrameAssembler_ConvertFloatToCharArray(
-						&kDataSaver.u8SavingPage[kDataSaver.u8CurrentSavingPage][kDataSaver.u8SaveIndex],
+						&kDataSaver.u8SavingPage[kDataSaver.u8CurrentSavingPage][kDataSaver.u16SaveIndex],
 						kDataSaver.pfAveragePointer[kDataSaver.u8DataProcessingIndex]);
-				kDataSaver.u8SaveIndex += dSingleMeasurementSize;
+				kDataSaver.u16SaveIndex += dSingleMeasurementSize;
 				kDataSaver.u8DataProcessingIndex++;
 			}
 			else
 			{
+				kDataSaver.u8SavingPage[kDataSaver.u8CurrentSavingPage][kDataSaver.u16SaveIndex++] = '\r';
+				kDataSaver.u8SavingPage[kDataSaver.u8CurrentSavingPage][kDataSaver.u16SaveIndex++] = '\n';
 				kDataSaver.u8DataProcessingIndex = 0;
-				if( (kDataSaver.u8SaveIndex - ( dSingleMeasurementSize * dMaximumChannels)) < ( dSingleMeasurementSize * dMaximumChannels) )
+				if( (kDataSaver.u16SaveIndex + ( dSingleMeasurementSize * dMaximumChannels)) > ( dSavingPageSize ) )
 				{
-					kDataSaver.u8SaveIndex = 0;
+					kDataSaver.u16SaveIndex = 0;
 					kDataSaver.u8PreviousSavingPage = kDataSaver.u8CurrentSavingPage;
 					kDataSaver.u8CurrentSavingPage++;
 					if(kDataSaver.u8CurrentSavingPage >= dSavingPageCount)
@@ -144,7 +148,7 @@ void DataSaver_Operate()
 			break;
 
 		case DataSaverState_OpenFile:
-			kDataSaver.kCardResult = f_open(&SDFile, "Test_5.txt", FA_CREATE_ALWAYS | FA_WRITE );
+			kDataSaver.kCardResult = f_open(&SDFile, "Test_6.txt", FA_OPEN_APPEND | FA_WRITE );
 			kDataSaver.eState = DataSaverState_CallSDSave;
 			break;
 		case DataSaverState_CallSDSave:
@@ -168,7 +172,7 @@ void DataSaver_NewDataAvailable()
 	if( !kDataSaver.bNewDataAvailable )
 	{
 		kDataSaver.bNewDataAvailable = true;
-		DataHandler_AccessMemoryInterchange(&kDataSaver.pkMeasurementPointer);
+		DataHandler_AccessStorageMemoryInterchange(&kDataSaver.pkMeasurementPointer);
 	}
 	else
 	{
