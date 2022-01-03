@@ -32,6 +32,8 @@
 #include "../Drivers/Sensors/TemperatureSensor_ArrayData.h"
 #include "../Drivers/Sensors/TemperatureSensor_MCP9808.h"
 
+#include "../Drivers/BSP/BSP.h"
+
 
 /* USER CODE END Includes */
 
@@ -144,7 +146,6 @@ int main(void)
   while (1)
   {
 	  ApplicationPerform();
-
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

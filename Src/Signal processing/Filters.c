@@ -69,7 +69,6 @@ static void SignalProcessing_ResetChannels()
 {
 	for(uint8_t u8Idx = 0; u8Idx < dMaximumChannels; u8Idx++)
 	{
-		kSignalProcessingData.fAverageRegister[u8Idx] = 0;
 		kSignalProcessingData.kAverageChannels[u8Idx].fCurrentValue = 0;
 		kSignalProcessingData.kAverageChannels[u8Idx].u16SamplesCollected = 0;
 	}

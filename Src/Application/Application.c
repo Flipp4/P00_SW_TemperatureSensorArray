@@ -21,6 +21,8 @@
 #include "../Communication/CommunicationManager.h"
 #include "../Communication/USBTransmitter.h"
 
+#include "../Signal processing/Filters.h"
+
 #include "../Middlewares/Third_Party/FatFs/src/ff.h"
 
 #include "../Inc/fatfs.h"
@@ -47,10 +49,10 @@ static volatile Application_t kApplicationBase =
 	.eApplicationState = eApp_EntryState
 };
 
-static FRESULT kCardResult;
-static WORD kWordCount;
-static char cDataToBeWritten[10];
-uint8_t u8WriteCounter = 0;
+//static FRESULT kCardResult;
+//static WORD kWordCount;
+//static char cDataToBeWritten[100];
+//uint8_t u8WriteCounter = 0;
 
 /* Definitions */
 
@@ -77,9 +79,8 @@ void ApplicationPerform()
 		CommManager_Initialize();
 		EventSystem_Initialize();
 		SignalProcessing_Initialize((uint8_t)dMemoryWidth);
+		DataSaver_Initialize();
 		TurnOnSynchronousEvent();
-		kCardResult = f_mount(&SDFatFS, (TCHAR const*)SDPath ,1);
-//		kCardResult = f_open(&SDFile, "Test_3.txt", FA_CREATE_ALWAYS | FA_WRITE );
 		AppStateChangeRequest(eApp_Perform);
 		break;
 
@@ -135,6 +136,7 @@ void AsynchronousTask_1ms()
 	 */
 	EventSystem_HandleEvent();
 	CommManager_Operate();
+	DataSaver_Operate();
 }
 
 void AsynchronousTask_10ms()
@@ -172,14 +174,18 @@ void AsynchronousTask_1000ms()
 
 
 
-	if(u8WriteCounter++ > 1)
-	{
-//		f_close(&SDFile);
-	}
-	else
-	{
-//		kCardResult = f_write(&SDFile, &cDataToBeWritten, 10, &kWordCount);
-	}
+//	if(u8WriteCounter++ >= 2)
+//	{
+////		SetSecondDebugPinOn();
+////		f_close(&SDFile);
+////		SetSecondDebugPinOff();
+//	}
+//	else
+//	{
+////		SetSecondDebugPinOn();
+////		kCardResult = f_write(&SDFile, &cDataToBeWritten, 100, &kWordCount);
+////		SetSecondDebugPinOff();
+//	}
 
 
 }

@@ -35,7 +35,8 @@ typedef enum AppErrorList_t
 	AppError_SIgnalProcessingError		= 0x04000,
 	AppError_AveragingDataLost			= 0x08000,
 
-	AppError_AveragingDataOverlaped		= 0x10000
+	AppError_AveragingDataOverlaped		= 0x10000,
+	AppError_SDCardNotMounted			= 0x20000
 
 }AppErrorList_t;
 
