@@ -11,5 +11,6 @@
 void CallForTransmissionEvent();
 void CallForUSBConnection();
 void CallForUSBDisonnection();
+void CallForAverageAddition();
 
 #endif /* APPLICATION_MODULEINTERCONNECT_H_ */

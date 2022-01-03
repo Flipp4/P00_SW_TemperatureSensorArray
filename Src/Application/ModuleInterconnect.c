@@ -22,3 +22,8 @@ void CallForUSBDisonnection()
 {
 	EventSystem_Signalize(Event_USBDisconnected);
 }
+
+void CallForAverageAddition()
+{
+	EventSystem_Signalize(Event_DataReadyForAverage);
+}

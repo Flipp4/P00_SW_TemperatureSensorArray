@@ -36,9 +36,9 @@ typedef struct DataHandler_t
 }DataHandler_t;
 
 static DataHandler_t kDataHandler;
-static MemoryInterchange_t kMemoryInterchange;
+static MemoryInterchange_t kTransmissionMemoryInterchange;
 
-void DataHandler_CopyMemoryToTransmissionBuffer( float *pfMemoryArray );
+void DataHandler_CopyMemoryToInterchangeBuffer( float *pfMemoryArray );
 
 void DataHandler_Initialize()
 {
@@ -153,16 +153,17 @@ void DataHandler_Operate()
 		{
 			if(kDataHandler.u8LengthPointer == 0)
 			{
-				DataHandler_CopyMemoryToTransmissionBuffer(kDataHandler.kMeasurementMemory[kDataHandler.u8LastMemoryPage].fMeasurementArray[dMemoryLength-1]);
+				DataHandler_CopyMemoryToInterchangeBuffer(kDataHandler.kMeasurementMemory[kDataHandler.u8LastMemoryPage].fMeasurementArray[dMemoryLength-1]);
 //				bTransmissionStatus = USB_TransmitData(kDataHandler.kMeasurementMemory[kDataHandler.u8LastMemoryPage].fMeasurementArray[dMemoryLength-1]);
 			}
 			else
 			{
 //				bTransmissionStatus = USB_TransmitData(kDataHandler.kMeasurementMemory[kDataHandler.u8ActiveMemoryPage].fMeasurementArray[kDataHandler.u8LengthPointer-1]);
-				DataHandler_CopyMemoryToTransmissionBuffer(kDataHandler.kMeasurementMemory[kDataHandler.u8ActiveMemoryPage].fMeasurementArray[kDataHandler.u8LengthPointer-1]);
+				DataHandler_CopyMemoryToInterchangeBuffer(kDataHandler.kMeasurementMemory[kDataHandler.u8ActiveMemoryPage].fMeasurementArray[kDataHandler.u8LengthPointer-1]);
 			}
 
-			CallForTransmissionEvent(); //Inform main event system that there is a pending transmission and data is preloaded to Memory Interchange
+			CallForTransmissionEvent(); // Inform main event system that there is a pending transmission and data is preloaded to Memory Interchange
+			void CallForAverageAddition(); // Inform event system that data is also ready for averaging
 			kDataHandler.bReadyToSend = false;
 		}
 
@@ -176,20 +177,25 @@ void DataHandler_Operate()
 void DataHandler_AccessMemoryInterchange( MemoryInterchange_t ** pkMemoryInterchangeAddress)
 {
 	MemoryInterchange_t *pkPointer;
-	pkPointer = &kMemoryInterchange;
+	pkPointer = &kTransmissionMemoryInterchange;
 	*pkMemoryInterchangeAddress = pkPointer;
 }
 
-void DataHandler_CopyMemoryToTransmissionBuffer( float *pfMemoryArray )
+void DataHandler_CopyMemoryToInterchangeBuffer( float *pfMemoryArray )
 {
-	if( (kMemoryInterchange.eMemoryState != MemoryState_DataSent) && ( kMemoryInterchange.eMemoryState != MemoryState_DataSkipped ) )
+	if( (kTransmissionMemoryInterchange.eMemoryState != MemoryState_DataSent) && ( kTransmissionMemoryInterchange.eMemoryState != MemoryState_DataSkipped ) )
 	{
-		AssertError(AppError_DataLost); // Memory would be overwritten;
+		AssertError(AppError_DataLost); // Memory would be overwritten otherwise;
+		if( !kTransmissionMemoryInterchange.bAddedToAverage )
+		{
+			//todo: add average missing error;
+		}
 	}
 	else
 	{
-		kMemoryInterchange.fDataPointer = pfMemoryArray;
-		kMemoryInterchange.eMemoryState = MemoryState_NewData;
+		kTransmissionMemoryInterchange.fDataPointer = pfMemoryArray;
+		kTransmissionMemoryInterchange.eMemoryState = MemoryState_NewData;
+		kTransmissionMemoryInterchange.bAddedToAverage = false;
 	}
 
 }

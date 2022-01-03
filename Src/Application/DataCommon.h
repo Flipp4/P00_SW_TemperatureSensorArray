@@ -26,6 +26,7 @@ typedef enum MemoryState_t
 typedef struct MemoryInterchange_t
 {
 	float * fDataPointer;
+	bool bAddedToAverage;
 	MemoryState_t eMemoryState;
 }MemoryInterchange_t;
 

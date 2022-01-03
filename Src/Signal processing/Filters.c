@@ -7,10 +7,12 @@
 
 #include "Filters.h"
 
+#include "../Application/DataCommon.h"
 #include "../Application/Application.h"
+
 #include "../Drivers/Sensors/TemperatureSensor_ArrayData.h"
 
-#define dMaximumChannels ( Sensor_I2CA_DeviceCount + Sensor_I2CB_DeviceCount )
+#define dMaximumChannels ( dMemoryWidth )
 
 typedef struct AverageSignalChannel_t
 {
@@ -21,8 +23,10 @@ typedef struct AverageSignalChannel_t
 typedef struct SignalProcessingData_t
 {
 	bool bEnabled;
+	bool bAverageCalculated;
 	uint8_t u8ChannelCount;
 	AverageSignalChannel_t kAverageChannels[dMaximumChannels];
+	float fAverageRegister[dMaximumChannels];
 
 }SignalProcessingData_t;
 
@@ -40,19 +44,37 @@ void SignalProcessing_AddSampleToAverage(float fNewData, uint8_t u8Channel)
 {
 	if( u8Channel > kSignalProcessingData.u8ChannelCount )
 	{
-		AssertError();
+		AssertError(AppError_SIgnalProcessingError);
 	}
-
+	else
+	{
+		kSignalProcessingData.kAverageChannels[u8Channel].fCurrentValue += fNewData;
+		kSignalProcessingData.kAverageChannels[u8Channel].u16SamplesCollected++;
+	}
 }
 
-float* SignalProcessing_ReadAverage(uint8_t u8Channel)
+void SignalProcessing_CalculateAverage()
 {
+	for(uint8_t u8Idx = 0; u8Idx < dMaximumChannels; u8Idx++)
+	{
+		kSignalProcessingData.fAverageRegister[u8Idx] = kSignalProcessingData.kAverageChannels[u8Idx].fCurrentValue / kSignalProcessingData.kAverageChannels[u8Idx].u16SamplesCollected;
+	}
+	kSignalProcessingData.bAverageCalculated = true;
+}
 
+float* SignalProcessing_ReadAverage()
+{
 	SignalProcessing_ResetChannels();
-	return 0;
+	return kSignalProcessingData.fAverageRegister;
 }
 
 static void SignalProcessing_ResetChannels()
 {
-
+	for(uint8_t u8Idx = 0; u8Idx < dMaximumChannels; u8Idx++)
+	{
+		kSignalProcessingData.fAverageRegister[u8Idx] = 0;
+		kSignalProcessingData.kAverageChannels[u8Idx].fCurrentValue = 0;
+		kSignalProcessingData.kAverageChannels[u8Idx].u16SamplesCollected = 0;
+	}
+	kSignalProcessingData.bAverageCalculated = false;
 }

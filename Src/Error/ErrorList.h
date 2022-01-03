@@ -31,7 +31,8 @@ typedef enum AppErrorList_t
 	AppError_ArrayAError				= 0x8000,
 
 	AppError_ArrayBError				= 0x1000,
-	AppError_HALHandleAssignmentError	= 0x2000
+	AppError_HALHandleAssignmentError	= 0x2000,
+	AppError_SIgnalProcessingError		= 0x4000
 
 }AppErrorList_t;
 

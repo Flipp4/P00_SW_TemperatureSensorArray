@@ -16,6 +16,7 @@ typedef enum Event_t
 	Event_USBConnected		 	= 0x0002,
 	Event_USBDisconnected		= 0x0004,
 	Event_Other					= 0x0008,
+	Event_DataReadyForAverage	= 0x0010
 }Event_t;
 
 void EventSystem_Initialize();

@@ -30,24 +30,30 @@ void EventSystem_HandleEvent()
 	uint32_t u32EventCode = 0;
 
 	u32EventCode = (uint32_t)Event_DataReadyToTransmit;
-
 	if( (kEventData.u32EventRegister & u32EventCode) == u32EventCode )
 	{
 		ComManager_ArmTransmission();
 		kEventData.u32EventRegister &= ~(u32EventCode);
 	}
-	u32EventCode = (uint32_t)Event_USBConnected;
 
+	u32EventCode = (uint32_t)Event_USBConnected;
 	if( (kEventData.u32EventRegister & u32EventCode) == u32EventCode )
 	{
 		CommManager_SetUSBConnectionState(USB_Connected);
 		kEventData.u32EventRegister &= ~(u32EventCode);
 	}
-	u32EventCode = (uint32_t)Event_USBDisconnected;
 
+	u32EventCode = (uint32_t)Event_USBDisconnected;
 	if( (kEventData.u32EventRegister & u32EventCode) == u32EventCode )
 	{
 		CommManager_SetUSBConnectionState(USB_Disconnected);
+		kEventData.u32EventRegister &= ~(u32EventCode);
+	}
+
+	u32EventCode = (uint32_t)Event_DataReadyForAverage;
+	if( (kEventData.u32EventRegister & u32EventCode) == u32EventCode )
+	{
+//		CommManager_SetUSBConnectionState(USB_Disconnected);
 		kEventData.u32EventRegister &= ~(u32EventCode);
 	}
 }
