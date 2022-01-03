@@ -10,6 +10,18 @@
 #include "DataHandler.h"
 #include "DataCommon.h"
 
+typedef enum DataSaverState_t
+{
+	DataSaverState_Wait,
+	DataSaverState_AddToAverageSum,
+	DataSaverState_CalculateAverage,
+	DataSaverState_GetCurrentTime,
+	DataSaverState_StoreAverage,
+	DataSaverState_OpenFile,
+	DataSaverState_CallSDSave,
+	DataSaverState_CloseFile
+}DataSaverState_t;
+
 typedef struct DataSaver_t
 {
 	bool bEnabled;
@@ -23,6 +35,7 @@ typedef struct DataSaver_t
 	float* pfMeasurementPointer;
 	float* pfAveragePointer;
 	uint16_t u16TickCounter;
+	DataSaverState_t eState;
 }DataSaver_t;
 
 static DataSaver_t kDataSaver;
@@ -34,11 +47,19 @@ void DataSaver_Initialize()
 	kDataSaver.u8PreviousSavingPage = 0;
 	kDataSaver.u8SaveIndex = 0;
 	kDataSaver.u16TickCounter = 0;
+	kDataSaver.eState = DataSaverState_Wait;
 }
 
 void DataSaver_Operate()
 {
+	if(kDataSaver.bEnabled)
+	{
+		switch(kDataSaver.eState)
+		{
 
+		}
+
+	}
 }
 
 void DataSaver_NewDataAvailable()
@@ -55,18 +76,21 @@ void DataSaver_NewDataAvailable()
 
 void DataSaver_TickAveragingPeriod()
 {
-	kDataSaver.u16TickCounter++;
-
-	if(kDataSaver.u16TickCounter >= ((uint16_t)dAveragingPeriodTicks ) )
+	if( kDataSaver.bEnabled )
 	{
-		kDataSaver.u16TickCounter = 0;
-		if( !kDataSaver.bAveragingPeriodElapsed )
+		kDataSaver.u16TickCounter++;
+
+		if(kDataSaver.u16TickCounter >= ((uint16_t)dAveragingPeriodTicks ) )
 		{
-			kDataSaver.bAveragingPeriodElapsed = true;
-		}
-		else
-		{
-			AssertError(AppError_AveragingDataLost);
+			kDataSaver.u16TickCounter = 0;
+			if( !kDataSaver.bAveragingPeriodElapsed )
+			{
+				kDataSaver.bAveragingPeriodElapsed = true;
+			}
+			else
+			{
+				AssertError(AppError_AveragingDataLost);
+			}
 		}
 	}
 }
