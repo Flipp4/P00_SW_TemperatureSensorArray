@@ -7,12 +7,9 @@
 
 #include "Filters.h"
 
-#include "../Application/DataCommon.h"
 #include "../Application/Application.h"
 
 #include "../Drivers/Sensors/TemperatureSensor_ArrayData.h"
-
-#define dMaximumChannels ( dMemoryWidth )
 
 typedef struct AverageSignalChannel_t
 {

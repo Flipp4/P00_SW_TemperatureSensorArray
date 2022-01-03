@@ -10,6 +10,7 @@
 
 #include "EventSystem.h"
 #include "Application.h"
+#include "DataSaver.h"
 
 #include "../Communication/CommunicationManager.h"
 
@@ -53,7 +54,7 @@ void EventSystem_HandleEvent()
 	u32EventCode = (uint32_t)Event_DataReadyForAverage;
 	if( (kEventData.u32EventRegister & u32EventCode) == u32EventCode )
 	{
-//		CommManager_SetUSBConnectionState(USB_Disconnected);
+		DataSaver_NewDataAvailable();
 		kEventData.u32EventRegister &= ~(u32EventCode);
 	}
 }

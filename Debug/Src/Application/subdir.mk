@@ -7,6 +7,7 @@
 C_SRCS += \
 ../Src/Application/Application.c \
 ../Src/Application/DataHandler.c \
+../Src/Application/DataSaver.c \
 ../Src/Application/EventSystem.c \
 ../Src/Application/HandlesAssigner.c \
 ../Src/Application/ModuleInterconnect.c \
@@ -15,6 +16,7 @@ C_SRCS += \
 OBJS += \
 ./Src/Application/Application.o \
 ./Src/Application/DataHandler.o \
+./Src/Application/DataSaver.o \
 ./Src/Application/EventSystem.o \
 ./Src/Application/HandlesAssigner.o \
 ./Src/Application/ModuleInterconnect.o \
@@ -23,6 +25,7 @@ OBJS += \
 C_DEPS += \
 ./Src/Application/Application.d \
 ./Src/Application/DataHandler.d \
+./Src/Application/DataSaver.d \
 ./Src/Application/EventSystem.d \
 ./Src/Application/HandlesAssigner.d \
 ./Src/Application/ModuleInterconnect.d \
@@ -38,7 +41,7 @@ Src/Application/%.o: ../Src/Application/%.c Src/Application/subdir.mk
 clean: clean-Src-2f-Application
 
 clean-Src-2f-Application:
-	-$(RM) ./Src/Application/Application.d ./Src/Application/Application.o ./Src/Application/DataHandler.d ./Src/Application/DataHandler.o ./Src/Application/EventSystem.d ./Src/Application/EventSystem.o ./Src/Application/HandlesAssigner.d ./Src/Application/HandlesAssigner.o ./Src/Application/ModuleInterconnect.d ./Src/Application/ModuleInterconnect.o ./Src/Application/TemperatureCollector.d ./Src/Application/TemperatureCollector.o
+	-$(RM) ./Src/Application/Application.d ./Src/Application/Application.o ./Src/Application/DataHandler.d ./Src/Application/DataHandler.o ./Src/Application/DataSaver.d ./Src/Application/DataSaver.o ./Src/Application/EventSystem.d ./Src/Application/EventSystem.o ./Src/Application/HandlesAssigner.d ./Src/Application/HandlesAssigner.o ./Src/Application/ModuleInterconnect.d ./Src/Application/ModuleInterconnect.o ./Src/Application/TemperatureCollector.d ./Src/Application/TemperatureCollector.o
 
 .PHONY: clean-Src-2f-Application
 

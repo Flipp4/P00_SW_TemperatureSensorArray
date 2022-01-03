@@ -10,29 +10,32 @@
 
 typedef enum AppErrorList_t
 {
-	AppError_TimerError 				= 0x0001,
-	AppError_InputError					= 0x0002,
-	AppError_TaskOverlapError			= 0x0004,
-	AppError_UndefinedError				= 0x0008,
+	AppError_TimerError 				= 0x00001,
+	AppError_InputError					= 0x00002,
+	AppError_TaskOverlapError			= 0x00004,
+	AppError_UndefinedError				= 0x00008,
 
-	AppError_AppDefaultStateEntryError	= 0x0010,
-	AppError_WrongStateTransition		= 0x0020,
-	AppError_DataLost					= 0x0040,
-	AppError_WidthOverstretched			= 0x0080,
+	AppError_AppDefaultStateEntryError	= 0x00010,
+	AppError_WrongStateTransition		= 0x00020,
+	AppError_DataLost					= 0x00040,
+	AppError_WidthOverstretched			= 0x00080,
 
-	AppError_DataHandlerUninitialized	= 0x0100,
-	AppError_TempCollectUninitialized	= 0x0200,
-	AppError_TempCollectDefaultState	= 0x0400,
-	AppError_TempCollectRequestOverlap	= 0x0800,
+	AppError_DataHandlerUninitialized	= 0x00100,
+	AppError_TempCollectUninitialized	= 0x00200,
+	AppError_TempCollectDefaultState	= 0x00400,
+	AppError_TempCollectRequestOverlap	= 0x00800,
 
-	AppError_EventOverlap				= 0x1000,
-	AppError_TransmissionOverlap		= 0x2000,
-	AppError_TransmissionLogicBroken	= 0x4000,
-	AppError_ArrayAError				= 0x8000,
+	AppError_EventOverlap				= 0x01000,
+	AppError_TransmissionOverlap		= 0x02000,
+	AppError_TransmissionLogicBroken	= 0x04000,
+	AppError_ArrayAError				= 0x08000,
 
-	AppError_ArrayBError				= 0x1000,
-	AppError_HALHandleAssignmentError	= 0x2000,
-	AppError_SIgnalProcessingError		= 0x4000
+	AppError_ArrayBError				= 0x01000,
+	AppError_HALHandleAssignmentError	= 0x02000,
+	AppError_SIgnalProcessingError		= 0x04000,
+	AppError_AveragingDataLost			= 0x08000,
+
+	AppError_AveragingDataOverlaped		= 0x10000
 
 }AppErrorList_t;
 

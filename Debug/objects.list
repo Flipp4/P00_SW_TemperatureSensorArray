@@ -40,6 +40,7 @@
 "./Middlewares/Third_Party/FatFs/src/option/syscall.o"
 "./Src/Application/Application.o"
 "./Src/Application/DataHandler.o"
+"./Src/Application/DataSaver.o"
 "./Src/Application/EventSystem.o"
 "./Src/Application/HandlesAssigner.o"
 "./Src/Application/ModuleInterconnect.o"

@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include "Application/Application.h"
 #include "Application/TemperatureCollector.h"
+#include "Application/DataSaver.h"
 #include "Communication/CommunicationManager.h"
 #include "Communication/USBTransmitter.h"
 /* USER CODE END Includes */
@@ -279,6 +280,7 @@ void TIM2_IRQHandler(void)
   /* USER CODE BEGIN TIM2_IRQn 1 */
 
   TempCollect_ScheduleMeasurement();
+  DataSaver_TickAveragingPeriod();
 
   /* USER CODE END TIM2_IRQn 1 */
 }
