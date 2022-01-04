@@ -13,6 +13,7 @@
 typedef enum HandleType_t
 {
 	eHandle_TIM2,
+	eHandle_TIM5,
 	eHandle_I2C1,
 	eHandle_I2C2,
 	eHandle_RTC,

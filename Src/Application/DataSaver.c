@@ -116,7 +116,6 @@ void DataSaver_Operate()
 			break;
 
 		case DataSaverState_GetCurrentTime:
-			SetFirstDebugPinOn();
 			HAL_RTC_GetTime(kDataSaver.phRTCHandle, &kDataSaver.kTimeData, RTC_FORMAT_BIN);
 			HAL_RTC_GetDate(kDataSaver.phRTCHandle, &kDataSaver.kDateData, RTC_FORMAT_BIN);
 			FrameAssembler_ConvertDateTimeToCharArray(
@@ -124,7 +123,6 @@ void DataSaver_Operate()
 					&kDataSaver.kTimeData,
 					&kDataSaver.kDateData);
 			kDataSaver.u16SaveIndex +=dTimestampSize;
-			SetFirstDebugPinOff();
 			//todo: call RTC and convert/store data in buffer
 			//todo: add function to convert RTC format into string with known pattern
 			kDataSaver.eState = DataSaverState_StoreAverage;

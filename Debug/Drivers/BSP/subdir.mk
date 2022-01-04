@@ -5,13 +5,16 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Drivers/BSP/BSP.c 
+../Drivers/BSP/BSP.c \
+../Drivers/BSP/PWM_Generator.c 
 
 OBJS += \
-./Drivers/BSP/BSP.o 
+./Drivers/BSP/BSP.o \
+./Drivers/BSP/PWM_Generator.o 
 
 C_DEPS += \
-./Drivers/BSP/BSP.d 
+./Drivers/BSP/BSP.d \
+./Drivers/BSP/PWM_Generator.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -21,7 +24,7 @@ Drivers/BSP/%.o: ../Drivers/BSP/%.c Drivers/BSP/subdir.mk
 clean: clean-Drivers-2f-BSP
 
 clean-Drivers-2f-BSP:
-	-$(RM) ./Drivers/BSP/BSP.d ./Drivers/BSP/BSP.o
+	-$(RM) ./Drivers/BSP/BSP.d ./Drivers/BSP/BSP.o ./Drivers/BSP/PWM_Generator.d ./Drivers/BSP/PWM_Generator.o
 
 .PHONY: clean-Drivers-2f-BSP
 

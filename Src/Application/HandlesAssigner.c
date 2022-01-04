@@ -16,6 +16,7 @@ typedef struct HandleAssignerData_t
 	RTC_HandleTypeDef 	*phRTC;
 	SD_HandleTypeDef 	*phSD;
 	TIM_HandleTypeDef 	*phTIM2;
+	TIM_HandleTypeDef 	*phTIM5;
 	UART_HandleTypeDef	*phUART1;
 	bool bEnabled;
 }HandleAssignerData_t;
@@ -28,6 +29,9 @@ void HandlesAssigner_ShareHandle(void * phHandle, HandleType_t eHandleDeviceType
 	{
 		case (eHandle_TIM2):
 			kHandleAssignerData.phTIM2 = phHandle;
+			break;
+		case (eHandle_TIM5):
+			kHandleAssignerData.phTIM5 = phHandle;
 			break;
 		case (eHandle_I2C1):
 			kHandleAssignerData.phI2C1 = phHandle;
@@ -60,6 +64,9 @@ void* HandlesAssigner_GetHandle(HandleType_t eHandleDeviceType)
 	{
 		case (eHandle_TIM2):
 			phHandle = kHandleAssignerData.phTIM2;
+			break;
+		case (eHandle_TIM5):
+			phHandle = kHandleAssignerData.phTIM5;
 			break;
 		case (eHandle_I2C1):
 			phHandle = kHandleAssignerData.phI2C1;

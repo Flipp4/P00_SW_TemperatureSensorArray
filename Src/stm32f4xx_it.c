@@ -28,6 +28,7 @@
 #include "Application/DataSaver.h"
 #include "Communication/CommunicationManager.h"
 #include "Communication/USBTransmitter.h"
+#include "../Drivers/BSP/PWM_Generator.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -368,6 +369,11 @@ void SDIO_IRQHandler(void)
 void TIM5_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM5_IRQn 0 */
+
+	PWMGenerator_RecalculatePWM();
+	PWMGenerator_ApplyNewWidth();
+
+
 
   /* USER CODE END TIM5_IRQn 0 */
   HAL_TIM_IRQHandler(&htim5);

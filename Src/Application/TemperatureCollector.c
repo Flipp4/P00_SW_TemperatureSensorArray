@@ -218,7 +218,7 @@ void TempCollect_RetrieveResult(TemperatureData_t *sTemperatureData);
 
 void TempCollect_ScheduleMeasurement()
 {
-	ToggleLED_D();
+	ToggleLED_A();
 	if(kTemperatureData.bScheduleMeasurement)
 	{
 		AssertError(AppError_TempCollectRequestOverlap); // Overlap of requests;

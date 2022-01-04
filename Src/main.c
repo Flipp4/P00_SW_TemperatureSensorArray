@@ -359,8 +359,8 @@ static void MX_RTC_Init(void)
 
   /** Initialize RTC and set the Time and Date
   */
-  sTime.Hours = 17;
-  sTime.Minutes = 05;
+  sTime.Hours = 19;
+  sTime.Minutes = 47;
   sTime.Seconds = 0;
   sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
   sTime.StoreOperation = RTC_STOREOPERATION_RESET;
@@ -404,7 +404,7 @@ static void MX_SDIO_SD_Init(void)
   hsd.Init.ClockPowerSave = SDIO_CLOCK_POWER_SAVE_DISABLE;
   hsd.Init.BusWide = SDIO_BUS_WIDE_1B;
   hsd.Init.HardwareFlowControl = SDIO_HARDWARE_FLOW_CONTROL_DISABLE;
-  hsd.Init.ClockDiv = 2;
+  hsd.Init.ClockDiv = 4;
   /* USER CODE BEGIN SDIO_Init 2 */
 
   /* USER CODE END SDIO_Init 2 */
@@ -641,6 +641,7 @@ void AssignHandles()
 	HandlesAssigner_ShareHandle(&hsd, eHandle_SD);
 	HandlesAssigner_ShareHandle(&htim2, eHandle_TIM2);
 	HandlesAssigner_ShareHandle(&huart1, eHandle_UART1);
+	HandlesAssigner_ShareHandle(&htim5, eHandle_TIM5);
 }
 
 /* USER CODE END 4 */

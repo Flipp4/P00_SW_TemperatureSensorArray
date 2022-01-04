@@ -14,8 +14,10 @@
 #include "DataHandler.h"
 #include "EventSystem.h"
 #include "HandlesAssigner.h"
+#include "DataSaver.h"
 
 #include "../Drivers/BSP/BSP.h"
+#include "../Drivers/BSP/PWM_Generator.h"
 #include "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
 
 #include "../Communication/CommunicationManager.h"
@@ -80,6 +82,8 @@ void ApplicationPerform()
 		EventSystem_Initialize();
 		SignalProcessing_Initialize((uint8_t)dMemoryWidth);
 		DataSaver_Initialize();
+		PWMGenerator_Initialize();
+		PWMGenerator_TurnPWMTimerOn();
 		TurnOnSynchronousEvent();
 		AppStateChangeRequest(eApp_Perform);
 		break;
@@ -136,9 +140,7 @@ void AsynchronousTask_1ms()
 	 */
 	EventSystem_HandleEvent();
 	CommManager_Operate();
-	SetSecondDebugPinOn();
 	DataSaver_Operate();
-	SetSecondDebugPinOff();
 }
 
 void AsynchronousTask_10ms()
