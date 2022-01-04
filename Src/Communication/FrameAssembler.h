@@ -11,6 +11,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "../stm32f4xx_hal.h"
+
 void FrameAssembler_ConvertFloatToCharArray(uint8_t *pResultArray, float fNumber);
+void FrameAssembler_ConvertDateTimeToCharArray(uint8_t *pResultArray, RTC_TimeTypeDef * pkTime, RTC_DateTypeDef* pkDate);
 
 #endif /* COMMUNICATION_FRAMEASSEMBLER_H_ */

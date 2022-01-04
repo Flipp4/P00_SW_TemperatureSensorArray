@@ -10,15 +10,17 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include  "../Signal processing/Filters.h"
 
-#define dSingleMeasurementSize ( 10 )
+#include "../Communication/DataFormat.h"
+
+#include  "../Signal processing/Filters.h"
 
 #define dSavingPageCount	( 2 )
 #define dFormattingCharacters ( 2 )
-#define dSavingPageSize 	( (dMaximumChannels * dSingleMeasurementSize + dFormattingCharacters) * 10 )
+#define dSingleEntryLength ( dMaximumChannels * dMaxDataLenght )
+#define dSavingPageSize 	( ( dSingleEntryLength + dFormattingCharacters + dTimestampSize ) * 10 )
 
-#define dAveragingPeriodTicks	( 8 )
+#define dAveragingPeriodTicks	( 10 )
 
 void DataSaver_Initialize();
 void DataSaver_Operate();

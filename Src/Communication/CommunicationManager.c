@@ -8,6 +8,7 @@
 #include "CommunicationManager.h"
 #include "FrameAssembler.h"
 #include "USBTransmitter.h"
+#include "DataFormat.h"
 #include "../Application/DataHandler.h"
 #include "../Application/DataCommon.h"
 #include "../Application/Application.h"
@@ -17,7 +18,6 @@
 #define dClosingByte	( 0x0D ) // carriage return (/r) as an closing character
 #define dTabASCII		( 0x09 ) // tab character (/t) to separate bytes
 
-#define dMaxDataLenght 		( 10 )
 #define dMaxTrialsCount		( 3 )
 
 void CommManager_FlushFrame();

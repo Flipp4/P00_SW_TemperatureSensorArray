@@ -9,6 +9,7 @@
 #include "Application.h"
 #include "DataHandler.h"
 #include "DataCommon.h"
+#include "HandlesAssigner.h"
 
 #include "../Signal processing/Filters.h"
 
@@ -48,6 +49,9 @@ typedef struct DataSaver_t
 	uint16_t u16TickCounter;
 	DataSaverState_t eState;
 	FRESULT kCardResult;
+	RTC_HandleTypeDef* phRTCHandle;
+	RTC_TimeTypeDef kTimeData;
+	RTC_DateTypeDef kDateData;
 }DataSaver_t;
 
 static DataSaver_t kDataSaver;
@@ -68,6 +72,7 @@ void DataSaver_Initialize()
 		AssertError(AppError_SDCardNotMounted);
 	}
 
+	kDataSaver.phRTCHandle = HandlesAssigner_GetHandle(eHandle_RTC);
 }
 
 void DataSaver_Operate()
@@ -109,6 +114,15 @@ void DataSaver_Operate()
 			break;
 
 		case DataSaverState_GetCurrentTime:
+			SetFirstDebugPinOn();
+			HAL_RTC_GetTime(kDataSaver.phRTCHandle, &kDataSaver.kTimeData, RTC_FORMAT_BCD);
+			HAL_RTC_GetDate(kDataSaver.phRTCHandle, &kDataSaver.kDateData, RTC_FORMAT_BCD);
+			FrameAssembler_ConvertDateTimeToCharArray(
+					&kDataSaver.u8SavingPage[kDataSaver.u8CurrentSavingPage][kDataSaver.u16SaveIndex],
+					&kDataSaver.kTimeData,
+					&kDataSaver.kDateData);
+			kDataSaver.u16SaveIndex +=dTimestampSize;
+			SetFirstDebugPinOff();
 			//todo: call RTC and convert/store data in buffer
 			//todo: add function to convert RTC format into string with known pattern
 			kDataSaver.eState = DataSaverState_StoreAverage;
@@ -121,7 +135,7 @@ void DataSaver_Operate()
 				FrameAssembler_ConvertFloatToCharArray(
 						&kDataSaver.u8SavingPage[kDataSaver.u8CurrentSavingPage][kDataSaver.u16SaveIndex],
 						kDataSaver.pfAveragePointer[kDataSaver.u8DataProcessingIndex]);
-				kDataSaver.u16SaveIndex += dSingleMeasurementSize;
+				kDataSaver.u16SaveIndex += dMaxDataLenght;
 				kDataSaver.u8DataProcessingIndex++;
 			}
 			else
@@ -129,7 +143,7 @@ void DataSaver_Operate()
 				kDataSaver.u8SavingPage[kDataSaver.u8CurrentSavingPage][kDataSaver.u16SaveIndex++] = '\r';
 				kDataSaver.u8SavingPage[kDataSaver.u8CurrentSavingPage][kDataSaver.u16SaveIndex++] = '\n';
 				kDataSaver.u8DataProcessingIndex = 0;
-				if( (kDataSaver.u16SaveIndex + ( dSingleMeasurementSize * dMaximumChannels)) > ( dSavingPageSize ) )
+				if( (kDataSaver.u16SaveIndex + ( dMaxDataLenght * dMaximumChannels)) > ( dSavingPageSize ) )
 				{
 					kDataSaver.u16SaveIndex = 0;
 					kDataSaver.u8PreviousSavingPage = kDataSaver.u8CurrentSavingPage;
