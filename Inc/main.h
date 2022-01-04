@@ -50,6 +50,8 @@ extern "C" {
 
 /* USER CODE END EM */
 
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
+
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
@@ -60,14 +62,14 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define I2C2_VDD_Pin GPIO_PIN_13
 #define I2C2_VDD_GPIO_Port GPIOC
-#define LED0_Pin GPIO_PIN_0
-#define LED0_GPIO_Port GPIOC
+#define LED3_Pin GPIO_PIN_0
+#define LED3_GPIO_Port GPIOC
 #define LED1_Pin GPIO_PIN_1
 #define LED1_GPIO_Port GPIOC
 #define LED2_Pin GPIO_PIN_2
 #define LED2_GPIO_Port GPIOC
-#define LED3_Pin GPIO_PIN_3
-#define LED3_GPIO_Port GPIOC
+#define LED0_Pin GPIO_PIN_3
+#define LED0_GPIO_Port GPIOC
 #define PIN_0_Pin GPIO_PIN_0
 #define PIN_0_GPIO_Port GPIOA
 #define PIN_1_Pin GPIO_PIN_1
