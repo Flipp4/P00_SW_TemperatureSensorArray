@@ -27,6 +27,7 @@ typedef enum DataSaverState_t
 	DataSaverState_AddToAverageSum,
 	DataSaverState_CalculateAverage,
 	DataSaverState_GetCurrentTime,
+	DataSaverState_CreateFilename,
 	DataSaverState_StoreAverage,
 	DataSaverState_OpenFile,
 	DataSaverState_CallSDSave,
@@ -52,6 +53,7 @@ typedef struct DataSaver_t
 	RTC_HandleTypeDef* phRTCHandle;
 	RTC_TimeTypeDef kTimeData;
 	RTC_DateTypeDef kDateData;
+	uint8_t u8Filename[dFilenameLength];
 }DataSaver_t;
 
 static DataSaver_t kDataSaver;
@@ -115,8 +117,8 @@ void DataSaver_Operate()
 
 		case DataSaverState_GetCurrentTime:
 			SetFirstDebugPinOn();
-			HAL_RTC_GetTime(kDataSaver.phRTCHandle, &kDataSaver.kTimeData, RTC_FORMAT_BCD);
-			HAL_RTC_GetDate(kDataSaver.phRTCHandle, &kDataSaver.kDateData, RTC_FORMAT_BCD);
+			HAL_RTC_GetTime(kDataSaver.phRTCHandle, &kDataSaver.kTimeData, RTC_FORMAT_BIN);
+			HAL_RTC_GetDate(kDataSaver.phRTCHandle, &kDataSaver.kDateData, RTC_FORMAT_BIN);
 			FrameAssembler_ConvertDateTimeToCharArray(
 					&kDataSaver.u8SavingPage[kDataSaver.u8CurrentSavingPage][kDataSaver.u16SaveIndex],
 					&kDataSaver.kTimeData,
@@ -152,7 +154,7 @@ void DataSaver_Operate()
 					{
 						kDataSaver.u8CurrentSavingPage = 0;
 					}
-					kDataSaver.eState = DataSaverState_OpenFile;
+					kDataSaver.eState = DataSaverState_CreateFilename;
 				}
 				else
 				{
@@ -161,8 +163,13 @@ void DataSaver_Operate()
 			}
 			break;
 
+		case DataSaverState_CreateFilename:
+			FrameAssembler_CreateFilnameFromDate(&kDataSaver.u8Filename, &kDataSaver.kDateData);
+			kDataSaver.eState = DataSaverState_OpenFile;
+			break;
+
 		case DataSaverState_OpenFile:
-			kDataSaver.kCardResult = f_open(&SDFile, "Test_6.txt", FA_OPEN_APPEND | FA_WRITE );
+			kDataSaver.kCardResult = f_open(&SDFile, &kDataSaver.u8Filename, FA_OPEN_APPEND | FA_WRITE );
 			kDataSaver.eState = DataSaverState_CallSDSave;
 			break;
 		case DataSaverState_CallSDSave:

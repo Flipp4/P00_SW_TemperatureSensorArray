@@ -28,4 +28,6 @@
 #define dTimeSize ( 11 )
 #define dTimestampSize ( dDateSize + dTimeSize )
 
+#define dFilenameLength (12)
+
 #endif /* COMMUNICATION_DATAFORMAT_H_ */

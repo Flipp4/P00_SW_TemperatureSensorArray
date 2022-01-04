@@ -20,5 +20,10 @@ void FrameAssembler_ConvertDateTimeToCharArray(uint8_t *pResultArray, RTC_TimeTy
 	uint8_t u8SecondFraction = (uint8_t)( ((pkTime->SecondFraction - pkTime->SubSeconds) * 10 )/(1 + pkTime->SecondFraction));
 
 	sprintf((char*)pResultArray, "%2d.%2d.%2d ", pkDate->Date, pkDate->Month, pkDate->Year);
-	sprintf(((char*)pResultArray+dDateSize), "%2d:%2d:%2d:%1d\t", pkTime->Hours, pkTime->Minutes, pkTime->Seconds, u8SecondFraction);
+	sprintf(((char*)pResultArray+dDateSize), "%2d:%2d:%2d.%1d\t", pkTime->Hours, pkTime->Minutes, pkTime->Seconds, u8SecondFraction);
+}
+
+void FrameAssembler_CreateFilnameFromDate(uint8_t *pResultArray, RTC_DateTypeDef* pkDate)
+{
+	sprintf((char*)pResultArray, "%02d_%02d_%02d.txt", pkDate->Date, pkDate->Month, pkDate->Year);
 }
