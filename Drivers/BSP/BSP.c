@@ -13,11 +13,11 @@ void OperateLED_A (LEDState_t eState)
 {
 	if(eState == eLED_On)
 	{
-		HAL_GPIO_WritePin(LED0_GPIO_Port, LED0_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, GPIO_PIN_SET);
 	}
 	else if(eState == eLED_Off)
 	{
-		HAL_GPIO_WritePin(LED0_GPIO_Port, LED0_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, GPIO_PIN_RESET);
 	}
 }
 void OperateLED_B (LEDState_t eState)
@@ -46,11 +46,11 @@ void OperateLED_D (LEDState_t eState)
 {
 	if(eState == eLED_On)
 	{
-		HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LED0_GPIO_Port, LED0_Pin, GPIO_PIN_SET);
 	}
 	else if(eState == eLED_Off)
 	{
-		HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LED0_GPIO_Port, LED0_Pin, GPIO_PIN_RESET);
 	}
 }
 
@@ -61,7 +61,7 @@ void ToggleLED_B()
 
 void ToggleLED_D()
 {
-	HAL_GPIO_TogglePin(LED3_GPIO_Port, LED3_Pin);
+	HAL_GPIO_TogglePin(LED0_GPIO_Port, LED0_Pin);
 }
 
 void OperateSensorPower_A (SensorState_t eState)
