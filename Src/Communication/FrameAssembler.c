@@ -12,7 +12,7 @@
 void FrameAssembler_ConvertFloatToCharArray(uint8_t *pResultArray, float fNumber)
 {
 //	sprintf((char*)pResultArray,"%+9.4f\t",fNumber);
-	sprintf((char*)pResultArray, "+%" dPrintfSize "." dFractionSize "f\t", fNumber);
+	sprintf((char*)pResultArray, "%+" dPrintfSize "." dFractionSize "f\t", fNumber);
 }
 
 void FrameAssembler_ConvertDateTimeToCharArray(uint8_t *pResultArray, RTC_TimeTypeDef * pkTime, RTC_DateTypeDef* pkDate)

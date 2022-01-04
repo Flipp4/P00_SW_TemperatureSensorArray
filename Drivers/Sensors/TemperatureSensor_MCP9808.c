@@ -38,7 +38,7 @@ float MCP9808_DecodeTemperature(TemperatureSensor_t *kSensor)
 
 	if (bNegativeSign)
 	{
-		fResult = ((float)(u16FixedPointReading) / 16) * -1;
+		fResult = ((float)(u16FixedPointReading) / 16) - 256.0;
 	}
 	else
 	{

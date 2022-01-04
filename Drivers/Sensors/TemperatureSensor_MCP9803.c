@@ -57,7 +57,7 @@ float MCP9803_DecodeTemperature(TemperatureSensor_t *kSensor)
 
 	if (bNegativeSign)
 	{
-		fResult = (((float)u16FixedPointReadingLow) + (((float)u16FixedPointReadingHigh) * 0.0625)) * -1;
+		fResult = (((float)u16FixedPointReadingLow) + (((float)u16FixedPointReadingHigh) * 0.0625)) - 127.0;
 	}
 	else
 	{
