@@ -75,7 +75,7 @@ void EventSystem_Signalize(Event_t eEvent)
 	{
 		if( (kEventData.u32EventRegister & u32EventCode) == u32EventCode )
 		{
-			AssertError(AppError_EventOverlap); // Event already set, before handling it
+			AssertError(eAppError_EventOverlap); // Event already set, before handling it
 		}
 		else
 		{

@@ -56,7 +56,7 @@ void AssertError( AppErrorList_t eAppError )
 {
 	kErrorData.u32Register |= (uint32_t)eAppError;
 
-	if ( (eAppError == AppError_ArrayAError) || (eAppError == AppError_ArrayBError) )
+	if ( (eAppError == eAppError_ArrayAError) || (eAppError == eAppError_ArrayBError) )
 	{
 		kErrorData.u16SensorErrorCounter++;
 		kErrorData.bErrorTimeCounterEnabled = true;

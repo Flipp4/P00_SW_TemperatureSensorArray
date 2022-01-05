@@ -71,7 +71,7 @@ void DataSaver_Initialize()
 
 	if( f_mount(&SDFatFS, (TCHAR const*)SDPath, 1) != FR_OK )
 	{
-		AssertError(AppError_SDCardNotMounted);
+		AssertError(eAppError_SDCardNotMounted);
 	}
 
 	kDataSaver.phRTCHandle = HandlesAssigner_GetHandle(eHandle_RTC);
@@ -195,7 +195,7 @@ void DataSaver_NewDataAvailable()
 	}
 	else
 	{
-		AssertError(AppError_AveragingDataOverlaped);
+		AssertError(eAppError_AveragingDataOverlaped);
 	}
 }
 
@@ -214,7 +214,7 @@ void DataSaver_TickAveragingPeriod()
 			}
 			else
 			{
-				AssertError(AppError_AveragingDataLost);
+				AssertError(eAppError_AveragingDataLost);
 			}
 		}
 	}

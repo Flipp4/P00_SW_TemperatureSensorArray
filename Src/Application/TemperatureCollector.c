@@ -63,7 +63,7 @@ void TempCollect_Operate()
 	switch(kTemperatureData.eState)
 	{
 	case(TempCollect_EntryState):
-		AssertError(AppError_TempCollectUninitialized); // Incorrect entry - before initialization
+		AssertError(eAppError_TempCollectUninitialized); // Incorrect entry - before initialization
 		break;
 	case(TempCollect_Initialized):
 		if(kTemperatureData.bScheduleMeasurement)
@@ -112,12 +112,12 @@ void TempCollect_Operate()
 				if(!kTemperatureData.bStateReady[0] || kTemperatureData.bErrorOnArray[0])
 				{
 					kTemperatureData.bErrorOnArray[0] = true;
-					AssertError(AppError_ArrayAError);
+					AssertError(eAppError_ArrayAError);
 				}
 				if(!kTemperatureData.bStateReady[1] || kTemperatureData.bErrorOnArray[1])
 				{
 					kTemperatureData.bErrorOnArray[1] = true;
-					AssertError(AppError_ArrayBError);
+					AssertError(eAppError_ArrayBError);
 				}
 				kTemperatureData.eState = TempCollect_ProcessData;
 			}
@@ -224,7 +224,7 @@ void TempCollect_Operate()
 		break;
 
 	default:
-		AssertError(AppError_TempCollectDefaultState); // Incorrect entry
+		AssertError(eAppError_TempCollectDefaultState); // Incorrect entry
 	break;
 	}
 }
@@ -273,7 +273,7 @@ void TempCollect_ScheduleMeasurement()
 	ToggleLED_A();
 	if(kTemperatureData.bScheduleMeasurement)
 	{
-		AssertError(AppError_TempCollectRequestOverlap); // Overlap of requests;
+		AssertError(eAppError_TempCollectRequestOverlap); // Overlap of requests;
 	}
 	else
 	{

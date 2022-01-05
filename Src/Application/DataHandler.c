@@ -100,7 +100,7 @@ void DataHandler_OpenNewMeasurement( uint32_t u32TimeStamp )
 	}
 	else
 	{
-		AssertError(AppError_DataHandlerUninitialized); // Call to DataHandler procedure before initialization
+		AssertError(eAppError_DataHandlerUninitialized); // Call to DataHandler procedure before initialization
 	}
 
 }
@@ -119,12 +119,12 @@ void DataHandler_StoreMeasurement( float fNewMeasurement )
 		if(kDataHandler.u8WidthPointer > dMemoryWidth)
 		{
 			kDataHandler.u8WidthPointer--;
-			AssertError(AppError_WidthOverstretched); // Width overstretched - no new measurement was called;
+			AssertError(eAppError_WidthOverstretched); // Width overstretched - no new measurement was called;
 		}
 	}
 	else
 	{
-		AssertError(AppError_DataHandlerUninitialized); // Call to DataHandler procedure before initialization
+		AssertError(eAppError_DataHandlerUninitialized); // Call to DataHandler procedure before initialization
 	}
 }
 
@@ -160,7 +160,7 @@ void DataHandler_Operate()
 	}
 	else
 	{
-		AssertError(AppError_DataHandlerUninitialized); // Call to DataHandler procedure before initialization
+		AssertError(eAppError_DataHandlerUninitialized); // Call to DataHandler procedure before initialization
 	}
 }
 
@@ -181,7 +181,7 @@ void DataHandler_CopyMemoryToInterchangeBuffer( float *pfMemoryArray )
 {
 	if( (kTransmissionMemoryInterchange.eMemoryState != eMemoryState_DataSent) && ( kTransmissionMemoryInterchange.eMemoryState != eMemoryState_DataSkipped ) )
 	{
-		AssertError(AppError_DataLost); // Memory would be overwritten otherwise;
+		AssertError(eAppError_DataLost); // Memory would be overwritten otherwise;
 	}
 	else
 	{

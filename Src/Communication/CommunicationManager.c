@@ -131,7 +131,7 @@ void CommManager_Operate()
 				}
 				else
 				{
-					AssertError(AppError_TransmissionLogicBroken);
+					AssertError(eAppError_TransmissionLogicBroken);
 					kCommData.eState = Comm_Abort;
 				}
 			}
@@ -194,7 +194,7 @@ void ComManager_ArmTransmission()
 		}
 		else
 		{
-			AssertError(AppError_TransmissionOverlap);
+			AssertError(eAppError_TransmissionOverlap);
 		}
 	}
 	else

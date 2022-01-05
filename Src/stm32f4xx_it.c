@@ -432,7 +432,7 @@ void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c)
 	}
 	else
 	{
-		AssertError(AppError_UndefinedError);
+		AssertError(eAppError_UndefinedError);
 	}
 }
 /* USER CODE END 1 */

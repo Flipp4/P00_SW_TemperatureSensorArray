@@ -27,29 +27,29 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
  11 .ARM.attributes 00000030  00000000  00000000  00020350  2**0
                   CONTENTS, READONLY
- 12 .debug_info   0004b27b  00000000  00000000  00020380  2**0
+ 12 .debug_info   0004b27a  00000000  00000000  00020380  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 000086a1  00000000  00000000  0006b5fb  2**0
+ 13 .debug_abbrev 00008689  00000000  00000000  0006b5fa  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_loc    00025c6f  00000000  00000000  00073c9c  2**0
+ 14 .debug_loc    00025c6f  00000000  00000000  00073c83  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_aranges 00002400  00000000  00000000  00099910  2**3
+ 15 .debug_aranges 00002400  00000000  00000000  000998f8  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_ranges 00002158  00000000  00000000  0009bd10  2**3
+ 16 .debug_ranges 00002158  00000000  00000000  0009bcf8  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  000242e4  00000000  00000000  0009de68  2**0
+ 17 .debug_macro  000242e4  00000000  00000000  0009de50  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   00042af3  00000000  00000000  000c214c  2**0
+ 18 .debug_line   00042af0  00000000  00000000  000c2134  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000afdfa  00000000  00000000  00104c3f  2**0
+ 19 .debug_str    000afe10  00000000  00000000  00104c24  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .comment      00000053  00000000  00000000  001b4a39  2**0
+ 20 .comment      00000053  00000000  00000000  001b4a34  2**0
                   CONTENTS, READONLY
- 21 .debug_frame  0000771c  00000000  00000000  001b4a8c  2**2
+ 21 .debug_frame  0000771c  00000000  00000000  001b4a88  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 22 .stab         000000cc  00000000  00000000  001bc1a8  2**2
+ 22 .stab         000000cc  00000000  00000000  001bc1a4  2**2
                   CONTENTS, READONLY, DEBUGGING
- 23 .stabstr      000001b9  00000000  00000000  001bc274  2**0
+ 23 .stabstr      000001b9  00000000  00000000  001bc270  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -23797,11 +23797,6 @@ void AsynchronousTask_1000ms()
 	 */
 	ToggleLED_B();
  8009d3e:	f7f7 f933 	bl	8000fa8 <ToggleLED_B>
-////		kCardResult = f_write(&SDFile, &cDataToBeWritten, 100, &kWordCount);
-////		SetSecondDebugPinOff();
-//	}
-
-
 }
  8009d42:	bd08      	pop	{r3, pc}
 
@@ -23913,7 +23908,7 @@ void AppStateChangeRequest( ApplicationState_t eNewState)
 		}
 		else
 		{
-			AssertError(AppError_WrongStateTransition);
+			AssertError(eAppError_WrongStateTransition);
  8009dc4:	2020      	movs	r0, #32
  8009dc6:	f000 ff5b 	bl	800ac80 <AssertError>
  8009dca:	e01c      	b.n	8009e06 <AppStateChangeRequest+0x62>
@@ -23933,7 +23928,7 @@ void AppStateChangeRequest( ApplicationState_t eNewState)
 		}
 		else
 		{
-			AssertError(AppError_WrongStateTransition);
+			AssertError(eAppError_WrongStateTransition);
  8009dd8:	2020      	movs	r0, #32
  8009dda:	f000 ff51 	bl	800ac80 <AssertError>
  8009dde:	e012      	b.n	8009e06 <AppStateChangeRequest+0x62>
@@ -23964,7 +23959,7 @@ void AppStateChangeRequest( ApplicationState_t eNewState)
 		}
 		else
 		{
-			AssertError(AppError_WrongStateTransition);
+			AssertError(eAppError_WrongStateTransition);
  8009df8:	2020      	movs	r0, #32
  8009dfa:	f000 ff41 	bl	800ac80 <AssertError>
  8009dfe:	e002      	b.n	8009e06 <AppStateChangeRequest+0x62>
@@ -23972,17 +23967,17 @@ void AppStateChangeRequest( ApplicationState_t eNewState)
 		break;
 
 	case eApp_Shutdown:
-		AssertError(AppError_WrongStateTransition);
+		AssertError(eAppError_WrongStateTransition);
  8009e00:	2020      	movs	r0, #32
  8009e02:	f000 ff3d 	bl	800ac80 <AssertError>
+
 	default:
-		AssertError(AppError_WrongStateTransition);
+		AssertError(eAppError_WrongStateTransition);
 		break;
 	}
-
 }
  8009e06:	bd08      	pop	{r3, pc}
-		AssertError(AppError_WrongStateTransition);
+		AssertError(eAppError_WrongStateTransition);
  8009e08:	2020      	movs	r0, #32
  8009e0a:	f000 ff39 	bl	800ac80 <AssertError>
 }
@@ -24094,7 +24089,7 @@ void TurnOnSynchronousEvent()
  8009eae:	f7ff ff49 	bl	8009d44 <AsynchronousTaskScheduler>
 		break;
  8009eb2:	e7dc      	b.n	8009e6e <ApplicationPerform+0x2a>
-		AssertError(AppError_AppDefaultStateEntryError);
+		AssertError(eAppError_AppDefaultStateEntryError);
  8009eb4:	2010      	movs	r0, #16
  8009eb6:	f000 fee3 	bl	800ac80 <AssertError>
 }
@@ -24258,12 +24253,12 @@ void DataHandler_OpenNewMeasurement( uint32_t u32TimeStamp )
  8009faa:	f883 2419 	strb.w	r2, [r3, #1049]	; 0x419
 	else
 	{
-		AssertError(AppError_DataHandlerUninitialized); // Call to DataHandler procedure before initialization
+		AssertError(eAppError_DataHandlerUninitialized); // Call to DataHandler procedure before initialization
 	}
 
 }
  8009fae:	bd10      	pop	{r4, pc}
-		AssertError(AppError_DataHandlerUninitialized); // Call to DataHandler procedure before initialization
+		AssertError(eAppError_DataHandlerUninitialized); // Call to DataHandler procedure before initialization
  8009fb0:	f44f 7080 	mov.w	r0, #256	; 0x100
  8009fb4:	f000 fe64 	bl	800ac80 <AssertError>
 }
@@ -24307,17 +24302,17 @@ void DataHandler_StoreMeasurement( float fNewMeasurement )
 	}
 	else
 	{
-		AssertError(AppError_DataHandlerUninitialized); // Call to DataHandler procedure before initialization
+		AssertError(eAppError_DataHandlerUninitialized); // Call to DataHandler procedure before initialization
 	}
 }
  8009ff6:	bd08      	pop	{r3, pc}
 			kDataHandler.u8WidthPointer--;
  8009ff8:	f882 1416 	strb.w	r1, [r2, #1046]	; 0x416
-			AssertError(AppError_WidthOverstretched); // Width overstretched - no new measurement was called;
+			AssertError(eAppError_WidthOverstretched); // Width overstretched - no new measurement was called;
  8009ffc:	2080      	movs	r0, #128	; 0x80
  8009ffe:	f000 fe3f 	bl	800ac80 <AssertError>
  800a002:	e7f8      	b.n	8009ff6 <DataHandler_StoreMeasurement+0x36>
-		AssertError(AppError_DataHandlerUninitialized); // Call to DataHandler procedure before initialization
+		AssertError(eAppError_DataHandlerUninitialized); // Call to DataHandler procedure before initialization
  800a004:	f44f 7080 	mov.w	r0, #256	; 0x100
  800a008:	f000 fe3a 	bl	800ac80 <AssertError>
 }
@@ -24366,7 +24361,7 @@ void DataHandler_CopyMemoryToInterchangeBuffer( float *pfMemoryArray )
  800a038:	2b01      	cmp	r3, #1
  800a03a:	d80b      	bhi.n	800a054 <DataHandler_CopyMemoryToInterchangeBuffer+0x28>
 	{
-		AssertError(AppError_DataLost); // Memory would be overwritten otherwise;
+		AssertError(eAppError_DataLost); // Memory would be overwritten otherwise;
 	}
 	else
 	{
@@ -24397,7 +24392,7 @@ void DataHandler_CopyMemoryToInterchangeBuffer( float *pfMemoryArray )
 
 }
  800a052:	bd10      	pop	{r4, pc}
-		AssertError(AppError_DataLost); // Memory would be overwritten otherwise;
+		AssertError(eAppError_DataLost); // Memory would be overwritten otherwise;
  800a054:	2040      	movs	r0, #64	; 0x40
  800a056:	f000 fe13 	bl	800ac80 <AssertError>
  800a05a:	e7f3      	b.n	800a044 <DataHandler_CopyMemoryToInterchangeBuffer+0x18>
@@ -24457,7 +24452,7 @@ void DataHandler_CopyMemoryToInterchangeBuffer( float *pfMemoryArray )
  800a0ca:	3008      	adds	r0, #8
  800a0cc:	f7ff ffae 	bl	800a02c <DataHandler_CopyMemoryToInterchangeBuffer>
  800a0d0:	e7e8      	b.n	800a0a4 <DataHandler_Operate+0x40>
-		AssertError(AppError_DataHandlerUninitialized); // Call to DataHandler procedure before initialization
+		AssertError(eAppError_DataHandlerUninitialized); // Call to DataHandler procedure before initialization
  800a0d2:	f44f 7080 	mov.w	r0, #256	; 0x100
  800a0d6:	f000 fdd3 	bl	800ac80 <AssertError>
 }
@@ -24496,7 +24491,7 @@ void DataSaver_Initialize()
  800a100:	f7ff fb0a 	bl	8009718 <f_mount>
  800a104:	b930      	cbnz	r0, 800a114 <DataSaver_Initialize+0x34>
 	{
-		AssertError(AppError_SDCardNotMounted);
+		AssertError(eAppError_SDCardNotMounted);
 	}
 
 	kDataSaver.phRTCHandle = HandlesAssigner_GetHandle(eHandle_RTC);
@@ -24506,7 +24501,7 @@ void DataSaver_Initialize()
  800a10e:	f8c3 0e50 	str.w	r0, [r3, #3664]	; 0xe50
 }
  800a112:	bd08      	pop	{r3, pc}
-		AssertError(AppError_SDCardNotMounted);
+		AssertError(eAppError_SDCardNotMounted);
  800a114:	f44f 3000 	mov.w	r0, #131072	; 0x20000
  800a118:	f000 fdb2 	bl	800ac80 <AssertError>
  800a11c:	e7f3      	b.n	800a106 <DataSaver_Initialize+0x26>
@@ -24806,11 +24801,11 @@ void DataSaver_NewDataAvailable()
 	}
 	else
 	{
-		AssertError(AppError_AveragingDataOverlaped);
+		AssertError(eAppError_AveragingDataOverlaped);
 	}
 }
  800a33e:	bd08      	pop	{r3, pc}
-		AssertError(AppError_AveragingDataOverlaped);
+		AssertError(eAppError_AveragingDataOverlaped);
  800a340:	f44f 3080 	mov.w	r0, #65536	; 0x10000
  800a344:	f000 fc9c 	bl	800ac80 <AssertError>
 }
@@ -24852,13 +24847,13 @@ void DataSaver_TickAveragingPeriod()
  800a378:	2201      	movs	r2, #1
  800a37a:	705a      	strb	r2, [r3, #1]
 			{
-				AssertError(AppError_AveragingDataLost);
+				AssertError(eAppError_AveragingDataLost);
 			}
 		}
 	}
 }
  800a37c:	bd08      	pop	{r3, pc}
-				AssertError(AppError_AveragingDataLost);
+				AssertError(eAppError_AveragingDataLost);
  800a37e:	f44f 4000 	mov.w	r0, #32768	; 0x8000
  800a382:	f000 fc7d 	bl	800ac80 <AssertError>
 }
@@ -25001,7 +24996,7 @@ void EventSystem_Signalize(Event_t eEvent)
  800a434:	ea30 0203 	bics.w	r2, r0, r3
  800a438:	d003      	beq.n	800a442 <EventSystem_Signalize+0x1a>
 		{
-			AssertError(AppError_EventOverlap); // Event already set, before handling it
+			AssertError(eAppError_EventOverlap); // Event already set, before handling it
 		}
 		else
 		{
@@ -25013,7 +25008,7 @@ void EventSystem_Signalize(Event_t eEvent)
 	}
 }
  800a440:	bd08      	pop	{r3, pc}
-			AssertError(AppError_EventOverlap); // Event already set, before handling it
+			AssertError(eAppError_EventOverlap); // Event already set, before handling it
  800a442:	f44f 5080 	mov.w	r0, #4096	; 0x1000
  800a446:	f000 fc1b 	bl	800ac80 <AssertError>
  800a44a:	e7f9      	b.n	800a440 <EventSystem_Signalize+0x18>
@@ -25041,7 +25036,7 @@ void HandlesAssigner_ShareHandle(void * phHandle, HandleType_t eHandleDeviceType
  800a464:	6158      	str	r0, [r3, #20]
 			break;
 		default:
-			AssertError(AppError_HALHandleAssignmentError);
+			AssertError(eAppError_HALHandleAssignmentError);
 			break;
 	}
 }
@@ -25081,7 +25076,7 @@ void HandlesAssigner_ShareHandle(void * phHandle, HandleType_t eHandleDeviceType
  800a48e:	61d8      	str	r0, [r3, #28]
 			break;
  800a490:	e7e9      	b.n	800a466 <HandlesAssigner_ShareHandle+0x16>
-			AssertError(AppError_HALHandleAssignmentError);
+			AssertError(eAppError_HALHandleAssignmentError);
  800a492:	f44f 5000 	mov.w	r0, #8192	; 0x2000
  800a496:	f000 fbf3 	bl	800ac80 <AssertError>
 }
@@ -25107,7 +25102,7 @@ void* HandlesAssigner_GetHandle(HandleType_t eHandleDeviceType)
  800a4b2:	4b0f      	ldr	r3, [pc, #60]	; (800a4f0 <HandlesAssigner_GetHandle+0x50>)
  800a4b4:	695c      	ldr	r4, [r3, #20]
 		default:
-			AssertError(AppError_HALHandleAssignmentError);
+			AssertError(eAppError_HALHandleAssignmentError);
 			break;
 	}
 	return phHandle;
@@ -25149,7 +25144,7 @@ void* HandlesAssigner_GetHandle(HandleType_t eHandleDeviceType)
  800a4e0:	69dc      	ldr	r4, [r3, #28]
 			break;
  800a4e2:	e7e8      	b.n	800a4b6 <HandlesAssigner_GetHandle+0x16>
-			AssertError(AppError_HALHandleAssignmentError);
+			AssertError(eAppError_HALHandleAssignmentError);
  800a4e4:	f44f 5000 	mov.w	r0, #8192	; 0x2000
  800a4e8:	f000 fbca 	bl	800ac80 <AssertError>
 	return phHandle;
@@ -25340,7 +25335,7 @@ static void TempCollect_FillRemainingReadingsWithError()
  800a5d0:	007b001a 	.word	0x007b001a
  800a5d4:	004400bf 	.word	0x004400bf
  800a5d8:	00ed      	.short	0x00ed
-		AssertError(AppError_TempCollectUninitialized); // Incorrect entry - before initialization
+		AssertError(eAppError_TempCollectUninitialized); // Incorrect entry - before initialization
  800a5da:	f44f 7000 	mov.w	r0, #512	; 0x200
  800a5de:	f000 fb4f 	bl	800ac80 <AssertError>
 }
@@ -25449,7 +25444,7 @@ static void TempCollect_FillRemainingReadingsWithError()
  800a692:	4b61      	ldr	r3, [pc, #388]	; (800a818 <TempCollect_Operate+0x25c>)
  800a694:	2201      	movs	r2, #1
  800a696:	765a      	strb	r2, [r3, #25]
-					AssertError(AppError_ArrayAError);
+					AssertError(eAppError_ArrayAError);
  800a698:	f44f 4000 	mov.w	r0, #32768	; 0x8000
  800a69c:	f000 faf0 	bl	800ac80 <AssertError>
 				if(!kTemperatureData.bStateReady[1] || kTemperatureData.bErrorOnArray[1])
@@ -25463,7 +25458,7 @@ static void TempCollect_FillRemainingReadingsWithError()
  800a6ac:	4b5a      	ldr	r3, [pc, #360]	; (800a818 <TempCollect_Operate+0x25c>)
  800a6ae:	2201      	movs	r2, #1
  800a6b0:	769a      	strb	r2, [r3, #26]
-					AssertError(AppError_ArrayBError);
+					AssertError(eAppError_ArrayBError);
  800a6b2:	f44f 5080 	mov.w	r0, #4096	; 0x1000
  800a6b6:	f000 fae3 	bl	800ac80 <AssertError>
 				kTemperatureData.eState = TempCollect_ProcessData;
@@ -25657,7 +25652,7 @@ static void TempCollect_FillRemainingReadingsWithError()
 			TempCollect_FillRemainingReadingsWithError();
  800a806:	f7ff fe8f 	bl	800a528 <TempCollect_FillRemainingReadingsWithError>
  800a80a:	e7df      	b.n	800a7cc <TempCollect_Operate+0x210>
-		AssertError(AppError_TempCollectDefaultState); // Incorrect entry
+		AssertError(eAppError_TempCollectDefaultState); // Incorrect entry
  800a80c:	f44f 6080 	mov.w	r0, #1024	; 0x400
  800a810:	f000 fa36 	bl	800ac80 <AssertError>
 }
@@ -25757,7 +25752,7 @@ static void TempCollect_FillRemainingReadingsWithError()
  800a8d0:	709a      	strb	r2, [r3, #2]
 }
  800a8d2:	bd08      	pop	{r3, pc}
-		AssertError(AppError_TempCollectRequestOverlap); // Overlap of requests;
+		AssertError(eAppError_TempCollectRequestOverlap); // Overlap of requests;
  800a8d4:	f44f 6000 	mov.w	r0, #2048	; 0x800
  800a8d8:	f000 f9d2 	bl	800ac80 <AssertError>
  800a8dc:	e7f9      	b.n	800a8d2 <TempCollect_ScheduleMeasurement+0x12>
@@ -25883,7 +25878,7 @@ void ComManager_ArmTransmission()
 		}
 		else
 		{
-			AssertError(AppError_TransmissionOverlap);
+			AssertError(eAppError_TransmissionOverlap);
  800a96e:	f44f 5000 	mov.w	r0, #8192	; 0x2000
  800a972:	f000 f985 	bl	800ac80 <AssertError>
  800a976:	e003      	b.n	800a980 <ComManager_ArmTransmission+0x30>
@@ -26082,7 +26077,7 @@ void CommManager_FlushFrame()
  800aa8e:	2201      	movs	r2, #1
  800aa90:	721a      	strb	r2, [r3, #8]
  800aa92:	e7a2      	b.n	800a9da <CommManager_Operate+0x22>
-					AssertError(AppError_TransmissionLogicBroken);
+					AssertError(eAppError_TransmissionLogicBroken);
  800aa94:	f44f 4080 	mov.w	r0, #16384	; 0x4000
  800aa98:	f000 f8f2 	bl	800ac80 <AssertError>
 					kCommData.eState = Comm_Abort;
@@ -26468,7 +26463,7 @@ void AssertError( AppErrorList_t eAppError )
  800ac84:	4303      	orrs	r3, r0
  800ac86:	6053      	str	r3, [r2, #4]
 
-	if ( (eAppError == AppError_ArrayAError) || (eAppError == AppError_ArrayBError) )
+	if ( (eAppError == eAppError_ArrayAError) || (eAppError == eAppError_ArrayBError) )
  800ac88:	f5b0 4f00 	cmp.w	r0, #32768	; 0x8000
  800ac8c:	d002      	beq.n	800ac94 <AssertError+0x14>
  800ac8e:	f5b0 5f80 	cmp.w	r0, #4096	; 0x1000
@@ -26558,7 +26553,7 @@ static void SignalProcessing_ResetChannels()
  800ad0e:	8103      	strh	r3, [r0, #8]
 }
  800ad10:	bd08      	pop	{r3, pc}
-		AssertError(AppError_SignalProcessingError);
+		AssertError(eAppError_SignalProcessingError);
  800ad12:	f44f 4080 	mov.w	r0, #16384	; 0x4000
  800ad16:	f7ff ffb3 	bl	800ac80 <AssertError>
  800ad1a:	e7f9      	b.n	800ad10 <SignalProcessing_AddSampleToAverage+0x30>
@@ -29477,7 +29472,7 @@ void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c)
 	}
 	else
 	{
-		AssertError(AppError_UndefinedError);
+		AssertError(eAppError_UndefinedError);
  800bcb2:	2008      	movs	r0, #8
  800bcb4:	f7fe ffe4 	bl	800ac80 <AssertError>
 	}

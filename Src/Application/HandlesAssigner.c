@@ -52,7 +52,7 @@ void HandlesAssigner_ShareHandle(void * phHandle, HandleType_t eHandleDeviceType
 			kHandleAssignerData.phUART1 = phHandle;
 			break;
 		default:
-			AssertError(AppError_HALHandleAssignmentError);
+			AssertError(eAppError_HALHandleAssignmentError);
 			break;
 	}
 }
@@ -87,7 +87,7 @@ void* HandlesAssigner_GetHandle(HandleType_t eHandleDeviceType)
 			phHandle = kHandleAssignerData.phUART1;
 			break;
 		default:
-			AssertError(AppError_HALHandleAssignmentError);
+			AssertError(eAppError_HALHandleAssignmentError);
 			break;
 	}
 	return phHandle;

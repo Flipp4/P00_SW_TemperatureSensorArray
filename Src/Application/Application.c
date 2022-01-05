@@ -51,11 +51,6 @@ static volatile Application_t kApplicationBase =
 	.eApplicationState = eApp_EntryState
 };
 
-//static FRESULT kCardResult;
-//static WORD kWordCount;
-//static char cDataToBeWritten[100];
-//uint8_t u8WriteCounter = 0;
-
 /* Definitions */
 
 
@@ -96,7 +91,7 @@ void ApplicationPerform()
 		break;
 
 	default:
-		AssertError(AppError_AppDefaultStateEntryError);
+		AssertError(eAppError_AppDefaultStateEntryError);
 		break;
 	}
 }
@@ -176,23 +171,6 @@ void AsynchronousTask_1000ms()
 	 * Measured 22.12.2021
 	 */
 	ToggleLED_B();
-
-
-
-//	if(u8WriteCounter++ >= 2)
-//	{
-////		SetSecondDebugPinOn();
-////		f_close(&SDFile);
-////		SetSecondDebugPinOff();
-//	}
-//	else
-//	{
-////		SetSecondDebugPinOn();
-////		kCardResult = f_write(&SDFile, &cDataToBeWritten, 100, &kWordCount);
-////		SetSecondDebugPinOff();
-//	}
-
-
 }
 
 void AsynchronousTaskScheduler()
@@ -234,7 +212,7 @@ void AppStateChangeRequest( ApplicationState_t eNewState)
 		}
 		else
 		{
-			AssertError(AppError_WrongStateTransition);
+			AssertError(eAppError_WrongStateTransition);
 		}
 		break;
 
@@ -245,7 +223,7 @@ void AppStateChangeRequest( ApplicationState_t eNewState)
 		}
 		else
 		{
-			AssertError(AppError_WrongStateTransition);
+			AssertError(eAppError_WrongStateTransition);
 		}
 		break;
 
@@ -260,19 +238,18 @@ void AppStateChangeRequest( ApplicationState_t eNewState)
 		}
 		else
 		{
-			AssertError(AppError_WrongStateTransition);
+			AssertError(eAppError_WrongStateTransition);
 		}
 		break;
 
 	case eApp_Shutdown:
-		AssertError(AppError_WrongStateTransition);
+		AssertError(eAppError_WrongStateTransition);
 		break;
 
 	default:
-		AssertError(AppError_WrongStateTransition);
+		AssertError(eAppError_WrongStateTransition);
 		break;
 	}
-
 }
 
 void AppEnableResetTaskTimers()
