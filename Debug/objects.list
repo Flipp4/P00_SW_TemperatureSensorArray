@@ -49,6 +49,7 @@
 "./Src/Communication/CommunicationManager.o"
 "./Src/Communication/FrameAssembler.o"
 "./Src/Communication/USBTransmitter.o"
+"./Src/Error/ErrorHandler.o"
 "./Src/Signal processing/Filters.o"
 "./Src/bsp_driver_sd.o"
 "./Src/fatfs.o"

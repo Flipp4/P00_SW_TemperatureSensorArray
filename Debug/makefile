@@ -11,6 +11,7 @@ RM := rm -rf
 -include sources.mk
 -include Startup/subdir.mk
 -include Src/Signal\ processing/subdir.mk
+-include Src/Error/subdir.mk
 -include Src/Communication/subdir.mk
 -include Src/Application/subdir.mk
 -include Src/subdir.mk

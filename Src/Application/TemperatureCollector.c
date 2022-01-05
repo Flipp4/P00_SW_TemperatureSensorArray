@@ -11,10 +11,12 @@
 #include "../../Drivers/Sensors/TemperatureSensor_MCP9803.h"
 #include "Application.h"
 #include "DataHandler.h"
+#include "HandlesAssigner.h"
 #include "../Drivers/BSP/BSP.h"
+#include "../Communication/DataFormat.h"
 
-#define dTimeoutMaxWait		(15)
-#define dErrorIndication	(200.0)
+#define dTimeoutMaxWait		(10)
+#define dSensorResetTime	(80)
 
 typedef enum TemperatureCollectorState_t
 {
@@ -29,7 +31,6 @@ typedef enum TemperatureCollectorState_t
 
 typedef struct kTempCollect_Data_t
 {
-	I2C_HandleTypeDef* hTranscieverHandle;
 	uint8_t u8DeviceCount;
 	bool bEnabledFlag;
 	bool bScheduleMeasurement;
@@ -42,8 +43,14 @@ typedef struct kTempCollect_Data_t
 	uint32_t u32MeasurementCounter;
 	uint8_t u8TimeoutCounter;
 	bool bErrorOnArray[2];
+	uint16_t u16ErrorWaitingCounter;
+	bool bResetRequest;
+	I2C_HandleTypeDef *hTranscieverA;
+	I2C_HandleTypeDef *hTranscieverB;
 
 }kTempCollect_Data_t;
+
+static void TempCollect_FillRemainingReadingsWithError();
 
 kTempCollect_Data_t kTemperatureData =
 {
@@ -173,9 +180,49 @@ void TempCollect_Operate()
 		}
 		else
 		{
-			kTemperatureData.eState = TempCollect_TemperatureReadRequest;
+			if( kTemperatureData.bResetRequest)
+			{
+				kTemperatureData.eState = TempCollect_Error;
+			}
+			else
+			{
+				kTemperatureData.eState = TempCollect_TemperatureReadRequest;
+			}
 		}
 		break;
+	case TempCollect_Error:
+		kTemperatureData.u16ErrorWaitingCounter++;
+		if( kTemperatureData.u16ErrorWaitingCounter == 1 )
+		{
+			TurnAllSensorOff();
+		}
+		else if( kTemperatureData.u16ErrorWaitingCounter == ( dSensorResetTime - 25 ) )
+		{
+
+			HAL_I2C_ER_IRQHandler(kTemperatureData.hTranscieverA);
+			HAL_I2C_ER_IRQHandler(kTemperatureData.hTranscieverB);
+
+			HAL_I2C_DeInit(kTemperatureData.hTranscieverA);
+			HAL_I2C_DeInit(kTemperatureData.hTranscieverB);
+
+			HAL_I2C_Init(kTemperatureData.hTranscieverA);
+			HAL_I2C_Init(kTemperatureData.hTranscieverB);
+		}
+		else if( kTemperatureData.u16ErrorWaitingCounter == ( dSensorResetTime - 35 ) )
+		{
+			TurnAllSensorOn();
+			TempCollect_FillRemainingReadingsWithError();
+		}
+		else if( kTemperatureData.u16ErrorWaitingCounter >= dSensorResetTime)
+		{
+			kTemperatureData.bScheduleMeasurement = false;
+			kTemperatureData.eState = TempCollect_Initialized;
+			kTemperatureData.u16ErrorWaitingCounter = 0;
+		}
+
+		kTemperatureData.bResetRequest = false;
+		break;
+
 	default:
 		AssertError(AppError_TempCollectDefaultState); // Incorrect entry
 	break;
@@ -184,8 +231,11 @@ void TempCollect_Operate()
 
 void TempCollect_Initialize()
 {
+	TurnAllSensorOn();
+
 	kTemperatureData.eState = TempCollect_Initialized;
 	kTemperatureData.bEnabledFlag = true;
+	kTemperatureData.u16ErrorWaitingCounter = 0;
 
 	if(Sensor_I2CA_DeviceCount == 0)
 	{
@@ -211,8 +261,10 @@ void TempCollect_Initialize()
 			kaSensorArrayDataB[u8Idx].fcnSendConfig(&kaSensorArrayDataB[u8Idx], eMCP9803_Resolution_12bit);
 		}
 	}
+
+	kTemperatureData.hTranscieverA = HandlesAssigner_GetHandle(eHandle_I2C1);
+	kTemperatureData.hTranscieverB = HandlesAssigner_GetHandle(eHandle_I2C2);
 }
-void TempCollect_RetrieveResult(TemperatureData_t *sTemperatureData);
 
 /* Interrupt callback functions */
 
@@ -248,4 +300,48 @@ void TempCollect_CommFaultOccured(CommunicationModule_t eModule)
 	{
 		kTemperatureData.bErrorOnArray[1] = true;
 	}
+}
+
+void TempCollect_ResetSensors()
+{
+	kTemperatureData.bResetRequest = true;
+}
+
+static void TempCollect_FillRemainingReadingsWithError()
+{
+	for( kTemperatureData.u16ArrayASensorIndex; ; kTemperatureData.u16ArrayASensorIndex++ )
+	{
+		if( !kTemperatureData.bReadFinished[0] )
+		{
+			kTemperatureData.fConvertedTemperature[0] = dErrorIndication;
+			kTemperatureData.bErrorOnArray[0] = false;
+			DataHandler_StoreMeasurement(kTemperatureData.fConvertedTemperature[0]);
+		}
+		if( !kTemperatureData.bReadFinished[1] )
+		{
+			kTemperatureData.fConvertedTemperature[1] = dErrorIndication;
+			kTemperatureData.bErrorOnArray[1] = false;
+			DataHandler_StoreMeasurement(kTemperatureData.fConvertedTemperature[1]);
+		}
+		kTemperatureData.u16ArrayASensorIndex++;
+
+		if( kTemperatureData.u16ArrayASensorIndex >= Sensor_I2CA_DeviceCount)
+		{
+			kTemperatureData.bReadFinished[0] = true;
+		}
+
+		kTemperatureData.u16ArrayBSensorIndex++;
+
+		if( kTemperatureData.u16ArrayBSensorIndex >= Sensor_I2CB_DeviceCount)
+		{
+			kTemperatureData.bReadFinished[1] = true;
+		}
+		if ( kTemperatureData.bReadFinished[0] && kTemperatureData.bReadFinished[1] )
+		{
+			break;
+		}
+	}
+	DataHandler_OpenNewMeasurement(kTemperatureData.u32MeasurementCounter++);
+	kTemperatureData.bErrorOnArray[0] = false;
+	kTemperatureData.bErrorOnArray[1] = false;
 }

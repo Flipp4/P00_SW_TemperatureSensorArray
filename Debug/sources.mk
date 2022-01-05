@@ -29,6 +29,7 @@ Middlewares/Third_Party/FatFs/src \
 Middlewares/Third_Party/FatFs/src/option \
 Src/Application \
 Src/Communication \
+Src/Error \
 Src/Signal\ processing \
 Src \
 Startup \
