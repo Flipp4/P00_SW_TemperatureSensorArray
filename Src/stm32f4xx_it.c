@@ -49,11 +49,6 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
 
-static uint32_t u32Counter_SDIO = 0;
-static uint32_t u32Counter_DMA2S3 = 0;
-static uint32_t u32Counter_DMA2S6 = 0;
-static uint32_t u32Counter_DMATXCPLT = 0;
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -354,7 +349,6 @@ void I2C2_ER_IRQHandler(void)
 void SDIO_IRQHandler(void)
 {
   /* USER CODE BEGIN SDIO_IRQn 0 */
-	u32Counter_SDIO++;
 
   /* USER CODE END SDIO_IRQn 0 */
   HAL_SD_IRQHandler(&hsd);
@@ -389,8 +383,6 @@ void DMA2_Stream3_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA2_Stream3_IRQn 0 */
 
-	u32Counter_DMA2S3++;
-
   /* USER CODE END DMA2_Stream3_IRQn 0 */
   HAL_DMA_IRQHandler(&hdma_sdio_rx);
   /* USER CODE BEGIN DMA2_Stream3_IRQn 1 */
@@ -418,7 +410,6 @@ void OTG_FS_IRQHandler(void)
 void DMA2_Stream6_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA2_Stream6_IRQn 0 */
-	u32Counter_DMA2S6++;
 
   /* USER CODE END DMA2_Stream6_IRQn 0 */
   HAL_DMA_IRQHandler(&hdma_sdio_tx);
