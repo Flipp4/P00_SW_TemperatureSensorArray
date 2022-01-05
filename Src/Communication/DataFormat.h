@@ -24,10 +24,13 @@
  */
 #define dPrintfSize   "8"
 
-#define dDateSize ( 9 )
-#define dTimeSize ( 11 )
-#define dTimestampSize ( dDateSize + dTimeSize )
+#define dDateSize 			( 9 )
+#define dTimeSize 			( 11 )
+#define dTimestampSize 		( dDateSize + dTimeSize )
 
-#define dFilenameLength (12)
+#define dFilenameLength 	(12)
+
+#define dErrorIndication	(200.0)
+
 
 #endif /* COMMUNICATION_DATAFORMAT_H_ */

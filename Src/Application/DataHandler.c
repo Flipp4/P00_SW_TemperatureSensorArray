@@ -19,8 +19,6 @@ typedef struct MeasurementEntry_t
 	uint32_t u16Timestamp;
 	float fMeasurementArray[dMemoryLength][dMemoryWidth];
 	bool bAlreadySent;
-	bool bHardSaved;
-	bool bHardSaveRequest;
 }MeasurementEntry_t;
 
 typedef struct DataHandler_t
@@ -45,6 +43,7 @@ void DataHandler_Initialize()
 {
 	DataHandler_Reset();
 	kDataHandler.bEnabled = true;
+	kTransmissionMemoryInterchange.eMemoryState = eMemoryState_DataSkipped;
 
 }
 void DataHandler_Reset()
@@ -61,8 +60,6 @@ void DataHandler_Reset()
 		for(uint8_t u8LengthIdx = 0; u8LengthIdx < dMemoryLength; u8LengthIdx++)
 		{
 			kDataHandler.kMeasurementMemory[u8PageIdx].bAlreadySent = false;
-			kDataHandler.kMeasurementMemory[u8PageIdx].bHardSaved = false;
-			kDataHandler.kMeasurementMemory[u8PageIdx].bHardSaveRequest = false;
 
 			for(uint8_t u8WidthIdx = 0; u8WidthIdx < dMemoryWidth; u8WidthIdx++)
 			{
@@ -89,14 +86,7 @@ void DataHandler_OpenNewMeasurement( uint32_t u32TimeStamp )
 		{
 			kDataHandler.u8LengthPointer = 0;
 			kDataHandler.kMeasurementMemory[kDataHandler.u8ActiveMemoryPage].bAlreadySent = false;
-			kDataHandler.kMeasurementMemory[kDataHandler.u8ActiveMemoryPage].bHardSaveRequest = true;
-			kDataHandler.kMeasurementMemory[kDataHandler.u8ActiveMemoryPage].bHardSaved = false;
 			kDataHandler.kMeasurementMemory[kDataHandler.u8ActiveMemoryPage].u16Timestamp = u32TimeStamp;
-
-			if( !kDataHandler.kMeasurementMemory[kDataHandler.u8ActiveMemoryPage].bHardSaved )
-			{
-				AssertError(AppError_DataLost); // Data not saved; possibly add timestamp to track lost data chunks
-			}
 
 			kDataHandler.u8LastMemoryPage = kDataHandler.u8ActiveMemoryPage;
 			kDataHandler.u8ActiveMemoryPage++;
@@ -126,7 +116,7 @@ void DataHandler_StoreMeasurement( float fNewMeasurement )
 		kDataHandler.kMeasurementMemory[u8MemPage].fMeasurementArray[u8LenPtr][u8WidPtr] = fNewMeasurement;
 		kDataHandler.u8WidthPointer++;
 
-		if(kDataHandler.u8WidthPointer >= dMemoryWidth)
+		if(kDataHandler.u8WidthPointer > dMemoryWidth)
 		{
 			kDataHandler.u8WidthPointer--;
 			AssertError(AppError_WidthOverstretched); // Width overstretched - no new measurement was called;
@@ -145,7 +135,6 @@ void DataHandler_Operate()
 
 		if( kDataHandler.bPageFilled )
 		{
-			kDataHandler.kMeasurementMemory[kDataHandler.u8LastMemoryPage].bHardSaveRequest = true;
 			kDataHandler.bPageFilled = false;
 			// Call to save with SD card
 		}
@@ -190,14 +179,14 @@ void DataHandler_AccessStorageMemoryInterchange( MemoryInterchange_t ** pkMemory
 
 void DataHandler_CopyMemoryToInterchangeBuffer( float *pfMemoryArray )
 {
-	if( (kTransmissionMemoryInterchange.eMemoryState != MemoryState_DataSent) && ( kTransmissionMemoryInterchange.eMemoryState != MemoryState_DataSkipped ) )
+	if( (kTransmissionMemoryInterchange.eMemoryState != eMemoryState_DataSent) && ( kTransmissionMemoryInterchange.eMemoryState != eMemoryState_DataSkipped ) )
 	{
 		AssertError(AppError_DataLost); // Memory would be overwritten otherwise;
 	}
 	else
 	{
 		kTransmissionMemoryInterchange.fDataPointer = pfMemoryArray;
-		kTransmissionMemoryInterchange.eMemoryState = MemoryState_NewData;
+		kTransmissionMemoryInterchange.eMemoryState = eMemoryState_NewData;
 	}
 
 	if( !kStorageMemoryInterchange.bAddedToAverage )
