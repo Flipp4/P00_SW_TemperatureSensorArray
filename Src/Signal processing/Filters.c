@@ -11,6 +11,8 @@
 
 #include "../Drivers/Sensors/TemperatureSensor_ArrayData.h"
 
+#include "../Communication/DataFormat.h"
+
 typedef struct AverageSignalChannel_t
 {
 	float fCurrentValue;
@@ -45,8 +47,11 @@ void SignalProcessing_AddSampleToAverage(float fNewData, uint8_t u8Channel)
 	}
 	else
 	{
-		kSignalProcessingData.kAverageChannels[u8Channel].fCurrentValue += fNewData;
-		kSignalProcessingData.kAverageChannels[u8Channel].u16SamplesCollected++;
+		if( fNewData < dErrorIndication )
+		{
+			kSignalProcessingData.kAverageChannels[u8Channel].fCurrentValue += fNewData;
+			kSignalProcessingData.kAverageChannels[u8Channel].u16SamplesCollected++;
+		}
 	}
 }
 
@@ -54,7 +59,14 @@ void SignalProcessing_CalculateAverage()
 {
 	for(uint8_t u8Idx = 0; u8Idx < dMaximumChannels; u8Idx++)
 	{
-		kSignalProcessingData.fAverageRegister[u8Idx] = kSignalProcessingData.kAverageChannels[u8Idx].fCurrentValue / kSignalProcessingData.kAverageChannels[u8Idx].u16SamplesCollected;
+		if(kSignalProcessingData.kAverageChannels[u8Idx].u16SamplesCollected > 0)
+		{
+			kSignalProcessingData.fAverageRegister[u8Idx] = kSignalProcessingData.kAverageChannels[u8Idx].fCurrentValue / kSignalProcessingData.kAverageChannels[u8Idx].u16SamplesCollected;
+		}
+		else
+		{
+			kSignalProcessingData.fAverageRegister[u8Idx] = dErrorIndication;
+		}
 	}
 	kSignalProcessingData.bAverageCalculated = true;
 }
