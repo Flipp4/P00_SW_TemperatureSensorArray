@@ -34,6 +34,7 @@ void OperateSensorPower_A (SensorState_t eState);
 void OperateSensorPower_B (SensorState_t eState);
 
 void TurnAllSensorOn();
+void TurnAllSensorOff();
 
 void SetFirstDebugPinOn();
 void SetFirstDebugPinOff();

@@ -92,6 +92,12 @@ void TurnAllSensorOn()
 	OperateSensorPower_B(eSensor_On);
 }
 
+void TurnAllSensorOff()
+{
+	OperateSensorPower_A(eSensor_Off);
+	OperateSensorPower_B(eSensor_Off);
+}
+
 void SetFirstDebugPinOn()
 {
 	HAL_GPIO_WritePin(PIN_0_GPIO_Port, PIN_0_Pin, GPIO_PIN_SET);
