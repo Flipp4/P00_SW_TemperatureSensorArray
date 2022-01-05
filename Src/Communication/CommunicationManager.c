@@ -84,8 +84,15 @@ void CommManager_Operate()
 
 			pfPointer = kCommData.pkMemoryPointer->fDataPointer;
 			fValue = pfPointer[kCommData.u16ReadoutPointer];
-			FrameAssembler_ConvertFloatToCharArray(kCommData.u8Frame, fValue);
-			kCommData.u8CurrentFrameLength = 10;
+			if( fValue < dErrorIndication )
+			{
+				FrameAssembler_ConvertFloatToCharArray(kCommData.u8Frame, fValue);
+			}
+			else
+			{
+				FrameAssembler_SendError(kCommData.u8Frame);
+			}
+			kCommData.u8CurrentFrameLength = dMaxDataLenght;
 			kCommData.ePreviousState = kCommData.eState;
 			kCommData.eState = Comm_Transmit;
 			break;
@@ -114,7 +121,7 @@ void CommManager_Operate()
 				}
 				else if( kCommData.ePreviousState == Comm_CloseTransmission)
 				{
-					kCommData.pkMemoryPointer->eMemoryState = MemoryState_DataSent;
+					kCommData.pkMemoryPointer->eMemoryState = eMemoryState_DataSent;
 					kCommData.eState = Comm_Idle;
 				}
 				else if ( kCommData.ePreviousState == Comm_OpenTransmission )
@@ -146,7 +153,7 @@ void CommManager_Operate()
 
 			kCommData.eState = Comm_Idle;
 
-			kCommData.pkMemoryPointer->eMemoryState = MemoryState_DataSkipped;
+			kCommData.pkMemoryPointer->eMemoryState = eMemoryState_DataSkipped;
 			kCommData.u16ReadoutPointer = 0;
 			CommManager_FlushFrame();
 			break;
@@ -192,7 +199,7 @@ void ComManager_ArmTransmission()
 	}
 	else
 	{
-		kCommData.pkMemoryPointer->eMemoryState = MemoryState_DataSkipped;
+		kCommData.pkMemoryPointer->eMemoryState = eMemoryState_DataSkipped;
 	}
 
 }

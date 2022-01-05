@@ -16,5 +16,6 @@
 void FrameAssembler_ConvertFloatToCharArray(uint8_t *pResultArray, float fNumber);
 void FrameAssembler_ConvertDateTimeToCharArray(uint8_t *pResultArray, RTC_TimeTypeDef * pkTime, RTC_DateTypeDef* pkDate);
 void FrameAssembler_CreateFilnameFromDate(uint8_t *pResultArray, RTC_DateTypeDef* pkDate);
+void FrameAssembler_SendError(uint8_t *pResultArray);
 
 #endif /* COMMUNICATION_FRAMEASSEMBLER_H_ */

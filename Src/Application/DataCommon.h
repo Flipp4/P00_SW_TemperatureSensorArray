@@ -17,10 +17,10 @@
 
 typedef enum MemoryState_t
 {
-	MemoryState_NewData,
-	MemoryState_DataConverted,
-	MemoryState_DataSent,
-	MemoryState_DataSkipped
+	eMemoryState_NewData,
+	eMemoryState_DataConverted,
+	eMemoryState_DataSent,
+	eMemoryState_DataSkipped
 }MemoryState_t;
 
 typedef struct MemoryInterchange_t

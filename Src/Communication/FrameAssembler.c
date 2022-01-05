@@ -27,3 +27,18 @@ void FrameAssembler_CreateFilnameFromDate(uint8_t *pResultArray, RTC_DateTypeDef
 {
 	sprintf((char*)pResultArray, "%02d_%02d_%02d.txt", pkDate->Date, pkDate->Month, pkDate->Year);
 }
+
+void FrameAssembler_SendError(uint8_t *pResultArray)
+{
+	pResultArray[0] = 'e';
+	pResultArray[1] = 'r';
+	pResultArray[2] = 'r';
+	pResultArray[3] = 'o';
+	pResultArray[4] = 'r';
+	pResultArray[5] = ' ';
+	pResultArray[6] = ' ';
+	pResultArray[7] = ' ';
+	pResultArray[8] = ' ';
+	pResultArray[9] = '\t';
+
+}
