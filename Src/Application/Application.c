@@ -72,7 +72,7 @@ void ApplicationPerform()
 		break;
 
 	case eApp_Initialization:
-		TurnAllSensorOn();
+		ErrorHandler_Initalize();
 		SensorArray_Init();
 		USB_InitalizeTransmitterLogic();
 		AppEnableResetTaskTimers();
@@ -99,7 +99,6 @@ void ApplicationPerform()
 		AssertError(AppError_AppDefaultStateEntryError);
 		break;
 	}
-
 }
 
 void AsynchronousTaskTimerUpdate()
@@ -141,6 +140,7 @@ void AsynchronousTask_1ms()
 	EventSystem_HandleEvent();
 	CommManager_Operate();
 	DataSaver_Operate();
+	ErrorHandler_Handle();
 }
 
 void AsynchronousTask_10ms()
@@ -152,6 +152,7 @@ void AsynchronousTask_10ms()
 	 * one function (22.12.2201): TempCollect
 	 */
 	TempCollect_Operate();
+	ErrorHandler_Tick();
 }
 
 void AsynchronousTask_100ms()
@@ -287,11 +288,6 @@ void AppEnableResetTaskTimers()
 	kApplicationBase.sAsyncTimers.s10ms.u16Counter = 0;
 	kApplicationBase.sAsyncTimers.s1ms.u16Counter = 0;
 	kApplicationBase.sAsyncTimers.s500us.u16Counter = 0;
-}
-
-void AssertError( AppErrorList_t eAppError )
-{
-	kApplicationBase.u32ErrorReg |= (uint32_t)eAppError;
 }
 
 void TurnOnSynchronousEvent()

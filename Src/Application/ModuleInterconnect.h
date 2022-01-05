@@ -12,5 +12,6 @@ void CallForTransmissionEvent();
 void CallForUSBConnection();
 void CallForUSBDisonnection();
 void CallForAverageAddition();
+void CallForSensorReset();
 
 #endif /* APPLICATION_MODULEINTERCONNECT_H_ */

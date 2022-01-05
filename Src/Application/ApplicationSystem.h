@@ -48,7 +48,6 @@ typedef struct AsyncTimers_t
 typedef struct Application_t
 {
 	AsyncTimers_t sAsyncTimers;
-	uint32_t u32ErrorReg;
 	bool bInitializedFlag;
 	ApplicationState_t eApplicationState;
 	TIM_HandleTypeDef *phSynchronousEventTimer;

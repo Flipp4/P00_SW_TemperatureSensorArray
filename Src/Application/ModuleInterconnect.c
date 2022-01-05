@@ -11,19 +11,24 @@
 
 void CallForTransmissionEvent()
 {
-	EventSystem_Signalize(Event_DataReadyToTransmit);
+	EventSystem_Signalize(eEvent_DataReadyToTransmit);
 }
 
 void CallForUSBConnection()
 {
-	EventSystem_Signalize(Event_USBConnected);
+	EventSystem_Signalize(eEvent_USBConnected);
 }
 void CallForUSBDisonnection()
 {
-	EventSystem_Signalize(Event_USBDisconnected);
+	EventSystem_Signalize(eEvent_USBDisconnected);
 }
 
 void CallForAverageAddition()
 {
-	EventSystem_Signalize(Event_DataReadyForAverage);
+	EventSystem_Signalize(eEvent_DataReadyForAverage);
+}
+
+void CallForSensorReset()
+{
+	EventSystem_Signalize(eEvent_ResetSensors);
 }

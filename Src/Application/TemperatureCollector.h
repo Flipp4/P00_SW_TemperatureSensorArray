@@ -32,12 +32,12 @@ typedef struct TemperatureData_t
 
 void TempCollect_Operate();
 void TempCollect_Initialize();
-void TempCollect_RetrieveResult(TemperatureData_t *sTemperatureData);
 
 /* Functions used by interrupts */
 void TempCollect_ScheduleMeasurement();
 void TempCollect_I2CA_Done();
 void TempCollect_I2CB_Done();
 void TempCollect_CommFaultOccured(CommunicationModule_t eModule);
+void TempCollect_ResetSensors();
 
 #endif /* APPLICATION_TEMPERATURECOLLECTOR_H_ */

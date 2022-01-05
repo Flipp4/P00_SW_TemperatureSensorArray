@@ -9,12 +9,10 @@
 #define APPLICATION_APPLICATION_H_
 
 #include "../../Drivers/Sensors/TemperatureSensor_ArrayData.h"
-#include "../Error/ErrorList.h"
+#include "../Error/ErrorHandler.h"
 
 void ApplicationPerform();
 void AsynchronousTaskTimerUpdate();
-
-void AssertError(AppErrorList_t eAppError);
 
 #endif /* APPLICATION_APPLICATION_H_ */
 
