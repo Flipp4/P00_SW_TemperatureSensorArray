@@ -78,7 +78,7 @@ void ApplicationPerform()
 		SignalProcessing_Initialize((uint8_t)dMemoryWidth);
 		DataSaver_Initialize();
 		PWMGenerator_Initialize();
-		PWMGenerator_TurnPWMTimerOn();
+//		PWMGenerator_TurnPWMTimerOn();
 		TurnOnSynchronousEvent();
 		AppStateChangeRequest(eApp_Perform);
 		break;
