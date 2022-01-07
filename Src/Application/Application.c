@@ -16,6 +16,8 @@
 #include "HandlesAssigner.h"
 #include "DataSaver.h"
 
+#include "../Error/Supervisor.h"
+
 #include "../Drivers/BSP/BSP.h"
 #include "../Drivers/BSP/PWM_Generator.h"
 #include "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
@@ -61,13 +63,19 @@ void ApplicationPerform()
 	switch(kApplicationBase.eApplicationState)
 	{
 	case eApp_EntryState:
+
 		OperateLED_A(eLED_On);
+		OperateLED_B(eLED_On);
+		OperateLED_C(eLED_On);
+		OperateLED_D(eLED_On);
+
 		kApplicationBase.phSynchronousEventTimer = HandlesAssigner_GetHandle(eHandle_TIM2);
 		AppStateChangeRequest(eApp_Initialization);
 		break;
 
 	case eApp_Initialization:
 		ErrorHandler_Initalize();
+		Supervisor_Initialize();
 		SensorArray_Init();
 		USB_InitalizeTransmitterLogic();
 		AppEnableResetTaskTimers();
@@ -80,6 +88,12 @@ void ApplicationPerform()
 		PWMGenerator_Initialize();
 //		PWMGenerator_TurnPWMTimerOn();
 		TurnOnSynchronousEvent();
+
+		OperateLED_A(eLED_Off);
+		OperateLED_B(eLED_Off);
+		OperateLED_C(eLED_Off);
+		OperateLED_D(eLED_Off);
+
 		AppStateChangeRequest(eApp_Perform);
 		break;
 
@@ -160,6 +174,7 @@ void AsynchronousTask_100ms()
 	 */
 	USB_CheckForUSBConnection();
 	DataHandler_Operate();
+	ErrorHandler_Signalize();
 }
 
 void AsynchronousTask_1000ms()
@@ -171,6 +186,7 @@ void AsynchronousTask_1000ms()
 	 * Measured 22.12.2021
 	 */
 	ToggleLED_B();
+	Supervisor_Verify();
 }
 
 void AsynchronousTaskScheduler()

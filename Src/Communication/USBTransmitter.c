@@ -10,6 +10,7 @@
 #include "../Application/ModuleInterconnect.h"
 #include "../Application/DataCommon.h"
 #include "../Application/HandlesAssigner.h"
+#include "../Error/Supervisor.h"
 
 #define dLowThreshold  ( 3227 )
 #define dHighThreshold ( 3351 )
@@ -34,6 +35,10 @@ void USB_InitalizeTransmitterLogic()
 {
 	kUSBTransmitterData.phADCHandle = HandlesAssigner_GetHandle(eHandle_ADC);
 	kUSBTransmitterData.bInitialized = true;
+	kUSBTransmitterData.bCheckStarted = false;
+	kUSBTransmitterData.bNewMeasurement = false;
+	kUSBTransmitterData.bConnected = false;
+	kUSBTransmitterData.u32MeasuredVbus = 0;
 }
 
 bool USB_TransmitData(uint8_t *Dataset, uint8_t u8Length)
@@ -58,10 +63,13 @@ void USB_CheckForUSBConnection()
 		{
 			HAL_ADC_Start_IT(kUSBTransmitterData.phADCHandle);
 			kUSBTransmitterData.bCheckStarted = true;
+
+			Supervisor_TickA();
 		}
 
 		if( kUSBTransmitterData.bNewMeasurement )
 		{
+			Supervisor_TickB();
 			kUSBTransmitterData.bNewMeasurement = false;
 			if( (kUSBTransmitterData.u32MeasuredVbus < dLowThreshold) && kUSBTransmitterData.bConnected )
 			{

@@ -13,5 +13,7 @@ void CallForUSBConnection();
 void CallForUSBDisonnection();
 void CallForAverageAddition();
 void CallForSensorReset();
+void CallForErrorSignalize_Supervisor();
+void CallForErrorSignalize_Sensor();
 
 #endif /* APPLICATION_MODULEINTERCONNECT_H_ */

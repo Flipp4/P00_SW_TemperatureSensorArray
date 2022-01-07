@@ -40,4 +40,10 @@ typedef enum AppErrorList_t
 
 }AppErrorList_t;
 
+typedef enum ErrorSingalizeList_t
+{
+	eErrorSignalize_SensorError			= 0x0001,
+	eErrorSignalize_SupervisorError		= 0x0002
+}ErrorSingalizeList_t;
+
 #endif /* ERROR_ERRORLIST_H_ */

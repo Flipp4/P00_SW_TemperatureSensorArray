@@ -5,13 +5,16 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Src/Error/ErrorHandler.c 
+../Src/Error/ErrorHandler.c \
+../Src/Error/Supervisor.c 
 
 OBJS += \
-./Src/Error/ErrorHandler.o 
+./Src/Error/ErrorHandler.o \
+./Src/Error/Supervisor.o 
 
 C_DEPS += \
-./Src/Error/ErrorHandler.d 
+./Src/Error/ErrorHandler.d \
+./Src/Error/Supervisor.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -21,7 +24,7 @@ Src/Error/%.o: ../Src/Error/%.c Src/Error/subdir.mk
 clean: clean-Src-2f-Error
 
 clean-Src-2f-Error:
-	-$(RM) ./Src/Error/ErrorHandler.d ./Src/Error/ErrorHandler.o
+	-$(RM) ./Src/Error/ErrorHandler.d ./Src/Error/ErrorHandler.o ./Src/Error/Supervisor.d ./Src/Error/Supervisor.o
 
 .PHONY: clean-Src-2f-Error
 

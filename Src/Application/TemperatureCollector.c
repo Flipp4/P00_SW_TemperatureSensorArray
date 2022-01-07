@@ -12,6 +12,7 @@
 #include "Application.h"
 #include "DataHandler.h"
 #include "HandlesAssigner.h"
+#include "ModuleInterconnect.h"
 #include "../Drivers/BSP/BSP.h"
 #include "../Communication/DataFormat.h"
 
@@ -119,6 +120,7 @@ void TempCollect_Operate()
 					kTemperatureData.bErrorOnArray[1] = true;
 					AssertError(eAppError_ArrayBError);
 				}
+				CallForErrorSignalize_Sensor();
 				kTemperatureData.eState = TempCollect_ProcessData;
 			}
 		}
@@ -309,7 +311,7 @@ void TempCollect_ResetSensors()
 
 static void TempCollect_FillRemainingReadingsWithError()
 {
-	for( kTemperatureData.u16ArrayASensorIndex; ; kTemperatureData.u16ArrayASensorIndex++ )
+	for( ; ; )
 	{
 		if( !kTemperatureData.bReadFinished[0] )
 		{

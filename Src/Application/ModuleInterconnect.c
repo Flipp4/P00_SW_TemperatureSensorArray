@@ -32,3 +32,13 @@ void CallForSensorReset()
 {
 	EventSystem_Signalize(eEvent_ResetSensors);
 }
+
+void CallForErrorSignalize_Supervisor()
+{
+	EventSystem_Signalize(eEvent_ErrorSupervisor);
+}
+
+void CallForErrorSignalize_Sensor()
+{
+	EventSystem_Signalize(eEvent_SignalizeSensorError);
+}

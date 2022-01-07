@@ -65,6 +65,20 @@ void EventSystem_HandleEvent()
 		TempCollect_ResetSensors();
 		kEventData.u32EventRegister &= ~(u32EventCode);
 	}
+
+	u32EventCode = (uint32_t)eEvent_ErrorSupervisor;
+	if( (kEventData.u32EventRegister & u32EventCode) == u32EventCode )
+	{
+		ErrorHandler_SetSignalize(eErrorSignalize_SupervisorError);
+		kEventData.u32EventRegister &= ~(u32EventCode);
+	}
+
+	u32EventCode = (uint32_t)eEvent_SignalizeSensorError;
+	if( (kEventData.u32EventRegister & u32EventCode) == u32EventCode )
+	{
+		ErrorHandler_SetSignalize(eErrorSignalize_SensorError);
+		kEventData.u32EventRegister &= ~(u32EventCode);
+	}
 }
 
 void EventSystem_Signalize(Event_t eEvent)

@@ -19,6 +19,7 @@ void DataHandler_OpenNewMeasurement( uint32_t u32TimeStamp );
 void DataHandler_StoreMeasurement( float fNewMeasurement );
 void DataHandler_Operate();
 
-void DataHandler_AccessMemoryInterchange( MemoryInterchange_t ** pkMemoryInterchangeAddress);
+void DataHandler_AccessTransmissionMemoryInterchange( MemoryInterchange_t ** pkMemoryInterchangeAddress);
+void DataHandler_AccessStorageMemoryInterchange( MemoryInterchange_t ** pkMemoryInterchangeAddress);
 
 #endif /* APPLICATION_DATAHANDLER_H_ */
